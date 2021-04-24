@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<default>
+		<includes>
+			<!--
+				Path to css and js files into plugins folder.
+				If your files are not in plugins folder, use absolute paths.
+			-->
+			<css>
+				<file>popover/dist/jquery.webui-popover.min.css</file>
+			</css>
+			<js>
+				<file>popover/dist/jquery.webui-popover.min.js</file>
+			</js>
+		</includes>
+		<js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var dataCache = (dataAttr.cache === undefined) ? true : dataAttr.cache,
+            dataCloseable = (dataAttr.closeable === undefined) ? true : dataAttr.closeable,
+            dataAnimation = (dataAttr.animation === undefined) ? 'pop' : dataAttr.animation,
+            dataPlacement = (dataAttr.placement === undefined) ? 'auto' : dataAttr.placement,
+            dataWidth     = (dataAttr.width === undefined) ? 'auto' : dataAttr.width,
+            dataHeight    = (dataAttr.height === undefined) ? 'auto' : dataAttr.height,
+            dataBackdrop  = (dataAttr.backdrop === undefined) ? true : dataAttr.backdrop;
+
+        $(this).webuiPopover({
+            url: '#%formID%-content',
+            cache: dataCache,
+            closeable: dataCloseable,
+            animation: dataAnimation,
+            placement: dataPlacement,
+            width: dataWidth,
+            height: dataHeight,
+            backdrop: dataBackdrop,
+            onShow: function(element) {
+                var $element = $(element);
+                if ($element.position().left < 0) {
+                    $element.css('left', '10px');
+                }
+                var availableWidth = $(window).width() - $element.position().left;
+                if($element.width() > availableWidth) {
+                    $element.css('max-width', (availableWidth - 10) + 'px');
+                }
+                var bgColor = $('body').css('background-color');
+                if(bgColor == 'rgba(0, 0, 0, 0)') {
+                    bgColor = '#FFF';
+                }
+                $element.css('background-color', bgColor);
+                if($('#%formID% .g-recaptcha')[0] && !$('#%formID% .grecaptcha-badge')[0]) { // grecaptcha-badge = invisible recaptcha
+                    scaleCaptcha();
+                }
+            }
+        });
+
+        if ($("#%formID% .has-error")[0] || $("#%formID% .form-error")[0]) {
+            WebuiPopovers.show("%selector%");
+        }
+    });
+]]>
+		</js_code>
+	</default>
+</root>

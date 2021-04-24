@@ -1,0 +1,168 @@
+/* Bootstrap 4 mixins from ../../../../../../node_modules/bootstrap/scss/utilities - no change */
+
+/* Color contrast - from Bootstrap 4 utilities - no change */
+
+@mixin hover {
+    /* TODO: re-enable along with mq4-hover-shim*/
+    /*  @if $enable-hover-media-query {*/
+    /*    // See Media Queries Level 4: https://drafts.csswg.org/mediaqueries/#hover*/
+    /*    // Currently shimmed by https://github.com/twbs/mq4-hover-shim*/
+    /*    @media (hover: hover) {*/
+    /*      &:hover { @content }*/
+    /*    }*/
+    /*  }*/
+    /*  @else {*/
+    &:hover {
+        @content;
+    }
+    /*  }*/
+}
+
+@mixin hover-focus {
+    @if $enable-hover-media-query {
+        &:focus {
+            @content;
+        }
+        @include hover {
+            @content;
+        }
+    } @else {
+        &:focus,
+        &:hover {
+            @content;
+        }
+    }
+}
+
+@mixin text-emphasis-variant($parent, $color) {
+    #{$parent} {
+        color: $color !important;
+    }
+    a#{$parent} {
+        @include hover-focus {
+            color: darken($color, 10%) !important;
+        }
+    }
+}
+
+@mixin bg-variant($parent, $color) {
+    #{$parent} {
+        background-color: $color !important;
+    }
+    a#{$parent} {
+        @include hover-focus {
+            background-color: darken($color, 10%) !important;
+        }
+    }
+}
+
+@function color-yiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+
+    $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    @if ($yiq >= 150) {
+        @return #111;
+    } @else {
+        @return #fff;
+    }
+}
+
+/* Color variants - https://codepen.io/migli/pen/QaGNVp */
+
+$white: #fff;
+$black: #000;
+
+$slate: #607d8b;
+$gray: $gray-600;
+$gray-dark: $gray-800;
+
+$color-variants: (
+    100: -10%,
+    200: -25%,
+    300: -50%,
+    400: -75%,
+    500: 100%,
+    600: 75%,
+    700: 50%,
+    800: 25%,
+    900: 15%
+);
+
+$colors: ();
+$colors: map-merge(
+    (
+        "blue": $blue,
+        "indigo": $indigo,
+        "purple": $purple,
+        "pink": $pink,
+        "red": $red,
+        "orange": $orange,
+        "yellow": $yellow,
+        "green": $green,
+        "teal": $teal,
+        "cyan": $cyan,
+        "slate": $slate,
+        "white": $white,
+        "gray": $gray,
+        "gray-dark": $gray-dark,
+        "primary": $primary,
+        "success": $success,
+        "info": $info,
+        "warning": $warning,
+        "danger": $danger
+    ),
+    $colors
+);
+
+/*  Add color variants to $colors */
+
+@each $color-name, $color in $colors {
+    @each $variant-name, $percent in $color-variants {
+        $mix-color: if($percent < 0%, white, black);
+        $colors: map-merge($colors, ($color-name + "-" + $variant-name: mix($color, $mix-color, abs($percent))));
+    }
+}
+
+/* remap grays */
+
+$gray-100: map-get($colors, gray-100);
+$gray-200: map-get($colors, gray-200);
+$gray-300: map-get($colors, gray-300);
+$gray-400: map-get($colors, gray-400);
+$gray-500: map-get($colors, gray-500);
+$gray-600: map-get($colors, gray-600);
+$gray-700: map-get($colors, gray-700);
+$gray-800: map-get($colors, gray-800);
+$gray-900: map-get($colors, gray-900);
+
+$enable-hover-media-query: true;
+
+/* from Bootstrap 4 utilities - replaced $theme-colors with $colors */
+
+/* text colors*/
+@each $color, $value in $colors {
+    @include text-emphasis-variant(".text-#{$color}", $value);
+}
+
+/* background colors */
+@each $color, $value in $colors {
+    @include bg-variant(".bg-#{$color}", $value);
+    @include bg-variant(".btn-#{$color}", $value);
+}
+
+/* background text contrast */
+@each $color, $value in $colors {
+    .bg-#{$color} {
+        color: color-yiq($value);
+    }
+}
+
+/* border colors */
+@each $color, $value in $colors {
+    .border-#{$color} {
+        border-color: $value !important;
+    }
+}

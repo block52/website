@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>image-picker/image-picker.min.css</file>
+            </css>
+            <js>
+                <file>image-picker/image-picker.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $('%selector%').each(function() {
+        var options = {},
+        limit = $(this).attr('data-limit');
+
+        if($(this).hasClass('show_label')) {
+            options.show_label = true;
+        }
+        if (typeof limit !== typeof undefined && limit !== false) {
+            options.limit_reached = function() {
+                $(this).siblings('.image_picker_selector').after('<p class="image-picker-limit-reached alert alert-danger">Limit reached</p>');
+                setTimeout(function() {
+                    $('.image-picker-limit-reached').fadeOut('slow', function() {
+                        $('.image-picker-limit-reached').remove();
+                    });
+                }, 2000);
+            };
+        }
+
+        $(this).imagepicker(options);
+
+        if($(this).closest('form.material-form')[0]) {
+            $(this).siblings('label').css({
+                'position': 'static',
+                'padding-bottom': '0.5rem'
+            });
+        }
+    });
+
+]]>
+        </js_code>
+    </default>
+</root>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>PHP CRUD Generator</title>
+    <meta content="PHP CRUD Generator is a program developed in pure PHP for building complete website administration panels using a visual interface." name="description">
+    <meta content="en" name="language">
+    <meta content="Gilles Migliori" name="author">
+    <style>
+        @-ms-viewport{width:device-width}nav{display:block}@font-face{font-family:Overpass;font-style:normal;font-weight:100;src:local("Overpass Thin"),local("Overpass-Thin"),url(../assets/fonts/overpass-v2-latin-100.woff2) format("woff2"),url(../assets/fonts/overpass-v2-latin-100.woff) format("woff")}@font-face{font-family:Overpass;font-style:normal;font-weight:800;src:local("Overpass ExtraBold"),local("Overpass-ExtraBold"),url(../assets/fonts/overpass-v2-latin-800.woff2) format("woff2"),url(../assets/fonts/overpass-v2-latin-800.woff) format("woff")}@font-face{font-family:Overpass;font-style:normal;font-weight:100;src:local("Overpass Thin"),local("Overpass-Thin"),url(../documentation/assets/fonts/overpass-v2-latin-100.woff2) format("woff2"),url(../documentation/assets/fonts/overpass-v2-latin-100.woff) format("woff")}@font-face{font-family:Overpass;font-style:normal;font-weight:800;src:local("Overpass ExtraBold"),local("Overpass-ExtraBold"),url(../documentation/assets/fonts/overpass-v2-latin-800.woff2) format("woff2"),url(../documentation/assets/fonts/overpass-v2-latin-800.woff) format("woff")}@media (max-width:991.98px){#navbar-left-wrapper #navbar-left-collapse{display:block}.w3-animate-left{position:relative;animation:.4s a}@keyframes a{0%{left:-230px;opacity:0}to{left:0;opacity:1}}.navbar-expand-lg>.container-fluid{padding-right:0;padding-left:0}}:root{--blue:#007bff;--red:#fc4848;--orange:#fd7e14;--yellow:#ffc107;--green:#28a745;--cyan:#17a2b8;--gray:#8c8476;--gray-dark:#38352f;--blue-100:#e6f2ff;--blue-200:#bfdeff;--blue-300:#80bdff;--blue-400:#409cff;--blue-500:#007bff;--blue-600:#005cbf;--blue-700:#003e80;--blue-800:#001f40;--blue-900:#001226;--red-100:#ffeded;--red-200:#fed1d1;--red-300:#fea4a4;--red-400:#fd7676;--red-500:#fc4848;--red-600:#bd3636;--red-700:#7e2424;--red-800:#3f1212;--red-900:#260b0b;--orange-100:#fff2e8;--orange-200:#ffdfc4;--orange-300:#febf8a;--orange-400:#fe9e4f;--orange-500:#fd7e14;--orange-600:#be5f0f;--orange-700:#7f3f0a;--orange-800:#3f2005;--orange-900:#261303;--yellow-100:#fff9e6;--yellow-200:#fff0c1;--yellow-300:#ffe083;--yellow-400:#ffd145;--yellow-500:#ffc107;--yellow-600:#bf9105;--yellow-700:#806104;--yellow-800:#403002;--yellow-900:#261d01;--green-100:#eaf6ec;--green-200:#c9e9d1;--green-300:#94d3a2;--green-400:#5ebd74;--green-500:#28a745;--green-600:#1e7d34;--green-700:#145423;--green-800:#0a2a11;--green-900:#06190a;--cyan-100:#e8f6f8;--cyan-200:#c5e8ed;--cyan-300:#8bd1dc;--cyan-400:#51b9ca;--cyan-500:#17a2b8;--cyan-600:#117a8a;--cyan-700:#0c515c;--cyan-800:#06292e;--cyan-900:#03181c;--gray-100:#f4f3f1;--gray-200:#e2e0dd;--gray-300:#c6c2bb;--gray-400:#a9a398;--gray-500:#8c8476;--gray-600:#696359;--gray-700:#46423b;--gray-800:#23211e;--gray-900:#151412;--gray-dark-100:#ebebea;--gray-dark-200:#cdcdcb;--gray-dark-300:#9c9a97;--gray-dark-400:#6a6863;--gray-dark-500:#38352f;--gray-dark-600:#2a2823;--gray-dark-700:#1c1b18;--gray-dark-800:#0e0d0c;--gray-dark-900:#080807;--primary-100:#e6f2ff;--primary-200:#bfdeff;--primary-300:#80bdff;--primary-400:#409cff;--primary-500:#007bff;--primary-600:#005cbf;--primary-700:#003e80;--primary-800:#001f40;--primary-900:#001226;--success-100:#eaf6ec;--success-200:#c9e9d1;--success-300:#94d3a2;--success-400:#5ebd74;--success-500:#28a745;--success-600:#1e7d34;--success-700:#145423;--success-800:#0a2a11;--success-900:#06190a;--info-100:#e8f6f8;--info-200:#c5e8ed;--info-300:#8bd1dc;--info-400:#51b9ca;--info-500:#17a2b8;--info-600:#117a8a;--info-700:#0c515c;--info-800:#06292e;--info-900:#03181c;--warning-100:#fff9e6;--warning-200:#fff0c1;--warning-300:#ffe083;--warning-400:#ffd145;--warning-500:#ffc107;--warning-600:#bf9105;--warning-700:#806104;--warning-800:#403002;--warning-900:#261d01;--danger-100:#fcebec;--danger-200:#f6cdd1;--danger-300:#ee9aa2;--danger-400:#e56874;--danger-500:#dc3545;--danger-600:#a52834;--danger-700:#6e1b23;--danger-800:#370d11;--danger-900:#21080a;--primary:#007bff;--secondary:#6c757d;--success:#28a745;--info:#17a2b8;--warning:#ffc107;--danger:#dc3545;--light:#f8f9fa;--dark:#343a40;--breakpoint-xs:0;--breakpoint-sm:576px;--breakpoint-md:768px;--breakpoint-lg:992px;--breakpoint-xl:1200px;--font-family-sans-serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--font-family-monospace:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}*,:after,:before{box-sizing:border-box}html{font-family:sans-serif;line-height:1.15;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-ms-overflow-style:scrollbar}nav,section{display:block}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;font-size:1rem;font-weight:400;line-height:1.5;color:#151412;text-align:left;background-color:#fff}hr{box-sizing:content-box;height:0;overflow:visible}h2,h3,h5{margin-top:0;margin-bottom:.5rem}p{margin-top:0;margin-bottom:1rem}ul{margin-bottom:1rem}ul{margin-top:0}ul ul{margin-bottom:0}strong{font-weight:bolder}a{color:#007bff;text-decoration:none;background-color:transparent;-webkit-text-decoration-skip:objects}img{vertical-align:middle;border-style:none}button{border-radius:0}button{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button{overflow:visible}button{text-transform:none}button{-webkit-appearance:button}button::-moz-focus-inner{padding:0;border-style:none}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}h2,h3,h5{margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit}h2{font-size:2rem}h3{font-size:1.75rem}h5{font-size:1.25rem}.display-4{font-weight:300;line-height:1.2}.display-4{font-size:3.5rem}hr{margin-top:1rem;margin-bottom:1rem;border:0;border-top:1px solid rgba(0,0,0,.1)}.container{width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:576px){.container{max-width:540px}}@media (min-width:768px){.container{max-width:720px}}@media (min-width:992px){.container{max-width:960px}}@media (min-width:1200px){.container{max-width:1140px}}.container-fluid{width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}.collapse:not(.show){display:none}.dropdown{position:relative}.dropdown-toggle:after{display:inline-block;width:0;height:0;margin-left:.255em;vertical-align:.255em;content:"";border-top:.3em solid;border-right:.3em solid transparent;border-bottom:0;border-left:.3em solid transparent}.dropdown-menu{position:absolute;top:100%;left:0;z-index:2;display:none;float:left;min-width:10rem;padding:.5rem 0;margin:.125rem 0 0;font-size:1rem;color:#151412;text-align:left;list-style:none;background-color:#fff;background-clip:padding-box;border:1px solid rgba(0,0,0,.15);border-radius:.25rem;box-shadow:0 .5rem 1rem rgba(0,0,0,.175)}.dropdown-item{display:block;width:100%;padding:.25rem 1.5rem;clear:both;font-weight:400;color:#212529;text-align:inherit;white-space:nowrap;background-color:transparent;border:0}.nav{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;padding-left:0;margin-bottom:0;list-style:none}.nav-link{display:block;padding:.5rem 1rem}.nav-pills .nav-link{border-radius:0}.nav-pills .nav-link.active{color:#fff;background-color:#007bff}.navbar{position:relative;padding:.5rem 1rem}.navbar,.navbar>.container-fluid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:center;align-items:center;-ms-flex-pack:justify;justify-content:space-between}.navbar-brand{display:inline-block;padding-top:0;padding-bottom:0;margin-right:1rem;font-size:1.25rem;line-height:inherit;white-space:nowrap}.navbar-nav{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;padding-left:0;margin-bottom:0;list-style:none}.navbar-nav .nav-link{padding-right:0;padding-left:0}.navbar-nav .dropdown-menu{position:static;float:none}.navbar-collapse{-ms-flex-preferred-size:100%;flex-basis:100%;-ms-flex-positive:1;flex-grow:1;-ms-flex-align:center;align-items:center}.navbar-toggler{padding:.25rem .75rem;font-size:1.25rem;line-height:1;background-color:transparent;border:1px solid transparent;border-radius:.25rem}.navbar-toggler-icon{display:inline-block;width:1.5em;height:1.5em;vertical-align:middle;content:"";background:50% no-repeat;background-size:100% 100%}.navbar-light .navbar-brand{color:#dc3545}.navbar-light .navbar-nav .nav-link{color:rgba(0,0,0,.5)}.navbar-light .navbar-nav .nav-link.active{color:#dc3545}.navbar-light .navbar-toggler{color:rgba(0,0,0,.5);border-color:rgba(0,0,0,.1)}.navbar-light .navbar-toggler-icon{background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E")}.bg-white{background-color:#fff!important}.d-inline-block{display:inline-block!important}@media (min-width:992px){.navbar-expand-lg{-ms-flex-flow:row nowrap;flex-flow:row nowrap;-ms-flex-pack:start;justify-content:flex-start}.navbar-expand-lg .navbar-nav{-ms-flex-direction:row;flex-direction:row}.navbar-expand-lg .navbar-nav .dropdown-menu{position:absolute}.navbar-expand-lg .navbar-nav .nav-link{padding-right:1rem;padding-left:1rem}.navbar-expand-lg>.container-fluid{-ms-flex-wrap:nowrap;flex-wrap:nowrap}.navbar-expand-lg .navbar-collapse{display:-ms-flexbox!important;display:flex!important;-ms-flex-preferred-size:auto;flex-basis:auto}.navbar-expand-lg .navbar-toggler{display:none}.d-lg-none{display:none!important}}.flex-column{-ms-flex-direction:column!important;flex-direction:column!important}.float-right{float:right!important}.fixed-top{top:0}.fixed-top{position:fixed;right:0;left:0;z-index:4}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.shadow-sm{box-shadow:0 .125rem .25rem rgba(0,0,0,.075)!important}.w-100{width:100%!important}.my-4{margin-top:1.5rem!important}.mb-4,.my-4{margin-bottom:1.5rem!important}.my-5{margin-top:3rem!important}.my-5{margin-bottom:3rem!important}.pl-2{padding-left:.5rem!important}.pt-3{padding-top:1rem!important}.px-3{padding-right:1rem!important}.px-3{padding-left:1rem!important}.p-4{padding:1.5rem!important}.py-2{padding-top:3rem!important}.py-2{padding-bottom:3rem!important}.ml-auto{margin-left:auto!important}.text-center{text-align:center!important}.text-white{color:#fff!important}.text-light{color:#f8f9fa!important}.text-light{color:#8c8476!important}#navbar-left-wrapper{position:fixed;top:52px;padding-right:0;width:230px;height:100%;background-color:#23211e;z-index:1;box-shadow:2px 0 1px rgba(0,0,0,.12),1px 0 1px rgba(0,0,0,.24)}#navbar-left-wrapper #navbar-left-collapse{display:none}#navbar-left-wrapper~.container{padding-left:230px}@media (max-width:991.98px){#navbar-left-wrapper #navbar-left-collapse{display:block}#navbar-left-wrapper~.container{padding-left:0}.w3-animate-left{position:relative;animation:.4s a}@keyframes a{0%{left:-230px;opacity:0}to{left:0;opacity:1}}}#navbar-left{z-index:2;position:relative;width:100%;color:#fff;background-color:#23211e;box-shadow:0 1px 0 #030303}#navbar-left li,#navbar-left ul{margin:0;padding:0}#navbar-left>li>a{padding:12px 20px 12px 18px;border-top:1px solid #3e3b36;border-bottom:1px solid #0d0c0b;text-shadow:1px 1px 0 #3e3b36;color:#fff;background-color:#23211e;font-size:13px;font-weight:400}#navbar-left>li>a.active{background-color:#a93030}#navbar-left>li>ul>li a{font-size:13px;line-height:20px;display:block;padding:5px 22px 5px 30px;text-decoration:none;text-shadow:none;color:#fff;background-color:#312e2a}.dropdown-toggle:not(.sidebar-toggler):after{line-height:1.5rem;position:absolute;top:calc(50% - 7px);right:1rem;display:block;width:7px;height:14px;margin:0;content:" ";transform:rotate(0);border:none;background-repeat:no-repeat}.dropdown-toggle{position:relative;padding-right:2.5rem!important}.dropdown-toggle:not(.dropdown-light):after{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg data-prefix='fas' data-icon='angle-right' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' class='svg-inline--fa fa-angle-right fa-w-8 fa-2x'%3E%3Cpath fill='%238c8476' d='M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z'/%3E%3C/svg%3E")}html{position:relative;min-height:100%}h2{font-weight:100!important}h2,h3,h5{font-family:Overpass,sans-serif}h3,h5{text-transform:lowercase;font-variant:small-caps;font-weight:900!important;color:#dc3545}strong{font-weight:500}#website-navbar .navbar-nav .nav-link{display:block;font-weight:500}
+    </style>
+    <link as="style" href="assets/stylesheets/all.min.css" onload="this.rel='stylesheet'" rel="preload"><noscript>
+    <link href="/assets/stylesheets/all.min.css" media="screen" rel="stylesheet" type="text/css"></noscript>
+    <script type="text/javascript">
+        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License - https://github.com/filamentgroup/loadCSS */
+        (function (w) {
+            "use strict"; if (!w.loadCSS) { w.loadCSS = function () { } }
+            var rp = loadCSS.relpreload = {}; rp.support = (function () {
+                var ret; try { ret = w.document.createElement("link").relList.supports("preload") } catch (e) { ret = !1 }
+                return function () { return ret }
+            })(); rp.bindMediaToggle = function (link) {
+                var finalMedia = link.media || "all"; function enableStylesheet() { link.media = finalMedia }
+                if (link.addEventListener) { link.addEventListener("load", enableStylesheet) } else if (link.attachEvent) { link.attachEvent("onload", enableStylesheet) }
+                setTimeout(function () { link.rel = "stylesheet"; link.media = "only x" }); setTimeout(enableStylesheet, 3000)
+            }; rp.poly = function () {
+                if (rp.support()) { return }
+                var links = w.document.getElementsByTagName("link"); for (var i = 0; i < links.length; i++) { var link = links[i]; if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) { link.setAttribute("data-loadcss", !0); rp.bindMediaToggle(link) } }
+            }; if (!rp.support()) { rp.poly(); var run = w.setInterval(rp.poly, 500); if (w.addEventListener) { w.addEventListener("load", function () { rp.poly(); w.clearInterval(run) }) } else if (w.attachEvent) { w.attachEvent("onload", function () { rp.poly(); w.clearInterval(run) }) } }
+            if (typeof exports !== "undefined") { exports.loadCSS = loadCSS }
+            else { w.loadCSS = loadCSS }
+        }(typeof global !== "undefined" ? global : this))
+    </script>
+</head>
+
+<body>
+    <div class="container">
+
+        <section class="py-2 text-center">
+            <a href="https://codecanyon.net/item/php-crud-generator/22032357"><img class="img-thumbnail img-responsive mb-4" alt="PHP CRUD Generator preview" src="documentation/assets/images/phpcg-preview.png"></a>
+
+            <h1 class="text-light text-center">Welcome to PHP CRUD Generator<br>
+            <small class="text-muted">simple application to build backoffice for your website</small></h1>
+        </section>
+
+        <hr>
+
+        <section class="py-2">
+
+            <dl class="row">
+                <dt class="col-sm-3">Install:</dt>
+                <dd class="col-sm-9"> <a href="documentation/index.html#quick-start">documentation/index.html#quick-start</a> </dd>
+                <dt class="col-sm-3">Update:</dt>
+                <dd class="col-sm-9"> <a href="documentation/index.html#update">documentation/index.html#update</a> </dd>
+                <dt class="col-sm-3">Documentation:</dt>
+                <dd class="col-sm-9"> <a href="documentation/index.html">documentation/index.html</a> </dd>
+                <dt class="col-sm-3">Tutorials & Videos:</dt>
+                <dd class="col-sm-9"> <a href="https://www.phpcrudgenerator.com/tutorials">https://www.phpcrudgenerator.com/tutorials</a> </dd>
+                <dt class="col-sm-3">Help Center:</dt>
+                <dd class="col-sm-9"> <a href="https://www.phpcrudgenerator.com/help-center">https://www.phpcrudgenerator.com/help-center</a> </dd>
+                <dt class="col-sm-3">Changelog:</dt>
+                <dd class="col-sm-9"> <a href="https://www.phpcrudgenerator.com/documentation/index#changelog">https://www.phpcrudgenerator.com/documentation/index#changelog</a> </dd>
+            </dl>
+
+        </section>
+
+        <hr>
+
+        <section class="py-2 mb-5">
+
+            <h4>For any question or request</h4>
+
+            <p>Please</p>
+
+            <ul>
+                <li>Contact me through <a href="https://codecanyon.net/item/php-crud-generator/22032357/comments">PHP CRUD Generator's comments on Codecanyon</a> </li>
+                <li>E-mail me at <a href="https://www.miglisoft.com/#contact">https://www.miglisoft.com/#contact</a> </li>
+                <li>Chat on <a href="https://www.phpcrudgenerator.com">https://www.phpcrudgenerator.com</a> </li>
+            </ul>
+
+            <div class="alert alert-warning has-icon">
+                <p><strong>If you feel lost or have any trouble, please contact me before dropping any rating</strong> </p>
+
+                <ul>
+                    <li>I usually answer within 24 hours</li>
+                    <li>I do my best to help</li>
+                </ul>
+            </div>
+
+            <hr>
+
+            <h3>PHPCG is a hard work</h3>
+
+            <p><strong>Please if you like it don't forget to rate it</strong> at http://codecanyon.net/downloads (login to your account and go to download page)<br> And/Or drop a review at https://goo.gl/teKs6x</p>
+
+            <p class="lead mb-5">Many thanks!</p>
+        </section>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+/* Bootstrap functions */
+/* Admin CORE custom variables */
+/* ------------------ Overwrite Bootstrap default variables ----------------- */
+/* global */
+/* Text basics */
+/* ~14px*/
+/* ~12px*/
+/* ~25px*/
+/* ~23px*/
+/* ~21px*/
+/* ~19px*/
+/* ~17px*/
+/* ~15px*/
+/* 18/12*/
+/* 20/12/*/
+/* 16/12*/
+/* 14/12*/
+/* navbar */
+/* Define common padding and border radius sizes */
+/* cards */
+/* -------------------------- Bootswatch here -------------------------- */
+/* ----------------------------------- End ---------------------------------- */
+/* Bootstrap variables */
+/* Variables*/
+/**/
+/* Variables should follow the `$component-state-property-size` formula for*/
+/* consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.*/
+/* Color system*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* Set a specific jump point for requesting color jumps*/
+/* The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.*/
+/* Customize the light and dark text colors for use in our YIQ color contrast function.*/
+/* Options*/
+/**/
+/* Quickly modify global styling by enabling or disabling optional features.*/
+/* Deprecated, no longer affects any compiled CSS*/
+/* Spacing*/
+/**/
+/* Control the default styling of most Bootstrap elements by modifying these*/
+/* variables. Mostly focused on spacing.*/
+/* You can add more entries to the $spacers map, should you need more variation.*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* This variable affects the `.h-*` and `.w-*` classes.*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* Body*/
+/**/
+/* Settings for the `<body>` element.*/
+/* Links*/
+/**/
+/* Style anchor elements.*/
+/* Darken percentage for links with `.text-*` class (e.g. `.text-success`)*/
+/* Paragraphs*/
+/**/
+/* Style p element.*/
+/* Grid breakpoints*/
+/**/
+/* Define the minimum dimensions at which your layout will change,*/
+/* adapting to different screen sizes, for use in media queries.*/
+/* Grid containers*/
+/**/
+/* Define the maximum width of `.container` for different screen sizes.*/
+/* Grid columns*/
+/**/
+/* Set the number of columns and specify the width of the gutters.*/
+/* Components*/
+/**/
+/* Define common padding and border radius sizes and more.*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* Typography*/
+/**/
+/* Font, line-height, and color for body text, headings, and more.*/
+/* stylelint-disable value-keyword-case*/
+/* stylelint-enable value-keyword-case*/
+/* Assumes the browser default, typically `16px`*/
+/* Tables*/
+/**/
+/* Customizes the `.table` component with basic values, each used across all table variations.*/
+/* Buttons + Forms*/
+/**/
+/* Shared variables that are reassigned to `$input-` and `$btn-` specific variables.*/
+/* Buttons*/
+/**/
+/* For each of Bootstrap's buttons, define text, background, and border color.*/
+/* Allows for customizing button radius independently from global border radius*/
+/* Forms*/
+/* Extra padding to account for the presence of the background-image based indicator*/
+/* In pixels because image dimensions*/
+/* Used so we can have multiple background elements (e.g., arrow and feedback icon)*/
+/* For focus box shadow issue in IE/Edge*/
+/* Form validation*/
+/* stylelint-disable-next-line scss/dollar-variable-default*/
+/* Z-index master list*/
+/**/
+/* Warning: Avoid customizing these values. They're used for a bird's eye view*/
+/* of components dependent on the z-axis and are designed to all work together.*/
+/* Navs*/
+/* Navbar*/
+/* Compute the navbar-brand padding-y so the navbar-brand will have the same height as navbar-text and nav-link*/
+/* Dropdowns*/
+/**/
+/* Dropdown menu container and contents.*/
+/* Pagination*/
+/* Jumbotron*/
+/* Cards*/
+/* Tooltips*/
+/* Form tooltips must come after regular tooltips*/
+/* Popovers*/
+/* Toasts*/
+/* Badges*/
+/* Use a higher than normal value to ensure completely rounded edges when*/
+/* customizing padding or font-size on labels.*/
+/* Modals*/
+/* Padding applied to the modal body*/
+/* Keep this for backwards compatibility*/
+/* Alerts*/
+/**/
+/* Define alert colors, border radius, and padding.*/
+/* Progress bars*/
+/* List group*/
+/* Image thumbnails*/
+/* Figures*/
+/* Breadcrumbs*/
+/* Carousel*/
+/* Define transform transition first if using multiple transitions (e.g., `transform 2s ease, opacity .5s ease-out`)*/
+/* Spinners*/
+/* Close*/
+/* Code*/
+/* Utilities*/
+/* Printing*/
+/* Bootstrap mixins */
+/*===================================
+=            page header            =
+===================================*/
+.page-header.has-cover h1 {
+  color: inherit !important; }
+
+.page-header {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }
+
+.breadcrumb {
+  border-top: 1px solid #ced4da;
+  background-color: inherit; }
+  .breadcrumb .breadcrumb-item.active,
+  .breadcrumb .breadcrumb-item + .breadcrumb-item:before {
+    color: inherit; }
+
+/*===============================
+=            sidebar            =
+===============================*/
+.sidebar {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }
+  .sidebar .sidebar-user .category-content h4,
+  .sidebar .sidebar-user .category-content h5,
+  .sidebar .sidebar-user .category-content h6,
+  .sidebar .sidebar-user .category-content span {
+    color: inherit;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); }
+  .sidebar.sidebar-default {
+    background-color: #fff;
+    border-bottom: 1px solid #ecf0f1; }
+    .sidebar.sidebar-default .category-title {
+      border-bottom-color: #dee2e6; }
+      .sidebar.sidebar-default .category-title > a {
+        text-transform: uppercase;
+        color: #343a40; }
+    .sidebar.sidebar-default .category-content .nav li > a {
+      color: #343a40; }
+      .sidebar.sidebar-default .category-content .nav li > a.active, .sidebar.sidebar-default .category-content .nav li > a[aria-expanded="true"], .sidebar.sidebar-default .category-content .nav li > a:hover, .sidebar.sidebar-default .category-content .nav li > a:focus {
+        background-color: #ecf0f1; }
+  .sidebar .category-content.collapsing .nav, .sidebar .category-content.show .nav {
+    border-bottom: 1px solid #dee2e6; }
+  .sidebar .category-content .nav li a {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5); }

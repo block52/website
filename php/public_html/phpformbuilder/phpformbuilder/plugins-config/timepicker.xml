@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<default>
+		<includes>
+			<!--
+				Path to css and js files into plugins folder.
+				If your files are not in plugins folder, use absolute paths.
+			-->
+			<css>
+				<file>timepicker/jquery.timepicker.min.css</file>
+			</css>
+			<js>
+				<file>timepicker/jquery.timepicker.min.js</file>
+			</js>
+		</includes>
+		<js_code>
+<![CDATA[   $("%selector%").timepicker();]]>
+		</js_code>
+	</default>
+    <ranges-disabled-1>
+        <js_code>
+<![CDATA[   $("%selector%").timepicker({
+        minTime: '11:30am',
+        maxTime: '09:30pm',
+        disableTimeRanges: [['03:00pm', '06:30pm']]
+    });]]>
+        </js_code>
+    </ranges-disabled-1>
+    <ranges-disabled-2>
+        <js_code>
+<![CDATA[   $("%selector%").timepicker({
+        minTime: '08:30am',
+        maxTime: '07:30pm',
+        disableTimeRanges: [['00:30pm', '2:00pm']],
+        'timeFormat': 'H:i:s'
+    });]]>
+        </js_code>
+    </ranges-disabled-2>
+	<custom>
+		<!--
+			If you need differents includes for your custom code,
+			copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+			You can add several files nodes if necessary.
+		-->
+		<js_code>
+			<!-- your custom code here -->
+		</js_code>
+	</custom>
+</root>

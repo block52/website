@@ -1,0 +1,1 @@
+[{"name":"Contacts","tables":["crm_accounts"],"is_disabled":["false"]},{"name":"Administrators","tables":["phpcg_users","phpcg_users_profiles","account_balances","float_transactions"],"is_disabled":["false","false",false,false]}]

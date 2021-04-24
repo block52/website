@@ -1,0 +1,624 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Main project sass file
+ *
+ *  Common sass file with imports
+ *
+ *  Version: 1.0
+ *  Latest update: Dec 20, 2017
+ *
+ * ---------------------------------------------------------------------------- */
+
+/* Core
+-------------------------------------------------- */
+
+@import '../../../../node_modules/bootstrap/scss/functions';
+
+/* custom variables*/
+@import 'variables-custom.scss';
+
+/* bootstrap variables*/
+@import '../../../../node_modules/bootstrap/scss/variables';
+
+/* components*/
+@import 'components.scss';
+
+/* Project Fonts
+-------------------------------------------------- */
+
+/* roboto-300 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Roboto Light'), local('Roboto-Light'), url('../fonts/roboto-v18-latin-300.woff2') format('woff2'), url('../fonts/roboto-v18-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url('../fonts/roboto-v18-latin-regular.woff2') format('woff2'), url('../fonts/roboto-v18-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Roboto Medium'), local('Roboto-Medium'), url('../fonts/roboto-v18-latin-500.woff2') format('woff2'), url('../fonts/roboto-v18-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* roboto-condensed-regular - latin */
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url('../fonts/roboto-condensed-v16-latin-regular.woff2') format('woff2'),
+        url('../fonts/roboto-condensed-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* Project functions
+-------------------------------------------------- */
+
+@function get-color($colorName) {
+    @return map-get($colors, $colorName);
+}
+
+@function em2px($target, $context: 1em) {
+    @if $target == 0 {
+        @return 0;
+    }
+    @return ($target / 1em) * ($context / 1em) * 16 + 0px;
+}
+
+/* Project variables
+-------------------------------------------------- */
+
+$mainTitleColor: gray-500;
+$secondaryTitleColor: gray-400;
+
+/* Project styles
+-------------------------------------------------- */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    counter-reset: section;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: $font-family-base;
+}
+
+h1 {
+    @extend .text-primary;
+    line-height: 0.9;
+    margin-bottom: 2.5rem;
+    font-weight: normal;
+    &::first-letter,
+    &#jquery-plugins-title span {
+        font-size: 2em;
+        font-weight: 500;
+    }
+    &#jquery-plugins-title {
+        &::first-letter {
+            font-size: 1em;
+            font-weight: normal;
+        }
+    }
+    small {
+        font-size: 1.3125rem;
+        font-weight: 300;
+        line-height: 1;
+        margin-left: 0.75rem;
+    }
+}
+
+h2 {
+    @extend .mb-5;
+    font-weight: 300;
+    color: get-color($mainTitleColor);
+    border-bottom: 1px solid get-color($mainTitleColor);
+    small {
+        font-size: 1.125rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+}
+
+h3,
+.h3 {
+    small {
+        font-variant: normal;
+    }
+}
+
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5 {
+    font-weight: 300;
+    color: get-color($secondaryTitleColor);
+}
+
+h3,
+.h3 {
+    font-variant: small-caps;
+    @extend .mb-4;
+}
+
+h4,
+.h4 {
+    small {
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 1;
+        font-variant: normal;
+    }
+}
+
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    @extend .mb-3;
+}
+
+p.lead {
+    font-weight: 400;
+    color: get-color(gray-600);
+}
+
+pre,
+code,
+code[class*='language'] {
+    font-size: 0.75rem;
+}
+
+pre > code[class*='language'] {
+    @extend .px-0;
+}
+
+code[class*='language'] {
+    @extend .px-1;
+}
+
+strong,
+th {
+    font-weight: $font-weight-bold;
+}
+
+section,
+#filter-forms {
+    &#filter-forms {
+        legend {
+            color: #fff;
+            font-variant: small-caps;
+            font-weight: 300;
+            border-bottom: 1px solid $gray-300;
+            margin-bottom: 0.5rem;
+            ~ .input-field {
+                margin-top: 0;
+            }
+        }
+        .material-form [type='radio']:checked + span,
+        .material-form [type='radio']:not(:checked) + span,
+        .material-form [type='checkbox'] + span:not(.lever) {
+            font-size: 0.875rem;
+        }
+        label {
+            font-weight: 300;
+            margin-bottom: 0;
+            [type='radio']:checked + span,
+            [type='checkbox']:checked + span {
+                color: transparentize($white, 0.1);
+            }
+        }
+    }
+
+    > h2 {
+        padding: $spacer;
+        border-bottom: 1px solid #ddd;
+    }
+
+    > h3 {
+        white-space: nowrap;
+        &:before,
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: get-color(yellow-500);
+            margin-bottom: 3px;
+        }
+
+        &:before {
+            margin-right: 10px;
+        }
+
+        &:after {
+            margin-left: 12px;
+        }
+    }
+}
+
+article {
+    > h3:before,
+    > h4:before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        margin-bottom: 3px;
+        border-radius: 50%;
+        background: get-color(info-500);
+    }
+
+    > h3:before {
+        background: get-color(info-500);
+    }
+
+    > h4 {
+        &:before {
+            margin-left: 20px;
+            background: get-color(yellow-500);
+        }
+    }
+}
+
+/* Lists
+-------------------------------------------------- */
+
+section ul:not(.list-unstyled):not(.tree-list):not(.list-inline):not(.picker__list):not(.select2-selection__rendered) {
+    > li {
+        position: relative;
+        list-style: none;
+        margin-bottom: 0.5rem;
+        strong {
+            color: get-color(gray-800);
+        }
+        ul:not(.list-unstyled):not(.tree-list) > li {
+            &:before {
+                content: ' ';
+                width: 4px;
+                height: 4px;
+                background: get-color(gray-300);
+                border-radius: 0;
+                display: inline-block;
+                position: absolute;
+                left: -30px;
+                top: 0.75em;
+            }
+        }
+        &:before {
+            content: ' ';
+            width: 6px;
+            height: 6px;
+            background: get-color(gray-400);
+            display: inline-block;
+            position: absolute;
+            left: -30px;
+            top: 0.55em;
+        }
+    }
+}
+
+ol li {
+    @extend .mb-3;
+}
+
+/* Horizontal definition lists
+-------------------------------------------------- */
+
+dt {
+    font-weight: 500;
+}
+
+dl.dl-horizontal {
+    display: table;
+    table-layout: fixed;
+    /* min-width: 400px;*/
+    margin-bottom: 60px;
+    dt,
+    dd {
+        width: auto;
+        overflow: visible;
+    }
+    dt {
+        display: table-cell;
+        text-align: right;
+        white-space: nowrap;
+        font-weight: 500;
+        padding: 7px 20px 7px 0;
+        > pre {
+            margin-top: 3px;
+        }
+    }
+    dd {
+        display: table-cell;
+        padding: 7px 0;
+        &.line-break {
+            display: table-row;
+        }
+    }
+}
+
+@media (min-width: 936px) {
+    .dl-horizontal dt {
+        min-width: 220px;
+    }
+}
+
+.badge:not(.badge-circle) {
+    border-radius: 0;
+}
+
+.badge-light {
+    @extend .bg-gray-100;
+}
+
+/* Cards
+-------------------------------------------------- */
+
+.card-title {
+    font-weight: 500;
+    color: get-color(danger-500);
+}
+
+/* Numbered titles
+-------------------------------------------------- */
+
+.numbered-title:before {
+    counter-increment: section;
+    content: counter(section);
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    line-height: 1.5em;
+    background: darken(get-color(info-500), 15%);
+    color: #fff;
+}
+
+/* Numbered lists
+-------------------------------------------------- */
+
+.numbered {
+    position: relative;
+    counter-reset: my-counter;
+    list-style: none;
+    padding-left: 40px !important;
+}
+
+.numbered > dt,
+.numbered > li {
+    &:before {
+        content: counter(my-counter);
+        counter-increment: my-counter;
+        position: absolute;
+        left: 0;
+        @extend .bg-gray;
+        color: #fff;
+        width: 1.5em;
+        height: 1.5em;
+        font-weight: normal;
+        display: inline-block;
+        text-align: center;
+        border-radius: 50%;
+    }
+    &[class^='col-']:before {
+        left: -25px;
+    }
+}
+
+/* Code examples
+-------------------------------------------------- */
+
+.output,
+.output-code > pre,
+.form-code > pre {
+    &pre:before {
+        content: '';
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        font-size: 100%;
+        left: 0;
+        width: 3em;
+        height: 30px;
+        letter-spacing: -1px;
+        border-right: 1px solid #999;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    &:after {
+        font-family: 'Roboto';
+        font-size: 0.8125rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0 15px;
+        height: 24px;
+        line-height: 24px;
+        background: get-color(gray-700);
+        color: #fff;
+        border-radius: 0 0.25rem 0 0.25rem;
+    }
+}
+
+.output-code {
+    position: relative;
+}
+
+.output {
+    position: relative;
+    padding: 20px;
+    margin-bottom: 1em;
+    border-top: 1px solid #efefef;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    &:after {
+        content: 'output';
+    }
+}
+
+.output-code > pre:after {
+    content: 'output-code';
+}
+
+.form-code > pre:after {
+    content: 'form code';
+}
+
+.form-element {
+    padding: 20px 0 0;
+}
+
+/* Project Classes
+-------------------------------------------------- */
+
+.badge-lg {
+    font-size: 100%;
+}
+
+.bg-light {
+    background: $gray-100 !important;
+}
+
+.bg-pink:hover {
+    color: white;
+}
+
+.btn {
+    .icon-circle {
+        @extend .d-inline-block;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+    }
+    &.btn-lg {
+        .icon-circle {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+        }
+    }
+}
+
+.border-dashed {
+    border-style: dashed;
+}
+
+.condensed {
+    font-family: 'Roboto Condensed';
+}
+
+.dmca-badge {
+    min-height: 100px;
+}
+
+.has-separator {
+    display: block;
+    @extend .mb-5;
+    position: relative;
+    &:before,
+    &:after {
+        position: absolute;
+        left: 50%;
+        height: 1px;
+        content: '';
+        background: get-color(gray-300);
+    }
+    &:before {
+        bottom: - em2px(1em);
+        width: 12%;
+        margin-left: -6%;
+    }
+    &:after {
+        bottom: - em2px(1em) + 3px;
+        width: 20%;
+        margin-left: -10%;
+    }
+}
+
+.medium {
+    font-size: 93.33333333333333%;
+}
+
+.mh-100vh {
+    min-height: 100vh;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.file-path,
+.var-type,
+.var-value {
+    display: inline-block;
+    padding: $badge-padding-y $badge-padding-x;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    @extend .mx-1;
+    @extend .medium;
+    &.file-path {
+        @include border-radius($badge-border-radius);
+        @include badge-variant(get-color(gray-100));
+    }
+    &.var-type {
+        @extend .text-muted;
+    }
+    &.var-value {
+        @include border-radius($badge-border-radius);
+        background: get-color(gray-200);
+        color: get-color(gray-900);
+    }
+}
+
+.alert-info {
+    .file-path {
+        @include badge-variant(get-color(info-500));
+    }
+}
+
+.alert-warning {
+    .file-path {
+        @include badge-variant(get-color(warning-500));
+    }
+}
+
+.text-light {
+    @extend .text-gray;
+}
+
+.underline {
+    text-decoration: underline !important;
+}

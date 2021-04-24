@@ -1,0 +1,158 @@
+{# -----------------------------------------------------
+    The footer below is built for the website demo
+    feel free to replace the content with any TWIG HTML
+----------------------------------------------------- #}
+{% if constant('DEMO') == true %}
+
+{# --- if data list --- #}
+{% if object != '' %}
+
+<section class="text-center text-md-left pt-5">
+    <div class="container">
+
+        <hr class="my-5">
+
+        <article>
+
+            <h2>About the current <em>{{ object.table|capitalize }}</em> data list</h2>
+            <p>The MySQL records displayed on this page are extracted from the "<em>{{ object.table }}</em>" table.</p>
+            <p>Table <em>{{ object.table }}</em> is structured as follows:</p>
+
+            <table class="table table-condensed table-striped mb-5">
+                <thead>
+                    <tr>
+                        <th>Field name</th>
+                        <th>Displayed name</th>
+                        <th>Extra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in object.fields %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                        <td>{% if key == object.primary_key %}
+                            <strong class="ml-2 text-secondary">[Primary key]</strong>
+                            {% endif %}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </article>
+
+        <hr class="my-5">
+
+        <article>
+
+            <h2>Informations about the Mysql query:</h2>
+
+            <ul>
+                <li>The records are ordered by <strong>{{ object.sorting }}</strong></li>
+                <li>{{ session.npp }} records are displayed on each page</li>
+                <li>The following query has been sent to the server:<br><code class="d-block border p-3 mt-3">{{ object.main_query }}</code>
+                </li>
+            </ul>
+            {% if object.external_tables_count > 0 %}
+            <p>The {{ object.table }} list uses {{ object.external_tables_count }} external relational table(s).</p>
+            <p>The records of the external relational table(s) are displayed in nested table(s).</p>
+            {% else %}
+            <p>The {{ object.table }} list doesn't use any external relational table.</p>
+            {% endif %}
+        </article>
+
+        <hr class="my-5">
+
+        <article class="mb-5">
+
+            <h2>Create your own CRUD Application from your MySQL Database</h2>
+            <p class="lead">This Bootstrap 4 Dashboard has been entirely designed with PHP CRUD Generator.</p>
+
+            <p>The current admin page lists the records of the <em>{{ object.table }}</em> table.<br>
+                PHP CRUD Generator allows to build this type of PHP admin dashboard in a very simple way and without programming.<br>
+                The <a href="https://www.phpcrudgenerator.com/tutorials/what-is-a-crud" title="What is CRUD?">CRUD application</a> analyzes your SQL database and extracts all its components: tables, relationships, fields, primary and secondary keys, field and data types, ...<br>
+                The CRUD system is able to generate an admin dashboard such as this one from any MySQL database, no matter how complex it is.</p>
+
+            <p>PHP CRUD Generator is available at a very low price <a href="https://1.envato.market/xabod" title="Buy PHP CRUD Generator on Codecanyon">here on Codecanyon</a>.<br>
+                1 license = 1 project, no recurring payments, 6 months of support included, a professional web application, no known bugs, ... and tons of work saved.</p>
+        </article>
+    </div>
+</section>
+
+{# --- if form --- #}
+{% else %}
+
+<section class="text-center text-md-left pt-5">
+    <div class="container">
+
+        <hr class="my-5">
+
+        <article class="mb-5">
+
+            <h2>Create your own CRUD Application from your MySQL Database</h2>
+            <p class="lead">This Bootstrap 4 Dashboard has been entirely designed with PHP CRUD Generator.</p>
+
+            <p>PHP CRUD Generator allows to build this type of PHP admin dashboard in a very simple way and without programming.<br>
+                The <a href="https://www.phpcrudgenerator.com/tutorials/what-is-a-crud" title="What is CRUD?">CRUD application</a> analyzes your SQL database and extracts all its components: tables, relationships, fields, primary and secondary keys, field and data types, ...<br>
+                The CRUD system is able to generate an admin dashboard such as this one from any MySQL database, no matter how complex it is.</p>
+
+            <p>PHP CRUD Generator is available at a very low price <a href="https://1.envato.market/xabod" title="Buy PHP CRUD Generator on Codecanyon">here on Codecanyon</a>.<br>
+                1 license = 1 project, no recurring payments, 6 months of support included, a professional web application, no known bugs, ... and tons of work saved.</p>
+        </article>
+    </div>
+</section>
+{# --- END if form --- #}
+{% endif %}
+<footer class="bg-dark text-light text-center">
+    <div class="container-fluid bg-gray-600">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 pb-3">
+
+                <h3 class="py-3">About PHP CRUD System</h3>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/tutorials/what-is-a-crud" class="text-light" title="PHP CRUD Tutorial - What is CRUD?">What is CRUD?</a>
+                    </li>
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/tutorials/what-is-php-crud-generator" class="text-light" title="PHP CRUD Tutorial - What is PHP CRUD Generator?">What is PHP CRUD Generator?</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-6 col-md-4 pb-3 border-left border-right border-gray-700">
+
+                <h3 class="py-3">Quick Start</h3>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/tutorials/how-to-create-a-bootstrap-crud-admin-dashboard" class="text-light" title="PHP CRUD Tutorial - Create your Bootstrap CRUD Admin Dashboard">Create your Bootstrap CRUD Admin Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/documentation/index" class="text-light" title="PHP CRUD Generator - Documentation">PHP CRUD - Documentation</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-6 col-md-4 pb-3">
+
+                <h3 class="py-3">MySQL database tutorials</h3>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/tutorials/requirements-and-good-practices" class="text-light" title="PHP CRUD Tutorial - MySQL Database g">MySQL Database - good practices</a>
+                    </li>
+                    <li>
+                        <a href="https://www.phpcrudgenerator.com/tutorials/how-to-build-up-your-database-with-mysql-workbench" class="text-light" title="PHP CRUD Tutorial - Build up your database with MySQL Workbench">Build up your database with MySQL Workbench</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col d-flex justify-content-center py-2 bg-gray-700">
+                <a href="https://www.facebook.com/miglisoft/" class="d-block px-4 text-light" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/miglisoft" class="d-block px-4 text-light" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/migliori" class="d-block px-4 text-light"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+    <p class="py-2 mb-0 bg-gray-800">www.phpcrudgenerator.com {{ "now"|date("Y") }} - PHPCG</p>
+</footer>
+{% endif %}

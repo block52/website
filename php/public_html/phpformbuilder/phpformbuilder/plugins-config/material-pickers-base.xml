@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>material-pickers-base/dist/css/material-pickers-base.min.css</file>
+            </css>
+            <js>
+                <file>material-pickers-base/dist/js/material-pickers-base.min.js</file>
+            </js>
+        </includes>
+        <js_code></js_code>
+    </default>
+    <materialize>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file></file>
+            </css>
+            <js>
+                <file></file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   if(!$('link[href$="material-pickers-base.min.css"]')[0]) {
+        var link = document.createElement("link");
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = "%pluginsUrl%material-pickers-base/dist/css/material-pickers-base.min.css";
+
+        $("head").append(link);
+    }
+
+    if(typeof(M) === "undefined") {
+
+        var materialBaseScript = document.createElement("script");
+        materialBaseScript.src = "%pluginsUrl%material-pickers-base/dist/js/material-pickers-base.min.js";
+
+        $("body").append(materialBaseScript);
+    }
+]]>
+        </js_code>
+    </materialize>
+    <custom>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+            <!-- your custom code here -->
+        </js_code>
+    </custom>
+</root>

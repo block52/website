@@ -1,0 +1,59 @@
+/* Validation Sass Placeholders */
+/* extracted from forms/_input-fields.scss */
+%valid-input-style {
+    border-bottom: 1px solid $input-success-color;
+    box-shadow: 0 1px 0 0 $input-success-color;
+}
+%invalid-input-style {
+    border-bottom: $input-invalid-border;
+    box-shadow: 0 1px 0 0 $input-error-color;
+}
+%hidden-text {
+    color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+%custom-success-message {
+    content: attr(data-success);
+    color: $input-success-color;
+}
+%custom-error-message {
+    content: attr(data-error);
+    color: $input-error-color;
+}
+%input-after-style {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    opacity: 0;
+    transition: 0.2s opacity ease-out, 0.2s color ease-out;
+}
+
+/* Custom styles for Bootstrap 4 compatibility */
+
+.datepicker-modal {
+    bottom: auto;
+}
+
+.datepicker-container {
+    border: none;
+}
+
+.btn-flat.datepicker-cancel,
+.btn-flat.datepicker-done {
+    height: 36px;
+    line-height: 36px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    &:hover,
+    &:focus {
+        outline: 0;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}

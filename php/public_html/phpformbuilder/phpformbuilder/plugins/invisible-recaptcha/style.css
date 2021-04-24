@@ -1,0 +1,14 @@
+@media only screen and (max-width: 767px) {
+    .g-invisible-recaptcha {
+        margin-bottom: 40px;
+    }
+}
+
+.grecaptcha-badge {
+    overflow: hidden;
+    clip: rect(0px, 70px, 70px, 0px);
+}
+
+.grecaptcha-badge:hover {
+    clip: rect(0px, 256px, 70px, 0px);
+}

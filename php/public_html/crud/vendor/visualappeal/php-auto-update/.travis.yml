@@ -1,0 +1,16 @@
+language: php
+
+dist: trusty
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
+
+before_script:
+  - composer install
+
+script:
+  - travis_retry composer self-update
+  - vendor/bin/phpunit -c tests/UnitTests.xml

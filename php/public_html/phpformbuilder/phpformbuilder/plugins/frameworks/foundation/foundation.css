@@ -1,0 +1,71 @@
+.foundation-radio,
+.main-label,
+.radio-inline,
+.foundation-checkbox {
+    margin-bottom: 7px !important;
+}
+.input-group-label.fa {
+    display: flex;
+}
+.align-center div {
+    text-align: center;
+}
+.alert-success {
+    background: #3adb76;
+    padding: 5px 15px;
+}
+.button.warning {
+    background-color: #e8af13;
+}
+.button.danger {
+    color: #fefefe;
+    background-color: #a53b2a;
+}
+.fv-plugins-foundation .cell > label,
+.fv-plugins-foundation .input-group {
+    position: relative;
+}
+.fv-plugins-foundation .fv-plugins-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fv-plugins-foundation label .fv-plugins-icon,
+.fv-plugins-foundation .input-group .fv-plugins-icon {
+    right: 0 !important;
+}
+.fv-plugins-foundation label .fv-plugins-icon {
+    bottom: 0;
+    top: auto;
+}
+.select2-container {
+    margin-bottom: 1rem !important;
+}
+.mce-tinymce.mce-panel {
+    margin-bottom: 14px !important;
+}
+.foundation-radio [class^='iradio'],
+.foundation-radio [class^='icheck'] {
+    margin-left: 0 !important;
+}
+.foundation-radio [class^='iradio'],
+.foundation-radio [class^='icheck'],
+div[class^='iradio'],
+div[class^='icheck'] {
+    margin-left: 0 !important;
+}
+div[class^='iradio'] + label {
+    display: inline-block;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+.intl-tel-input {
+    display: flex !important;
+    margin-bottom: 1rem;
+}
+.input-group .intl-tel-input {
+    margin-bottom: 0;
+    flex: 1 1 0px;
+    height: auto;
+    min-width: 0;
+}

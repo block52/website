@@ -1,0 +1,15 @@
+<?php return array (
+  'BR' => 'Brazil',
+  'CN' => 'China',
+  'ER' => 'Eretria',
+  'FR' => 'France',
+  'DE' => 'Germany',
+  'IN' => 'India',
+  'IT' => 'Italy',
+  'JP' => 'Japan',
+  'ET' => 'Otobbia',
+  'RU' => 'Russia',
+  'GB' => 'United Kingdom',
+  'US' => 'United States',
+  'DJ' => 'Yabuuti',
+);

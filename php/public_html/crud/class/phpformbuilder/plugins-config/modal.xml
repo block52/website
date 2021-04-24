@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>modal/dist/remodal.min.css</file>
+                <file>modal/dist/remodal-default-theme.min.css</file>
+            </css>
+            <js>
+                <file>modal/dist/remodal.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   if(typeof(mod) == 'undefined') {
+        var mod = [];
+    }
+    mod['%formID%'] = ["%selector%"];
+    mod['%formID%']["%selector%"] = $("%selector%").remodal({
+        hashTracking: false
+    });
+    var bgColor = $('body').css('background-color');
+    if(bgColor == 'rgba(0, 0, 0, 0)') {
+        bgColor = '#FFF';
+    }
+    $('.remodal').css('background-color', bgColor);
+    $('[data-modal-close]').on('click', function() {
+        var target = $(this).attr('data-modal-close');
+        $('[data-remodal-id=' + target + ']').remodal().close();
+    });
+    $(document).on('opened', '.remodal', function () {
+        if($('#%formID% .g-recaptcha')[0] && $('#%formID% .g-recaptcha').attr('data-size') != 'invisible') {
+            scaleCaptcha();
+        }
+    });
+    if ($("#%formID% .has-error")[0] || $("#%formID% .form-error")[0] || $("#%formID% .invalid")[0] || $("#%formID% .is-invalid")[0] ) {
+        mod['%formID%']["%selector%"].open();
+    }]]>
+        </js_code>
+    </default>
+</root>

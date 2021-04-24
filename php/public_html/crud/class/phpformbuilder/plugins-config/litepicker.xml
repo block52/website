@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>litepicker/litepicker.min.css</file>
+            </css>
+            <js>
+                <file>litepicker/litepicker.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+            <![CDATA[
+    if (typeof(litePickers) === "undefined") {
+        var litePickers = [];
+        var dataStringToArray = function(stringArray) {
+            return JSON.parse(stringArray.replace(/\'/g, '"'));
+        }
+    }
+
+    $("%selector%").each(function() {
+        let inputId                       = $(this).prop('id'),
+            dataAttr                      = $(this).data(),
+            dataElementEnd                = (dataAttr.elementEnd === undefined) ? null : document.getElementById(dataAttr.elementEnd),
+            dataParentEl                  = (dataAttr.parentEl === undefined) ? null : dataAttr.parentEl,
+            dataFirstDay                  = (dataAttr.firstDay === undefined) ? 1 : dataAttr.firstDay,
+            dataFormat                    = (dataAttr.format === undefined) ? 'D MMM, YYYY' : dataAttr.format,
+            dataLang                      = (dataAttr.lang === undefined) ? 'en-US' : dataAttr.lang,
+            dataNumberOfMonths            = (dataAttr.numberOfMonths === undefined) ? 2 : dataAttr.numberOfMonths,
+            dataNumberOfColumns           = (dataAttr.numberOfColumns === undefined) ? 2 : dataAttr.numberOfColumns,
+            dataStartDate                 = (dataAttr.startDate === undefined) ? null : dataAttr.startDate,
+            dataEndDate                   = (dataAttr.endDate === undefined) ? null : dataAttr.endDate,
+            dataZIndex                    = (dataAttr.zIndex === undefined) ? 9999 : dataAttr.zIndex,
+            dataMinDate                   = (dataAttr.minDate === undefined) ? null : dataAttr.minDate,
+            dataMaxDate                   = (dataAttr.maxDate === undefined) ? null : dataAttr.maxDate,
+            dataMinDays                   = (dataAttr.minDays === undefined) ? null : dataAttr.minDays,
+            dataMaxDays                   = (dataAttr.maxDays === undefined) ? null : dataAttr.maxDays,
+            dataSelectForward             = (dataAttr.selectForward === undefined) ? false : dataAttr.selectForward,
+            dataSelectBackward            = (dataAttr.selectBackward === undefined) ? false : dataAttr.selectBackward,
+            dataSplitView                 = (dataAttr.splitView === undefined) ? false : dataAttr.splitView,
+            dataInlineMode                = (dataAttr.inlineMode === undefined) ? false : dataAttr.inlineMode,
+            dataSingleMode                = (dataAttr.singleMode === undefined) ? true : dataAttr.singleMode,
+            dataAutoApply                 = (dataAttr.autoApply === undefined) ? true : dataAttr.autoApply,
+            dataAllowRepick               = (dataAttr.allowRepick === undefined) ? false : dataAttr.allowRepick,
+            dataShowWeekNumbers           = (dataAttr.showWeekNumbers === undefined) ? false : dataAttr.showWeekNumbers,
+            dataShowTooltip               = (dataAttr.showTooltip === undefined) ? true : dataAttr.showTooltip,
+            dataHotelMode                 = (dataAttr.hotelMode === undefined) ? false : dataAttr.hotelMode,
+            dataDisableWeekends           = (dataAttr.disableWeekends === undefined) ? false : dataAttr.disableWeekends,
+            dataScrollToDate              = (dataAttr.scrollToDate === undefined) ? true : dataAttr.scrollToDate,
+            dataUseResetBtn               = (dataAttr.useResetBtn === undefined) ? false : dataAttr.useResetBtn,
+            dataAutoRefresh               = (dataAttr.autoRefresh === undefined) ? false : dataAttr.autoRefresh,
+            dataLockDaysFormat            = (dataAttr.lockDaysFormat === undefined) ? 'YYYY-MM-DD' : dataAttr.lockDaysFormat,
+            dataLockDays                  = (dataAttr.lockDays === undefined) ? [] : dataAttr.lockDays,
+            dataDisallowLockDaysInRange   = (dataAttr.disallowLockDaysInRange === undefined) ? false : dataAttr.disallowLockDaysInRange,
+            dataLockDaysInclusivity       = (dataAttr.lockDaysInclusivity === undefined) ? [] : dataAttr.lockDaysInclusivity,
+            dataBookedDaysFormat          = (dataAttr.bookedDaysFormat === undefined) ? 'YYYY-MM-DD' : dataAttr.bookedDaysFormat,
+            dataBookedDays                = (dataAttr.bookedDays === undefined) ? [] : dataStringToArray(dataAttr.bookedDays),
+            dataDisallowBookedDaysInRange = (dataAttr.disallowBookedDaysInRange === undefined) ? false : dataAttr.disallowBookedDaysInRange,
+            dataBookedDaysInclusivity     = (dataAttr.bookedDaysInclusivity === undefined) ? [] : dataAttr.bookedDaysInclusivity,
+            dataAnyBookedDaysAsCheckout   = (dataAttr.anyBookedDaysAsCheckout === undefined) ? false : dataAttr.anyBookedDaysAsCheckout,
+            dataHighlightedDaysFormat     = (dataAttr.highlightedDaysFormat === undefined) ? 'YYYY-MM-DD' : dataAttr.highlightedDaysFormat,
+            dataHighlightedDays           = (dataAttr.highlightedDays === undefined) ? [] : dataAttr.highlightedDays;
+
+        let lpk = new Litepicker({
+            element                  : document.getElementById(inputId),
+            elementEnd               : dataElementEnd,
+            parentEl                 : dataParentEl,
+            firstDay                 : dataFirstDay,
+            format                   : dataFormat,
+            lang                     : dataLang,
+            numberOfMonths           : dataNumberOfMonths,
+            numberOfColumns          : dataNumberOfColumns,
+            startDate                : dataStartDate,
+            endDate                  : dataEndDate,
+            zIndex                   : dataZIndex,
+            minDate                  : dataMinDate,
+            maxDate                  : dataMaxDate,
+            minDays                  : dataMinDays,
+            maxDays                  : dataMaxDays,
+            selectForward            : dataSelectForward,
+            selectBackward           : dataSelectBackward,
+            splitView                : dataSplitView,
+            inlineMode               : dataInlineMode,
+            singleMode               : dataSingleMode,
+            autoApply                : dataAutoApply,
+            allowRepick              : dataAllowRepick,
+            showWeekNumbers          : dataShowWeekNumbers,
+            showTooltip              : dataShowTooltip,
+            hotelMode                : dataHotelMode,
+            disableWeekends          : dataDisableWeekends,
+            scrollToDate             : dataScrollToDate,
+            useResetBtn              : dataUseResetBtn,
+            autoRefresh              : dataAutoRefresh,
+            lockDaysFormat           : dataLockDaysFormat,
+            lockDays                 : dataLockDays,
+            disallowLockDaysInRange  : dataDisallowLockDaysInRange,
+            lockDaysInclusivity      : dataLockDaysInclusivity,
+            bookedDaysFormat         : dataBookedDaysFormat,
+            bookedDays               : dataBookedDays,
+            onHide                 : function(e) {
+                // required for Material to hide the placeholder label
+                $(this.options.element).trigger('focus').trigger('change');
+            }
+        });
+        litePickers[inputId] = lpk;
+    });]]>
+        </js_code>
+    </default>
+</root>

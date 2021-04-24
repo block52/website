@@ -1,0 +1,13 @@
+.litepicker {
+    font-size: .9em;
+}
+
+.month-item-header select {
+    -moz-appearance: auto;
+    -webkit-appearance: auto;
+    appearance: auto;
+    background: white !important;
+    padding: 2px 0 !important;
+    box-shadow: none;
+}
+:root{--litepickerMonthButton: #ecafd3 !important;--litepickerMonthButtonHover: #f781c3 !important;--litepickerDayColorHover: #f68e6b !important;--litepickerDayIsInRange: #f9dda5 !important;--litepickerDayIsStartBg: #f68e6b !important;--litepickerDayIsEndBg: #f68e6b !important}

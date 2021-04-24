@@ -1,0 +1,44 @@
+/* add inline style to adjust bottom margins with horizontal forms and grouped fields on small screens */
+@media only screen and (max-width: 767px) {
+    .form-group > div[class*='col-']:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}
+.append {
+    margin-left: 7px;
+}
+.prepend {
+    margin-right: 7px;
+}
+.nice-check > .fv-plugins-icon {
+    display: none;
+}
+.intl-tel-input > .fv-plugins-icon {
+    right: 0 !important;
+}
+.intl-tel-input:not(.allow-dropdown) {
+    display: block !important;
+}
+.form-horizontal .intl-tel-input {
+    display: table-cell;
+}
+.intl-tel-input .selected-flag {
+    z-index: 4;
+}
+.recaptcha-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+.g-recaptcha {
+    transform-origin: left top;
+    -webkit-transform-origin: left top;
+}
+.g-recaptcha > div {
+    margin: auto !important;
+}
+.fade.in {
+    opacity: 1 !important;
+}
+.bootstrap-select.btn-group.bs-container .dropdown-menu {
+    z-index: 10000 !important;
+}

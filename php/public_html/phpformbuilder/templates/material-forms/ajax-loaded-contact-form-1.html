@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Ajax Contact Form for Wordpress, Joomla, Drupal - Material Design</title>
+    <meta name="description" content="Material Ajax Form Generator - how to create an Ajax Contact Form with Php Form Builder for Wordpress, Joomla, Drupal or any CMS">
+    <link rel="canonical" href="https://www.phpformbuilder.pro/templates/material-forms/ajax-loaded-contact-form-1.html" />
+
+    <!-- Materialize CSS -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Material icons CSS -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- demo styles -->
+
+    <link rel="stylesheet" href="../assets/css/code-preview-styles.min.css">
+</head>
+
+<body>
+    <h1 class="center-align">Php Form Builder - Ajax Contact Form for Wordpress, Joomla, Drupal or any CMS<br><small>Material Design version</small></h1>
+    <div class="container">
+        <div class="row">
+            <div class="col m11 l10">
+                <p>The Ajax form source code is not available on this page, you'll find it in the <em>templates/ajax-forms</em> folder</p>
+                <div id="ajax-form"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <!-- Materialize JavaScript -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <!-- Ajax form loader -->
+
+    <script type="text/javascript">
+    var $head= document.getElementsByTagName('head')[0],
+        target = '#ajax-form';
+
+    var loadData = function(data, index) {
+        if (index <= $(data).length) {
+            var that = $(data).get(index);
+            if ($(that).is('script')) {
+                // output script
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                if (that.src != '') {
+                    script.src = that.src;
+                    script.onload = function() {
+                        loadData(data, index + 1);
+                    };
+                    $head.append(script);
+                } else {
+                    script.text = that.text;
+                    $('body').append(script);
+                    loadData(data, index + 1);
+                }
+            } else {
+                // output form html
+                $(target).append($(that));
+                loadData(data, index + 1);
+            }
+        } else {
+            $.holdReady(false);
+        }
+    };
+
+    $(document).ready(function() {
+        $.ajax({
+            url: 'ajax-forms/contact-form-1.php',
+            type: 'GET'
+        }).done(function(data) {
+            $.holdReady(true);
+            loadData(data, 0);
+        }).fail(function(data, statut, error) {
+            console.log(error);
+        });
+    });
+    </script>
+</body>
+</html>

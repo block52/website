@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>fileuploader/dist/font/font-fileuploader.css</file>
+                <file>fileuploader/dist/jquery.fileuploader.min.css</file>
+            </css>
+            <js>
+                <file>fileuploader/dist/jquery.fileuploader.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+            <![CDATA[   var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    debug%index%          = %debug%;
+    $("%selector%").fileuploader({
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/default/php/ajax_upload_file.php',
+            data: {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            onSuccess: function(data, item, listEl, parentEl, newInputEl, inputEl, textStatus, jqXHR) {
+                $submit.prop('disabled', originalDisabledState);
+
+                try {
+                    data = JSON.parse(data);
+                    item.name = data.files[0].name;
+					item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+                } catch (e) {
+                    if(debug%index% === true) {
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Something went wrong with the uploader. Open your browser console for more information.</p>');
+                    }
+                }
+
+                // make HTML changes
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item, listEl, parentEl, newInputEl, inputEl, jqXHR, textStatus, errorThrown) {
+                $submit.prop('disabled', originalDisabledState);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                $submit.prop('disabled', true);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            // send POST request
+            $.post('%PLUGINS_URL%fileuploader/default/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%'
+            });
+        },
+        // captions
+        captions: {
+            button: function(options) { return 'Browse ' + (options.limit == 1 ? 'file' : 'files'); },
+            feedback: function(options) { return 'Choose ' + (options.limit == 1 ? 'file' : 'files') + ' to upload'; },
+            feedback2: function(options) { return options.length + ' ' + (options.length > 1 ? ' files were' : ' file was') + ' chosen'; },
+            confirm: 'Confirm',
+            cancel: 'Cancel',
+            name: 'Name',
+            type: 'Type',
+            size: 'Size',
+            dimensions: 'Dimensions',
+            duration: 'Duration',
+            crop: 'Crop',
+            rotate: 'Rotate',
+            sort: 'Sort',
+            download: 'Download',
+            remove: 'Remove',
+            drop: 'Drop the files here to Upload',
+            paste: '<div class="fileuploader-pending-loader"></div> Pasting a file, click here to cancel.',
+            removeConfirmation: 'Are you sure you want to remove this file?',
+            errors: {
+                filesLimit: 'Only ${limit} files are allowed to be uploaded.',
+                filesType: 'Only ${extensions} files are allowed to be uploaded.',
+                fileSize: '${name} is too large! Please choose a file up to ${fileMaxSize}MB.',
+                filesSizeAll: 'Files that you chose are too large! Please upload files up to ${maxSize} MB.',
+                fileName: 'File with the name ${name} is already selected.',
+                folderUpload: 'You are not allowed to upload folders.'
+            }
+        }
+    });]]>
+        </js_code>
+    </default>
+    <image-upload>
+        <js_code>
+            <![CDATA[   // editor save function
+    if(typeof(saveEditedImage) == 'undefined') {
+        var saveEditedImage = function(item) {
+            // if still uploading
+            // pend and exit
+            if (item.upload && item.upload.status == 'loading')
+                return item.editor.isUploadPending = true;
+
+            // if not preloaded or not uploaded
+            if (!item.appended && !item.uploaded)
+                return;
+
+            // if no editor
+            if (!item.editor || !item.reader.width)
+                return;
+
+            // if uploaded
+            // resend upload
+            if (item.upload && item.upload.resend) {
+                item.upload.resend();
+            }
+
+            // if preloaded
+            // send request
+            if (item.appended) {
+                // hide current thumbnail (this is only animation)
+                item.imageIsUploading = true;
+                item.image.addClass('fileuploader-loading').html('');
+                item.html.find('.fileuploader-action-popup').hide();
+
+                $.post('php/ajax_resize_file.php', {_file: item.file, _editor: JSON.stringify(item.editor), fileuploader: 1}, function() {
+                    item.reader.read(function() {
+                        delete item.imageIsUploading;
+                        item.html.find('.fileuploader-action-popup').show();
+
+                        item.popup.html = item.popup.editor = item.editor.crop = item.editor.rotation = null;
+                        item.renderThumbnail();
+                    }, null, true);
+                });
+            }
+        };
+    }
+    var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    editor%index%         = %editor%,
+    debug%index%          = %debug%;
+    if(editor%index% === true) {
+        editor%index% = {
+            cropper: {
+                showGrid: true
+            },
+            onSave: function(dataURL, item) {
+                saveEditedImage(item);
+            }
+        }
+    }
+    $("%selector%").fileuploader({
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/image-upload/php/%uploader%',
+            data: {
+                'input_name': inputName%index%,
+                'hash'      : '%hash%',
+                'form_id'   : '%formId%',
+                'thumbnails': '%thumbnails%',
+                'width': '%width%',
+                'height': '%height%',
+                'crop': '%crop%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            beforeSend: function(item) {
+                // add editor to upload data
+                // note! that php will automatically adjust _editorr to the file
+                if (item.editor && (typeof item.editor.rotation != "undefined" || item.editor.crop)) {
+                    item.upload.data.fileuploader = 1;
+                    item.upload.data._editorr = JSON.stringify(item.editor);
+                }
+
+                item.html.find('.fileuploader-action-success').removeClass('fileuploader-action-success');
+            },
+            onSuccess: function(result, item) {
+                $submit.prop('disabled', originalDisabledState);
+                var data = {};
+
+                try {
+                    data = JSON.parse(result);
+                } catch (e) {
+                    data.hasWarnings = true;
+                    if(debug%index% === true) {
+                        console.log(result);
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Something went wrong with the uploader. Open your browser console for more information.</p>');
+                    }
+                }
+
+                // if success
+                if (data.isSuccess && data.files[0]) {
+                    item.name = data.files[0].name;
+                    item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+
+                    if (editor%index% === true && item.editor.isUploadPending) {
+                        delete item.editor.isUploadPending;
+
+                        saveEditedImage(item);
+                    }
+                }
+
+                // if warnings
+                if (data.hasWarnings) {
+                    for (var warning in data.warnings) {
+                        alert(data.warnings);
+                    }
+
+                    item.html.removeClass('upload-successful').addClass('upload-failed');
+                    // go out from success function by calling onError function
+                    // in this case we have a animation there
+                    // you can also response in PHP with 404
+                    return this.onError ? this.onError(item) : null;
+                }
+
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item) {
+                $submit.prop('disabled', originalDisabledState);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                $submit.prop('disabled', true);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            $.post('%PLUGINS_URL%fileuploader/image-upload/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%',
+                thumbnails: %thumbnails%,
+            });
+        },
+        editor: {
+            cropper: {
+                showGrid: true,
+            },
+            onSave: function(dataURL, item) {
+                saveEditedImage(item);
+            }
+        },
+        // captions
+        captions: {
+            button: function(options) { return 'Browse ' + (options.limit == 1 ? 'file' : 'files'); },
+            feedback: function(options) { return 'Choose ' + (options.limit == 1 ? 'file' : 'files') + ' to upload'; },
+            feedback2: function(options) { return options.length + ' ' + (options.length > 1 ? ' files were' : ' file was') + ' chosen'; },
+            confirm: 'Confirm',
+            cancel: 'Cancel',
+            name: 'Name',
+            type: 'Type',
+            size: 'Size',
+            dimensions: 'Dimensions',
+            duration: 'Duration',
+            crop: 'Crop',
+            rotate: 'Rotate',
+            sort: 'Sort',
+            download: 'Download',
+            remove: 'Remove',
+            drop: 'Drop the files here to Upload',
+            paste: '<div class="fileuploader-pending-loader"></div> Pasting a file, click here to cancel.',
+            removeConfirmation: 'Are you sure you want to remove this file?',
+            errors: {
+                filesLimit: 'Only ${limit} files are allowed to be uploaded.',
+                filesType: 'Only ${extensions} files are allowed to be uploaded.',
+                fileSize: '${name} is too large! Please choose a file up to ${fileMaxSize}MB.',
+                filesSizeAll: 'Files that you chose are too large! Please upload files up to ${maxSize} MB.',
+                fileName: 'File with the name ${name} is already selected.',
+                folderUpload: 'You are not allowed to upload folders.'
+            }
+        }
+    });]]>
+        </js_code>
+    </image-upload>
+    <drag-and-drop>
+        <js_code>
+            <![CDATA[    var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    debug%index%          = %debug%;
+
+    // enable fileuploader plugin
+    $("%selector%").fileuploader({
+        changeInput: '<div class="fileuploader-input">' +
+                '<div class="fileuploader-input-inner">' +
+                    '<div class="fileuploader-main-icon"></div>' +
+                    '<h3 class="fileuploader-input-caption"><span>${captions.feedback}</spa  n></h3>' +
+                    '<p>${captions.or}</p>' +
+                    '<div class="fileuploader-input-button"><span>${captions.button}</span></div>' +
+                '</div>' +
+            '</div>',
+        theme: 'dragdrop',
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/drag-and-drop/php/%uploader%',
+            data: {
+                'input_name': inputName%index%,
+                'hash'      : '%hash%',
+                'form_id'   : '%formId%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            beforeSend: null,
+            onSuccess: function(result, item) {
+                $submit.prop('disabled', originalDisabledState);
+                var data = {};
+
+                try {
+                    data = JSON.parse(result);
+                } catch (e) {
+                    if(debug%index% === true) {
+                        console.log(result);
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Something went wrong with the uploader. Open your browser console for more information.</p>');
+                    }
+                    data.hasWarnings = true;
+                }
+
+                // if success
+                if (data.isSuccess && data.files[0]) {
+                    item.name = data.files[0].name;
+                    item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+                }
+
+                // if warnings
+                if (data.hasWarnings) {
+                    for (var warning in data.warnings) {
+                        alert(data.warnings[warning]);
+                    }
+
+                    item.html.removeClass('upload-successful').addClass('upload-failed');
+                    // go out from success function by calling onError function
+                    // in this case we have a animation there
+                    // you can also response in PHP with 404
+                    return this.onError ? this.onError(item) : null;
+                }
+
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item) {
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null,
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            $.post('%PLUGINS_URL%fileuploader/drag-and-drop/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%'
+            });
+        },
+        captions: {
+            feedback: 'Drag and drop files here',
+            feedback2: 'Drag and drop files here',
+            drop: 'Drag and drop files here',
+            or: 'or',
+            button: 'Browse files',
+        },
+    });]]>
+        </js_code>
+    </drag-and-drop>
+    <default-french>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>fileuploader/dist/font/font-fileuploader.css</file>
+                <file>fileuploader/dist/jquery.fileuploader.min.css</file>
+            </css>
+            <js>
+                <file>fileuploader/dist/jquery.fileuploader.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+            <![CDATA[   var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    debug%index%          = %debug%;
+    $("%selector%").fileuploader({
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/default/php/ajax_upload_file.php',
+            data: {
+                'input_name': inputName%index%,
+                'hash'      : '%hash%',
+                'form_id'   : '%formId%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            onSuccess: function(data, item, listEl, parentEl, newInputEl, inputEl, textStatus, jqXHR) {
+                $submit.prop('disabled', originalDisabledState);
+
+                try {
+                    data = JSON.parse(data);
+                    item.name = data.files[0].name;
+					item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+                } catch (e) {
+                    if(debug%index% === true) {
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Quelque chose a échoué avec le téléchargeur. Ouvrez votre console de navigation pour plus d'informations.</p>');
+                    }
+                }
+
+                // make HTML changes
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item, listEl, parentEl, newInputEl, inputEl, jqXHR, textStatus, errorThrown) {
+                $submit.prop('disabled', originalDisabledState);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                $submit.prop('disabled', true);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            // send POST request
+            $.post('%PLUGINS_URL%fileuploader/default/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%'
+            });
+        },
+        // captions
+        captions: {
+            button: function(options) { return 'Choisissez le (s)  ' + (options.limit == 1 ? 'Fichier' : 'Fichiers'); },
+            feedback: function(options) { return 'Choisissez le(s)  ' + (options.limit == 1 ? 'fichier' : 'fichiers') + ' à télécharger'; },
+            feedback2: function(options) { return options.length + ' ' + (options.length > 1 ? ' fichiers ont été choisis' : ' fichier a été choisi'); },
+            confirm: 'Confirmer',
+            cancel: 'Annuler',
+            name: 'Nom',
+            type: 'Type',
+            size: 'Taille',
+            dimensions: 'Dimensions',
+            duration: 'Durée',
+            crop: 'Couper',
+            rotate: 'Retourner',
+            sort: 'Trier',
+            download: 'Télécharger',
+            remove: 'Retirer',
+            drop: 'Déposez les fichiers ici pour télécharger',
+            paste: '<div class="fileuploader-pending-loader"></div> Fichier collé, cliquez ici pour annuler.',
+            removeConfirmation: 'Êtes-vous sûr de vouloir supprimer ce fichier ?',
+            errors: {
+                filesLimit: 'Seulement ${limit} fichiers peuvent être téléchargés.',
+                filesType: 'Seuls les fichiers  ${extensions} peuvent être téléchargés.',
+                fileSize: '${name} est trop grand! Veuillez choisir un fichier jusqu\'à ${fileMaxSize}MB.',
+                filesSizeAll: 'Les fichiers que vous avez choisis sont trop grands! Veuillez télécharger des fichiers jusqu\'à ${maxSize} MB.',
+                fileName: 'Un fichier avec le nom ${name} est déjà sélectionné.',
+                folderUpload: 'Vous n\'êtes pas autorisé à télécharger des dossiers.'
+            }
+        }
+    });]]>
+        </js_code>
+    </default-french>
+    <image-upload-french>
+        <js_code>
+            <![CDATA[   // editor save function
+    if(typeof(saveEditedImage) == 'undefined') {
+        var saveEditedImage = function(item) {
+            // if still uploading
+            // pend and exit
+            if (item.upload && item.upload.status == 'loading')
+                return item.editor.isUploadPending = true;
+
+            // if not preloaded or not uploaded
+            if (!item.appended && !item.uploaded)
+                return;
+
+            // if no editor
+            if (!item.editor || !item.reader.width)
+                return;
+
+            // if uploaded
+            // resend upload
+            if (item.upload && item.upload.resend) {
+                item.upload.resend();
+            }
+
+            // if preloaded
+            // send request
+            if (item.appended) {
+                // hide current thumbnail (this is only animation)
+                item.imageIsUploading = true;
+                item.image.addClass('fileuploader-loading').html('');
+                item.html.find('.fileuploader-action-popup').hide();
+
+                $.post('php/ajax_resize_file.php', {_file: item.file, _editor: JSON.stringify(item.editor), fileuploader: 1}, function() {
+                    item.reader.read(function() {
+                        delete item.imageIsUploading;
+                        item.html.find('.fileuploader-action-popup').show();
+
+                        item.popup.html = item.popup.editor = item.editor.crop = item.editor.rotation = null;
+                        item.renderThumbnail();
+                    }, null, true);
+                });
+            }
+        };
+    }
+    var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    editor%index%         = %editor%,
+    debug%index%          = %debug%;
+    if(editor%index% === true) {
+        editor%index% = {
+            cropper: {
+                showGrid: true
+            },
+            onSave: function(dataURL, item) {
+                saveEditedImage(item);
+            }
+        }
+    }
+    $("%selector%").fileuploader({
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/image-upload/php/%uploader%',
+            data: {
+                'input_name': inputName%index%,
+                'hash'      : '%hash%',
+                'form_id'   : '%formId%',
+                'thumbnails': '%thumbnails%',
+                'width': '%width%',
+                'height': '%height%',
+                'crop': '%crop%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            beforeSend: function(item) {
+                // add editor to upload data
+                // note! that php will automatically adjust _editorr to the file
+                if (item.editor && (typeof item.editor.rotation != "undefined" || item.editor.crop)) {
+                    item.upload.data.fileuploader = 1;
+                    item.upload.data._editorr = JSON.stringify(item.editor);
+                }
+
+                item.html.find('.fileuploader-action-success').removeClass('fileuploader-action-success');
+            },
+            onSuccess: function(result, item) {
+                $submit.prop('disabled', originalDisabledState);
+                var data = {};
+
+                try {
+                    data = JSON.parse(result);
+                } catch (e) {
+                    data.hasWarnings = true;
+                    if(debug%index% === true) {
+                        console.log(result);
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Quelque chose a mal tourné avec le téléchargeur. Ouvrez votre console de navigation pour plus d'informations.</p>');
+                    }
+                }
+
+                // if success
+                if (data.isSuccess && data.files[0]) {
+                    item.name = data.files[0].name;
+                    item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+
+                    if (editor%index% === true && item.editor.isUploadPending) {
+                        delete item.editor.isUploadPending;
+
+                        saveEditedImage(item);
+                    }
+                }
+
+                // if warnings
+                if (data.hasWarnings) {
+                    for (var warning in data.warnings) {
+                        alert(data.warnings);
+                    }
+
+                    item.html.removeClass('upload-successful').addClass('upload-failed');
+                    // go out from success function by calling onError function
+                    // in this case we have a animation there
+                    // you can also response in PHP with 404
+                    return this.onError ? this.onError(item) : null;
+                }
+
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item) {
+                $submit.prop('disabled', originalDisabledState);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                $submit.prop('disabled', true);
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            $.post('%PLUGINS_URL%fileuploader/image-upload/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%',
+                thumbnails: %thumbnails%,
+            });
+        },
+        editor: {
+            cropper: {
+                showGrid: true,
+            },
+            onSave: function(dataURL, item) {
+                saveEditedImage(item);
+            }
+        },
+        // captions
+        captions: {
+            button: function(options) { return 'Choisissez le (s)  ' + (options.limit == 1 ? 'Fichier' : 'Fichiers'); },
+            feedback: function(options) { return 'Choisissez le(s)  ' + (options.limit == 1 ? 'fichier' : 'fichiers') + ' à télécharger'; },
+            feedback2: function(options) { return options.length + ' ' + (options.length > 1 ? ' fichiers ont été choisis' : ' fichier a été choisi'); },
+            confirm: 'Confirmer',
+            cancel: 'Annuler',
+            name: 'Nom',
+            type: 'Type',
+            size: 'Taille',
+            dimensions: 'Dimensions',
+            duration: 'Durée',
+            crop: 'Couper',
+            rotate: 'Retourner',
+            sort: 'Trier',
+            download: 'Télécharger',
+            remove: 'Retirer',
+            drop: 'Déposez les fichiers ici pour télécharger',
+            paste: '<div class="fileuploader-pending-loader"><div class="left-half" style="animation-duration: ${ms}s" /><div class="spinner" style="animation-duration: ${ms}s" /><div class="right-half" style="animation-duration: ${ms}s" /></div> Pasting a file, click here to cancel.',
+            removeConfirmation: 'Êtes-vous sûr de vouloir supprimer ce fichier ?',
+            errors: {
+                filesLimit: 'Seulement ${limit} fichiers peuvent être téléchargés.',
+                filesType: 'Seuls les fichiers ${extensions} peuvent être téléchargés.',
+                fileSize: '${name} est trop grand! Veuillez choisir un fichier jusqu\'à ${fileMaxSize}MB.',
+                filesSizeAll: 'Les fichiers que vous avez choisis sont trop grands! Veuillez télécharger des fichiers jusqu\'à ${maxSize} MB.',
+                fileName: 'Un fichier avec le nom ${name} est déjà sélectionné.',
+                folderUpload: 'Vous n\'êtes pas autorisé à télécharger des dossiers.'
+            }
+        }
+    });]]>
+        </js_code>
+    </image-upload-french>
+    <drag-and-drop-french>
+        <js_code>
+            <![CDATA[    var inputName%index%      = $("%selector%").attr('name'),
+    $form                 = $('input[name="' + inputName%index% + '"]').closest('form'),
+    $submit               = $form.find('button[type="submit"]'),
+    originalDisabledState = $submit.prop('disabled'),
+    debug%index%          = %debug%;
+
+    // enable fileuploader plugin
+    $("%selector%").fileuploader({
+        changeInput: '<div class="fileuploader-input">' +
+                '<div class="fileuploader-input-inner">' +
+                    '<div class="fileuploader-main-icon"></div>' +
+                    '<h3 class="fileuploader-input-caption"><span>${captions.feedback}</spa  n></h3>' +
+                    '<p>${captions.or}</p>' +
+                    '<div class="fileuploader-input-button"><span>${captions.button}</span></div>' +
+                '</div>' +
+            '</div>',
+        theme: 'dragdrop',
+        limit: %limit%,
+        extensions: %extensions%,
+        fileMaxSize: %fileMaxSize%,
+        upload: {
+            url: '%PLUGINS_URL%fileuploader/drag-and-drop/php/%uploader%',
+            data: {
+                'input_name': inputName%index%,
+                'hash'      : '%hash%',
+                'form_id'   : '%formId%'
+            },
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            start: true,
+            synchron: true,
+            beforeSend: null,
+            onSuccess: function(result, item) {
+                $submit.prop('disabled', originalDisabledState);
+                var data = {};
+
+                try {
+                    data = JSON.parse(result);
+                } catch (e) {
+                    if(debug%index% === true) {
+                        console.log(result);
+                        console.log(data);
+                        item.html.append('<p class="mt-2">&nbsp;</p><p class="alert alert-danger has-icon mt-2 mb-0">Quelque chose a mal tourné avec le téléchargeur. Ouvrez votre console de navigation pour plus d'informations.</p>');
+                    }
+                    data.hasWarnings = true;
+                }
+
+                // if success
+                if (data.isSuccess && data.files[0]) {
+                    item.name = data.files[0].name;
+                    item.html.find('.column-title > div:first-child').text(data.files[0].name).attr('title', data.files[0].name);
+                }
+
+                // if warnings
+                if (data.hasWarnings) {
+                    for (var warning in data.warnings) {
+                        alert(data.warnings[warning]);
+                    }
+
+                    item.html.removeClass('upload-successful').addClass('upload-failed');
+                    // go out from success function by calling onError function
+                    // in this case we have a animation there
+                    // you can also response in PHP with 404
+                    return this.onError ? this.onError(item) : null;
+                }
+
+                item.html.find('.fileuploader-action-remove').addClass('fileuploader-action-success');
+                setTimeout(function() {
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }, 400);
+            },
+            onError: function(item) {
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length) {
+                    progressBar.find('span').html(0 + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(0 + "%");
+                    item.html.find('.progress-bar2').fadeOut(400);
+                }
+
+                item.upload.status != 'cancelled' && item.html.find('.fileuploader-action-retry').length == 0 ? item.html.find('.column-actions').prepend(
+                    '<a class="fileuploader-action fileuploader-action-retry" title="Retry"><i></i></a>'
+                ) : null;
+            },
+            onProgress: function(data, item) {
+                var progressBar = item.html.find('.progress-bar2');
+
+                if(progressBar.length > 0) {
+                    progressBar.show();
+                    progressBar.find('span').html(data.percentage + "%");
+                    progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+                }
+            },
+            onComplete: null,
+        },
+        onRemove: function(item) {
+            $submit.prop('disabled', originalDisabledState);
+            $.post('%PLUGINS_URL%fileuploader/drag-and-drop/php/ajax_remove_file.php', {
+                input_name: inputName%index%,
+                hash      : '%hash%',
+                form_id   : '%formId%',
+                filename: item.name,
+                upload_dir: '%uploadDir%'
+            });
+        },
+        captions: {
+            feedback: 'Glissez/déposez vos fichiers ici',
+            feedback2: 'Glissez/déposez vos fichiers ici',
+            drop: 'Glissez/déposez vos fichiers ici',
+            or: 'or',
+            button: 'Browse files',
+        },
+    });]]>
+        </js_code>
+    </drag-and-drop-french>
+</root>

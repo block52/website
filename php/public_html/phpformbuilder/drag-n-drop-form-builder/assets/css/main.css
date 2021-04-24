@@ -1,0 +1,408 @@
+#form-generator-container {
+    max-width: 1140px;
+}
+
+.list-group-item {
+    width: 100%;
+    margin: 5px 0 !important;
+    border-width: 1px !important;
+    border-radius: .25rem !important;
+}
+
+@media (min-width: 768px) {
+    .list-group-item {
+        width: 47%;
+        margin: 5px 1.5% !important;
+    }
+
+    /* hide UI left / right column */
+
+    #ui-icon-bars-left-column.ui-hidden {
+        margin-left: calc(-25% + 70px);
+    }
+
+    #ui-left-column.ui-hidden {
+        margin-left: -25%;
+        opacity: 0;
+    }
+
+    #ui-icon-bars-right-column.ui-hidden {
+        margin-right: calc(-25% + 70px);
+    }
+
+    #ui-right-column.ui-hidden {
+        margin-right: -25%;
+        opacity: 0;
+    }
+}
+
+/* Main Form & Components
+-------------------------------------------------- */
+
+#fg-form-wrapper, #fg-form-wrapper form {
+    width: 100%;
+    min-height: 400px;
+}
+
+#fg-form-wrapper form {
+    width: 100%;
+    min-height: 50px;
+}
+
+#fg-form-wrapper form section {
+    width: 100%;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: transparent;
+    -webkit-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+}
+
+#fg-form-wrapper form:not(.form-horizontal) label[class*=col],
+#fg-form-wrapper form:not(.form-horizontal) div[class*=col] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+}
+
+#fg-form-wrapper form .section-component>* {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.section-component>*:not(.section-tools) {
+    flex-grow: 1;
+}
+
+.section-component {
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.section-component .form-group {
+    margin-bottom: 0 !important;
+}
+
+.section-component .btn-drag {
+    cursor: move !important;
+}
+
+.section-tools {
+    opacity: 0;
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    -ms-transition: all 100ms ease-in;
+    -o-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+}
+
+.section-component:hover .section-tools {
+    opacity: 1;
+}
+
+/* Main form section widths
+-------------------------------------------------- */
+
+.section-component.w-33 {
+    width: 33.332% !important;
+}
+
+.section-component.w-66 {
+    width: 66.662% !important;
+}
+
+.section-component.w-33,
+.section-component.w-50,
+.section-component.w-66 {
+    position: relative;
+    margin-top: 40px;
+    padding-left: 8px;
+    padding-right: 4px;
+}
+
+.section-component.w-33 .section-tools,
+.section-component.w-50 .section-tools,
+.section-component.w-66 .section-tools {
+    position: absolute;
+    bottom: 100%;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.section-component.w-33 .section-tools button,
+.section-component.w-50 .section-tools button,
+.section-component.w-66 .section-tools button {
+    padding-bottom: 0;
+}
+
+.section-component.w-33 .section-tools:first-of-type,
+.section-component.w-50 .section-tools:first-of-type,
+.section-component.w-66 .section-tools:first-of-type {
+    left: -5px;
+}
+
+.section-component.w-33 .section-tools:not(:first-of-type),
+.section-component.w-50 .section-tools:not(:first-of-type),
+.section-component.w-66 .section-tools:not(:first-of-type) {
+    right: 0;
+}
+
+/* drag & drop
+-------------------------------------------------- */
+
+#sidebar-components li[aria-grabbed="true"] {
+    display: none !important;
+}
+#sidebar-components li {
+    cursor: grab;
+}
+
+#droppable-hover-template {
+    border: 1px dashed #ccc;
+}
+
+/* Component Settings (right column)
+-------------------------------------------------- */
+
+#components-settings-form fieldset {
+    position: relative;
+}
+
+#components-settings-form fieldset .btn-delete {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+}
+
+#components-settings-form fieldset.collapsed {
+    padding-top: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+#components-settings-form fieldset.collapsed .btn-delete {
+    top: -2px;
+}
+
+#components-settings-form .checkbox-inline,
+#components-settings-form .radio-inline,
+#components-settings-form .checkbox label,
+#components-settings-form .radio label,
+#components-settings-form .form-check-label {
+    margin-right: 20px !important;
+    padding-left: 24px !important;
+}
+
+/* Misc
+-------------------------------------------------- */
+
+button[data-toggle="collapse"][aria-expanded="true"]:after {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.lcs_main_wrap > label {
+    display: none !important;
+}
+
+.list-unstyled-item {
+    list-style-type: none !important;
+}
+
+#preview-modal {
+    overflow-y: hidden !important;
+}
+
+.modal-xl {
+    max-width: 96% !important;
+}
+
+.modal-xl .modal-content {
+    min-height: 95vh !important;
+}
+
+.modal-xl .modal-content .modal-body {
+    height: 100%;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e2e0dd !important;
+    border: 1px solid #e2e0dd !important;
+    color: #212529 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #212529 !important;
+}
+
+/* Toasts
+-------------------------------------------------- */
+.tata.success {
+    font-weight: 300;
+    background: #0f9e7b !important;
+}
+
+.tata-title {
+    font-weight: 400;
+    padding-bottom: 10px;
+}
+
+/* Icons
+-------------------------------------------------- */
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?gg7ysk');
+    src: url('../fonts/icomoon.eot?gg7ysk#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?gg7ysk') format('truetype'),
+        url('../fonts/icomoon.woff?gg7ysk') format('woff'),
+        url('../fonts/icomoon.svg?gg7ysk#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    color: #2a2d2d;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"].icon-lg,
+[class*=" icon-"].icon-lg {
+    font-size: 2.5em;
+}
+.icon-short_text:before {
+    content: "\e913";
+}
+
+.icon-move:before {
+    content: "\e90e";
+}
+
+.icon-bubbles:before {
+    content: "\e914";
+}
+
+.icon-html-five:before {
+    content: "\e915";
+}
+
+.icon-expand:before {
+    content: "\e910";
+}
+
+.icon-shrink:before {
+    content: "\e911";
+}
+
+.icon-delete:before {
+    content: "\e90f";
+}
+
+.icon-outlink:before {
+    content: "\e90d";
+}
+
+.icon-lifebuoy:before {
+    content: "\e903";
+}
+
+.icon-upload1:before {
+    content: "\e904";
+}
+
+.icon-code:before {
+    content: "\e905";
+}
+
+.icon-eye:before {
+    content: "\e906";
+}
+
+.icon-download1:before {
+    content: "\e907";
+}
+
+.icon-title:before {
+    content: "\e91a";
+}
+
+.icon-recaptcha:before {
+    content: "\e919";
+}
+
+.icon-btn-group:before {
+    content: "\e908";
+}
+
+.icon-button:before {
+    content: "\e916";
+}
+
+.icon-fieldset:before {
+    content: "\e917";
+}
+
+.icon-checkbox-checked:before {
+    content: "\e918";
+}
+
+.icon-radio-checked:before {
+    content: "\e909";
+}
+
+.icon-input:before {
+    content: "\e90a";
+}
+
+.icon-select:before {
+    content: "\e90b";
+}
+
+.icon-textarea:before {
+    content: "\e90c";
+}
+
+.icon-download:before {
+    content: "\e91b";
+}
+
+.icon-upload:before {
+    content: "\e91c";
+}
+
+.icon-plus-circle:before {
+    content: "\e912";
+}
+
+.icon-question-circle:before {
+    content: "\e900";
+}
+
+.icon-bars:before {
+    content: "\e901";
+}
+
+.icon-tools:before {
+    content: "\e902";
+}

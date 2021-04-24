@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <!-- lowercase letters - at least 8 characters long -->
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>passfield/dist/css/passfield.min.css</file>
+            </css>
+            <js>
+                <file>passfield/dist/js/locales.min.js</file>
+                <file>passfield/js/passfield.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").passField();]]>
+        </js_code>
+    </default>
+    <min-3>
+        <js_code>
+            <!-- lowercase - at least 3 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abc"
+    });]]>
+        </js_code>
+    </min-3>
+    <min-4>
+        <js_code>
+            <!-- lowercase - at least 4 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abcd"
+    });]]>
+        </js_code>
+    </min-4>
+    <min-5>
+        <js_code>
+            <!-- lowercase - at least 5 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abcde"
+    });]]>
+        </js_code>
+    </min-5>
+    <min-6>
+        <js_code>
+            <!-- lowercase - at least 6 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abcdef"
+    });]]>
+        </js_code>
+    </min-6>
+    <min-7>
+        <js_code>
+            <!-- lowercase - at least 7 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abcdefg"
+    });]]>
+        </js_code>
+    </min-7>
+    <min-8>
+        <js_code>
+            <!-- lowercase - at least 8 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "abcdefgh"
+    });]]>
+        </js_code>
+    </min-8>
+    <lower-upper-min-3>
+        <js_code>
+            <!-- lowercase + uppercase - at least 3 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abc"
+    });]]>
+        </js_code>
+    </lower-upper-min-3>
+    <lower-upper-min-4>
+        <js_code>
+            <!-- lowercase + uppercase - at least 4 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abcd"
+    });]]>
+        </js_code>
+    </lower-upper-min-4>
+    <lower-upper-min-5>
+        <js_code>
+            <!-- lowercase + uppercase - at least 5 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abcde"
+    });]]>
+        </js_code>
+    </lower-upper-min-5>
+    <lower-upper-min-6>
+        <js_code>
+            <!-- lowercase + uppercase - at least 6 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abcdef"
+    });]]>
+        </js_code>
+    </lower-upper-min-6>
+    <lower-upper-min-7>
+        <js_code>
+            <!-- lowercase + uppercase - at least 7 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abcdefg"
+    });]]>
+        </js_code>
+    </lower-upper-min-7>
+    <lower-upper-min8>
+        <!-- lowercase + uppercase - at least 8 characters long -->
+        <js_code>
+<![CDATA[   $("%selector%").passField({
+        pattern: "Abcdefgh"
+    });]]>
+        </js_code>
+    </lower-upper-min8>
+    <lower-upper-number-min-3>
+        <js_code>
+            <!-- lowercase + uppercase + numbers - at least 3 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Ab"
+    });]]>
+        </js_code>
+    </lower-upper-number-min-3>
+    <lower-upper-number-min-4>
+        <js_code>
+            <!-- lowercase + uppercase + numbers - at least 4 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Abc"
+    });]]>
+        </js_code>
+    </lower-upper-number-min-4>
+    <lower-upper-number-min-5>
+        <js_code>
+            <!-- lowercase + uppercase + numbers - at least 5 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Abcd"
+    });]]>
+        </js_code>
+    </lower-upper-number-min-5>
+    <lower-upper-number-min-6>
+        <js_code>
+            <!-- lowercase + uppercase + numbers - at least 6 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Abcde"
+    });]]>
+        </js_code>
+    </lower-upper-number-min-6>
+    <lower-upper-number-min-7>
+        <js_code>
+            <!-- lowercase + uppercase + numbers - at least 7 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Abcdef"
+    });]]>
+        </js_code>
+    </lower-upper-number-min-7>
+    <lower-upper-number-min8>
+        <!-- lowercase + uppercase + numbers - at least 8 characters long -->
+        <js_code>
+<![CDATA[   $("%selector%").passField({
+        pattern: "1Abcdefg"
+    });]]>
+        </js_code>
+    </lower-upper-number-min8>
+    <lower-upper-number-symbol-min-3>
+        <js_code>
+            <!-- lowercase + uppercase + numbers + symbols - at least 3 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1A"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-3>
+    <lower-upper-number-symbol-min-4>
+        <js_code>
+            <!-- lowercase + uppercase + numbers + symbols - at least 4 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1Ab"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-4>
+    <lower-upper-number-symbol-min-5>
+        <js_code>
+            <!-- lowercase + uppercase + numbers + symbols - at least 5 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1Abc"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-5>
+    <lower-upper-number-symbol-min-6>
+        <js_code>
+            <!-- lowercase + uppercase + numbers + symbols - at least 6 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1Abcd"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-6>
+    <lower-upper-number-symbol-min-7>
+        <js_code>
+            <!-- lowercase + uppercase + numbers + symbols - at least 7 characters -->
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1Abcde"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-7>
+    <lower-upper-number-symbol-min-8>
+        <!-- lowercase + uppercase + numbers + symbols - at least 8 characters long -->
+        <js_code>
+<![CDATA[   $("%selector%").passField({
+        pattern: "$1Abcdef"
+    });]]>
+        </js_code>
+    </lower-upper-number-symbol-min-8>
+    <custom>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+            <!-- your custom code here -->
+        </js_code>
+    </custom>
+</root>

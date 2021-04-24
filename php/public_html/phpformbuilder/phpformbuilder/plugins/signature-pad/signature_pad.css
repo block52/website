@@ -1,0 +1,11 @@
+.signature-pad-canvas {
+    display: block;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.sign-pad-btn {
+    display: block;
+    margin: .5rem 0 .5rem auto;
+}

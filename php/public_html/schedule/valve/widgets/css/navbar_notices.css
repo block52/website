@@ -1,0 +1,106 @@
+
+/*
+ * Component: Timeline
+ * -------------------
+ */
+.caledonian, .wd-timeline {
+  z-index:2;
+}
+.navbar {
+  position: static;
+  z-index: 1;
+}
+.wd-timeline {
+  width:300px;
+  margin: 0 0 30px 0;
+  padding: 5px;
+  list-style: none;
+}
+.wd-timeline:before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  width: 4px;
+  background: #ddd;
+  left: 31px;
+  margin: 0;
+  border-radius: 2px;
+}
+.wd-timeline > li {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+.wd-timeline > li:before,
+.wd-timeline > li:after {
+  content: " ";
+  display: table;
+}
+.wd-timeline > li:after {
+  clear: both;
+}
+.wd-timeline > li > .timeline-item {
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  margin-top: 0px;
+  background: #fff;
+  color: #444;
+  margin-left: 60px;
+  margin-right: 15px;
+  padding: 0;
+  position: relative;
+}
+.wd-timeline > li > .timeline-item > .time {
+  color: #999;
+  float: right;
+  padding: 10px;
+  font-size: 12px;
+}
+.wd-timeline > li > .timeline-item > .timeline-header {
+  margin: 0;
+  color: #555;
+  border-bottom: 1px solid #f4f4f4;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.1;
+}
+.wd-timeline > li > .timeline-item > .timeline-header > a {
+  font-weight: 600;
+  font-size:14px;
+  display:block;
+  margin-bottom:5px;
+}
+.wd-timeline > li > .timeline-item > .timeline-body,
+.wd-timeline > li > .timeline-item > .timeline-footer {
+  padding: 10px;
+}
+
+.wd-timeline > li > .timeline-item > .timeline-header > span{
+	font-size:12px;
+	display:block;
+}
+
+.wd-timeline > li.time-label > span {
+  font-weight: 600;
+  padding: 5px;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.wd-timeline > li > .fa,
+.wd-timeline > li > .glyphicon,
+.wd-timeline > li > .ion {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  line-height: 30px;
+  position: absolute;
+  color: #fff;
+  background: #d2d6de;
+  border-radius: 50%;
+  text-align: center;
+  left: 18px;
+  top: 0;
+}

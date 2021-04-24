@@ -1,0 +1,185 @@
+/*/ Remove the unit of a length*/
+/*/ @param {Number} $number - Number to remove unit from*/
+/*/ @return {Number} - Unitless number*/
+@function strip-unit($number) {
+    @if type-of($number) == "number" and not unitless($number) {
+        @return $number / ($number * 0 + 1);
+    }
+
+    @return $number;
+}
+
+/**/
+/*  https://codepen.io/jakob-e/pen/doMoML*/
+/*  Function to create an optimized svg url*/
+/*  Version: 1.0.6*/
+@function svg-url($svg) {
+    /**/
+    /*  Chunk up string in order to avoid*/
+    /*  "stack level too deep" error*/
+    /**/
+    $encoded: "";
+    $slice: 2000;
+    $index: 0;
+    $loops: ceil(str-length($svg) / $slice);
+    /**/
+    /*  Add missing namespace*/
+    /**/
+    @if not str-index($svg, xmlns) {
+        $svg: str-replace($svg, "<svg", '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    @for $i from 1 through $loops {
+        $chunk: str-slice($svg, $index, $index + $slice - 1);
+        /**/
+        /*   Encode*/
+        /**/
+        $chunk: str-replace($chunk, '"', "'");
+        $chunk: str-replace($chunk, "%", "%25");
+        $chunk: str-replace($chunk, "#", "%23");
+        $chunk: str-replace($chunk, "{", "%7B");
+        $chunk: str-replace($chunk, "}", "%7D");
+        $chunk: str-replace($chunk, "<", "%3C");
+        $chunk: str-replace($chunk, ">", "%3E");
+        /**/
+        /*    The maybe list*/
+        /**/
+        /*    Keep size and compile time down*/
+        /*    ... only add on documented fail*/
+        /**/
+        /*  $chunk: str-replace($chunk, '&', '%26');*/
+        /*  $chunk: str-replace($chunk, '|', '%7C');*/
+        /*  $chunk: str-replace($chunk, '[', '%5B');*/
+        /*  $chunk: str-replace($chunk, ']', '%5D');*/
+        /*  $chunk: str-replace($chunk, '^', '%5E');*/
+        /*  $chunk: str-replace($chunk, '`', '%60');*/
+        /*  $chunk: str-replace($chunk, ';', '%3B');*/
+        /*  $chunk: str-replace($chunk, '?', '%3F');*/
+        /*  $chunk: str-replace($chunk, ':', '%3A');*/
+        /*  $chunk: str-replace($chunk, '@', '%40');*/
+        /*  $chunk: str-replace($chunk, '=', '%3D');*/
+        $encoded: #{$encoded}#{$chunk};
+        $index: $index + $slice;
+    }
+    @return url("data:image/svg+xml,#{$encoded}");
+}
+
+/*  Background svg mixin*/
+@mixin background-svg($svg) {
+    background-image: svg-url($svg);
+}
+
+/*  Helper function to replace characters in a string*/
+@function str-replace($string, $search, $replace: "") {
+    $index: str-index($string, $search);
+    @return if(
+        $index,
+        str-slice($string, 1, $index - 1) + $replace +
+            str-replace(str-slice($string, $index + str-length($search)), $search, $replace),
+        $string
+    );
+}
+
+/*=============================================
+=            Global caret settings            =
+=============================================*/
+
+%dropdown-toggle-after {
+    line-height: $font-size-base * 1.5;
+    position: absolute;
+    top: calc(50% - 7px);
+    right: $spacer;
+    display: block;
+    width: 7px;
+    height: 14px;
+    margin: 0;
+    content: " ";
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(0deg);
+    border: none;
+    background-repeat: no-repeat;
+}
+.dropdown-toggle {
+    position: relative;
+    padding-right: $spacer * 2.5;
+    &:not(.sidebar-toggler):after {
+        @extend %dropdown-toggle-after;
+    }
+    &:not(.dropdown-light):after {
+        @include background-svg(
+            '<svg aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" viewBox="0 0 256 512" class="svg-inline--fa fa-angle-right fa-w-8 fa-2x"><path fill="#{$body-color}" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" class=""></path></svg>'
+        );
+    }
+    &.dropdown-light:after {
+        @include background-svg(
+            '<svg aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" viewBox="0 0 256 512" class="svg-inline--fa fa-angle-right fa-w-8 fa-2x"><path fill="#{$gray-100}" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" class=""></path></svg>'
+        );
+    }
+    &[aria-expanded="true"]:after {
+        transform: rotate(90deg);
+    }
+}
+.heading-elements .dropdown-toggle,
+.btn.dropdown-toggle {
+    .heading-elements & {
+        margin-top: -0.5rem;
+        margin-bottom: -0.5rem;
+    }
+    &[aria-expanded="true"]:after {
+        transform: rotate(90deg);
+    }
+}
+.btn-icon.dropdown-toggle {
+    padding-right: 2.5rem !important;
+}
+.sidebar-mini-toggler:after {
+    margin: 0 12px 0 0;
+
+    @extend %dropdown-toggle-after;
+    @include background-svg(
+        '<svg aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-down" role="img" viewBox="0 0 320 512" class="svg-inline--fa fa-angle-down fa-w-10 fa-2x"><path fill="#fff" d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" class=""></path></svg>'
+    );
+}
+.autocomplete-suggestions {
+    border: 1px solid #999;
+    background: #fff;
+    overflow: auto;
+}
+.autocomplete-suggestion {
+    padding: 2px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: default;
+}
+.autocomplete-selected {
+    background: #f0f0f0;
+}
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #3399ff;
+}
+.autocomplete-group {
+    padding: 2px 5px;
+}
+.autocomplete-group strong {
+    display: block;
+    border-bottom: 1px solid #000;
+}
+.footable-toggle {
+    position: relative;
+    line-height: $font-size-base * 1.5;
+    display: block;
+    width: 21px;
+    height: 21px;
+    margin: 0;
+    content: " ";
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(0deg);
+    border: none;
+    background-repeat: no-repeat;
+    @include background-svg(
+        '<svg class="svg-inline--fa fa-caret-square-down fa-w-14" aria-hidden="true" focusable="false" data-prefix="far" data-icon="caret-square-down" role="img" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="#{$gray}" d="M125.1 208h197.8c10.7 0 16.1 13 8.5 20.5l-98.9 98.3c-4.7 4.7-12.2 4.7-16.9 0l-98.9-98.3c-7.7-7.5-2.3-20.5 8.4-20.5zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path></svg>'
+    );
+    &.fooicon-minus {
+        transform: rotate(180deg);
+    }
+}

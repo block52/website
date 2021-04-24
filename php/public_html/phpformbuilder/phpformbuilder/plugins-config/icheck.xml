@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<default>
+		<includes>
+			<!--
+				Path to css and js files into plugins folder.
+				If your files are not in plugins folder, use absolute paths.
+			-->
+			<css>
+				<file>icheck/skins/%theme%/%color%.min.css</file>
+			</css>
+			<js>
+				<file>icheck/icheck.min.js</file>
+			</js>
+		</includes>
+		<js_code>
+<![CDATA[   $("%selector%").iCheck({
+        checkboxClass: 'icheckbox_%theme%-%color%',
+        radioClass: 'iradio_%theme%-%color%'
+        // increaseArea: '20%' // optional
+    });
+    $("%selector%").on("ifChanged", function(e) {
+        var formId = $(this).closest('form').attr('id');
+        var form   = forms[formId];
+        if(typeof(form.fv) == 'object') {
+            if (this.name in form.fv.elements) {
+                form.fv.revalidateField(this.name);
+            }
+        }
+    });
+    // bs4 invalid feedback
+    if($('.invalid-feedback')[0] && $('.invalid-feedback').closest('.form-group')[0]) {
+        $('.invalid-feedback').closest('.form-group').addClass('has-error');
+    }]]>
+		</js_code>
+	</default>
+    <theme>
+        <!-- futurico and polaris theme -->
+        <includes>
+            <css>
+                <file>icheck/skins/%theme%/%theme%.min.css</file>
+            </css>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").iCheck({
+        checkboxClass: 'icheckbox_%theme%',
+        radioClass: 'iradio_%theme%'
+        // increaseArea: '20%' // optional
+    });
+    $("%selector%").on("ifChanged", function() {
+        var formId = $(this).closest('form').attr('id');
+        var form   = forms[formId];
+        if(typeof(form.fv) == 'object') {
+            form.fv.revalidateField(this.name);
+        }
+    });
+    if($('.invalid-feedback')[0] && $('.invalid-feedback').closest('.form-group')[0]) {
+        $('.invalid-feedback').closest('.form-group').addClass('has-error');
+    }]]>
+        </js_code>
+    </theme>
+    <line>
+        <!-- line theme
+            IMPORTANT:
+            set Form wrapCheckboxesIntoLabels and wrapRadiobtnsIntoLabels options to false if you use line theme
+        -->
+        <includes>
+            <css>
+                <file>icheck/skins/line/%color%.min.css</file>
+            </css>
+            <js>
+                <file>icheck/icheck.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function(){
+        var self = $(this),
+            label = self.next(),
+            label_text = label.text();
+
+        label.remove();
+        self.iCheck({
+            checkboxClass: 'icheckbox_line-%color%',
+            radioClass: 'iradio_line-%color%',
+            insert: '<div class="icheck_line-icon"></div>' + label_text
+        });
+    });
+    $("%selector%").on("ifChanged", function() {
+        var formId = $(this).closest('form').attr('id');
+        var form   = forms[formId];
+        if(typeof(form.fv) == 'object') {
+            form.fv.revalidateField(this.name);
+        }
+    });
+    if($('.invalid-feedback')[0] && $('.invalid-feedback').closest('.form-group')[0]) {
+        $('.invalid-feedback').closest('.form-group').addClass('has-error');
+    }]]>
+        </js_code>
+    </line>
+</root>

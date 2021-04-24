@@ -1,0 +1,12 @@
+RewriteEngine On
+# Redirect to www
+RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
+RewriteCond %{HTTPS}s ^on(s)|
+RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
+#** Event Detail
+RewriteRule ^event/([a-zA-Z0-9-]+)/([0-9]+)(/)?$ sdr.calendar.php?pos=details&ID=$2 [NC]
+
+#** API
+RewriteRule ^api/v1/(.*)$ api/v1/api.php?request=$1 [QSA,NC,L]

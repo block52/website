@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>pickadate/lib/compressed/themes/classic.css</file>
+                <file>pickadate/lib/compressed/themes/classic.date.css</file>
+                <file>pickadate/lib/compressed/themes/classic.time.css</file>
+            </css>
+            <js>
+                <file>pickadate/lib/compressed/picker.js</file>
+                <file>pickadate/lib/compressed/picker.date.js</file>
+                <file>pickadate/lib/compressed/picker.time.js</file>
+                <file>pickadate/lib/translations/%language%.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var dataFormat        = (dataAttr.format === undefined) ? 'mmm dd, yyyy' : dataAttr.format,
+            dataFormatSubmit  = (dataAttr.formatSubmit === undefined) ? undefined : dataAttr.formatSubmit,
+            dataSelectYears   = (dataAttr.selectYears === undefined) ? undefined : dataAttr.selectYears,
+            dataSelectMonths  = (dataAttr.selectMonths === undefined) ? undefined : dataAttr.selectMonths,
+            dataFirstDay      = (dataAttr.firstDay === undefined) ? undefined : dataAttr.firstDay,
+            dataMin           = (dataAttr.min === undefined) ? undefined : new Date(dataAttr.min),
+            dataMax           = (dataAttr.max === undefined) ? undefined : new Date(dataAttr.max),
+            dataCloseOnSelect = (dataAttr.closeOnSelect === undefined) ? true : dataAttr.closeOnSelect,
+            dataCloseOnClear  = (dataAttr.closeOnClear === undefined) ? true : dataAttr.closeOnClear;
+
+        $(this).attr('data-value', $(this).val());
+
+        this.datepicker =  $(this).pickadate({
+            format: dataFormat,
+            formatSubmit: dataFormatSubmit,
+            selectYears: dataSelectYears,
+            selectMonths: dataSelectMonths,
+            firstDay: dataFirstDay,
+            min: dataMin,
+            max: dataMax,
+            closeOnSelect: dataCloseOnSelect,
+            closeOnClear: dataCloseOnClear,
+            onClose: function(e) {
+                var formId = $('%selector%').closest('form').attr('id');
+                var form   = forms[formId];
+                if(typeof(form.fv) == 'object') {
+                    form.fv.revalidateField(this.$node[0].name);
+                }
+            }
+        });
+
+        if($("%selector%").width() < 240) {
+            $("%selector% ~ .picker").css({
+                'min-width': '240px',
+                'font-size': '14px'
+            });
+        }
+    });]]>
+        </js_code>
+    </default>
+    <pickatime>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var dataFormat        = (dataAttr.format === undefined) ? 'h:i A' : dataAttr.format,
+            dataFormatSubmit  = (dataAttr.formatSubmit === undefined) ? undefined : dataAttr.formatSubmit,
+            dataIInterval     = (dataAttr.interval === undefined) ? undefined : dataAttr.interval,
+            dataMin           = (dataAttr.min === undefined) ? undefined : dataAttr.min.split(','),
+            dataMax           = (dataAttr.max === undefined) ? undefined : dataAttr.max.split(','),
+            dataCloseOnSelect = (dataAttr.closeOnSelect === undefined) ? true : dataAttr.closeOnSelect,
+            dataCloseOnClear  = (dataAttr.closeOnClear === undefined) ? true : dataAttr.closeOnClear;
+
+        $(this).attr('data-value', $(this).val()).pickatime({
+            format: dataFormat,
+            formatSubmit: dataFormatSubmit,
+            interval: dataIInterval,
+            min: dataMin,
+            max: dataMax,
+            closeOnSelect: dataCloseOnSelect,
+            closeOnClear: dataCloseOnClear,
+            onClose: function() {
+                var formId = $('%selector%').closest('form').attr('id');
+                var form   = forms[formId];
+                if(typeof(form.fv) == 'object') {
+                    form.fv.revalidateField(this.$node[0].name);
+                }
+            }
+        });
+    });]]>
+        </js_code>
+    </pickatime>
+</root>

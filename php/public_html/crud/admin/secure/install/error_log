@@ -1,0 +1,2 @@
+[15-Sep-2020 01:50:14 UTC] PHP Warning:  array_keys() expects parameter 1 to be array, null given in /home/floattheflop/public_html/crud/admin/secure/install/do-install.php on line 29
+[15-Sep-2020 01:50:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/floattheflop/public_html/crud/admin/secure/install/do-install.php on line 30

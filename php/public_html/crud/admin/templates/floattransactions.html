@@ -1,0 +1,152 @@
+    <div class="card {{ constant('DEFAULT_CARD_CLASS') }} mr-4">
+        <div class="card-header d-lg-flex flex-wrap justify-content-between {{ constant('DEFAULT_CARD_HEADING_CLASS') }}">
+            {% if object.records_count > 0 %}
+
+            <div class="d-flex ml-auto order-lg-2">
+                {{ object.select_number_per_page|raw }}
+            </div>
+
+            <hr class="w-100 d-lg-none">
+
+            {% endif %}
+            <div class="d-flex order-lg-0 mb-3 mb-sm-0">
+                {% if object.can_create == true %}
+                <a href="{{ constant('ADMIN_URL') }}{{ object.item }}/create" class="btn btn-sm mr-1 btn-primary d-flex align-items-center legitRipple"><i class="{{ constant('ICON_PLUS') }} position-left"></i>{{ constant('ADD_NEW') }}</a>
+                {% endif %}
+                {% if object.records_count > 0 %}
+                {{ object.export_data_button|raw }}
+                {% endif %}
+            </div>
+
+            <div class="order-lg-1 mx-lg-auto">
+                <form name="rp-search-form" id="rp-search-form" action="" class="form-inline justify-content-center">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="rp-search-field" class="dropdown input-group-prepend">
+                                <a class="btn dropdown-toggle pl-4 pr-3 {{ constant('DEFAULT_BUTTONS_BACKGROUND') }}" rel="noindex" id="search-dropdown-link" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false"></a>
+                                <div class="dropdown-menu" aria-labelledby="search-dropdown-link">
+                                    {% for field_name, field_display_name in object.fields %}
+                                    {% set active = '' %}
+                                    {% if field_name == attribute(session.rp_search_field, object.table) %}
+                                    {% set active = ' active' %}
+                                    {% elseif field_name == 'id' %}
+                                    {% set active = ' active' %}
+                                    {% endif %}
+                                    <a class="dropdown-item{{ active }}" href="#" rel="noindex" data-value="{{ field_name }}">{{ field_display_name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% set search_value = '' %}
+                            {% if attribute(session.rp_search_string, object.table) is defined %}
+                            {% set search_value = attribute(session.rp_search_string, object.table) %}
+                            {% endif %}
+                            <input id="rp-search" name="rp-search" type="text" value="{{ search_value }}" placeholder="{{ constant('SEARCH') }}" class="form-control flex-grow-1">
+                            <div class="input-group-append">
+                                <button id="rp-search-submit" class="btn {{ constant('DEFAULT_BUTTONS_BACKGROUND') }} ladda-button" data-style="zoom-in" type="submit"><span class="ladda-label"><i class="{{ constant('ICON_SEARCH') }}"></i></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        {# Partial block list - rendered alone on the research results #}
+        {% block object_list %}
+
+        <div id="{{ object.item }}-list">
+
+        {% if object.records_count > 0 %}
+            <div class="table-responsive">
+                <table class="table table-striped table-condensed table-data">
+                    <thead>
+                        <tr class="{{ constant('DEFAULT_TABLE_HEADING_BACKGROUND') }}">
+                            {% if constant('ADMIN_ACTION_BUTTONS_POSITION') == 'left' %}
+                            <th>{{ constant('ACTION_CONST') }}</th>
+                            {% endif %}
+                            <th>{{ object.fields.id }}</th>
+                            <th>{{ object.fields.upoker_name }}</th>
+                            <th>{{ object.fields.upoker_id }}</th>
+                            <th>{{ object.fields.mobile_number }}</th>
+                            <th>{{ object.fields.transaction_type }}</th>
+                            <th>{{ object.fields.amount }}</th>
+                            <th>{{ object.fields.referral_code }}</th>
+                            <th>{{ object.fields.bonus_code }}</th>
+                            <th>{{ object.fields.status }}</th>
+                            <th>{{ object.fields.submit_time }}</th>
+                            <th>{{ object.fields.processed_time }}</th>
+                            <th>{{ object.fields.ip_address }}</th>
+                            <th>{{ object.fields.country }}</th>
+                            <th>{{ object.fields.city }}</th>
+                            <th>{{ constant('DISPLAY') }}</th>
+                            {% if constant('ADMIN_ACTION_BUTTONS_POSITION') == 'right' %}
+                        {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in range(0, object.records_count - 1) %}
+                        <tr>
+                            {% if constant('ADMIN_ACTION_BUTTONS_POSITION') == 'left' %}
+                            <td class="has-btn-group no-ellipsis">
+                                <div class="btn-group">
+                                    {% if object.pk[loop.index0] in object.authorized_update_pk %}
+                                    <a href="{{ constant('ADMIN_URL') }}{{ object.item }}/edit/{{ object.pk[loop.index0] }}" class="btn btn-sm btn-warning legitRipple" data-tooltip="{{ constant('EDIT') }}" data-delay="500"><span class="{{ constant('ICON_EDIT') }} icon-md"></span></a>
+                                    {% endif %}
+                                    {% if object.can_create == true %}
+                                    <a href="{{ constant('ADMIN_URL') }}{{ object.item }}/delete/{{ object.pk[loop.index0] }}" class="btn btn-sm btn-danger legitRipple" data-tooltip="{{ constant('DELETE_CONST') }}" data-delay="500"><span class="{{ constant('ICON_DELETE') }} icon-md"></span></a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            {% endif %}
+                            <td>{{ object.id[ loop.index0 ] }}</td>
+                            <td>{{ object.upoker_name[ loop.index0 ] }}</td>
+                            <td>{{ object.upoker_id[ loop.index0 ] }}</td>
+                            <td>{{ object.mobile_number[ loop.index0 ] }}</td>
+                            <td>{{ object.transaction_type[ loop.index0 ] }}</td>
+                            <td>{{ object.amount[ loop.index0 ] }}</td>
+                            <td>{{ object.referral_code[ loop.index0 ] }}</td>
+                            <td>{{ object.bonus_code[ loop.index0 ] }}</td>
+                            <td>{{ object.status[ loop.index0 ] }}</td>
+                            <td>{{ toDate(object.submit_time[ loop.index0 ], 'dd MMMM yyyy H:m a')|raw }}</td>
+                            <td>{{ toDate(object.processed_time[ loop.index0 ], 'dd MMMM yyyy H:m a')|raw }}</td>
+                            <td>{{ object.ip_address[ loop.index0 ] }}</td>
+                            <td>{{ object.country[ loop.index0 ] }}</td>
+                            <td>{{ object.city[ loop.index0 ] }}</td>
+                            <td><a href="{{ constant('BASE_URL') }}" rel="noindex" data-delay="500" data-tooltip="{{ constant('OPEN_URL') }}" target="_blank"><span class="{{ constant('ICON_NEW_TAB') }} text-center"></span></a></td>
+                            {% if constant('ADMIN_ACTION_BUTTONS_POSITION') == 'right' %}
+                            <td class="has-btn-group no-ellipsis">
+                                <div class="btn-group">
+                                    {% if object.pk[loop.index0] in object.authorized_update_pk %}
+                                    <a href="{{ constant('ADMIN_URL') }}{{ object.item }}/edit/{{ object.pk[loop.index0] }}" class="btn btn-sm btn-warning legitRipple" data-tooltip="{{ constant('EDIT') }}" data-delay="500"><span class="{{ constant('ICON_EDIT') }} icon-md"></span></a>
+                                    {% endif %}
+                                    {% if object.can_create == true %}
+                                    <a href="{{ constant('ADMIN_URL') }}{{ object.item }}/delete/{{ object.pk[loop.index0] }}" class="btn btn-sm btn-danger legitRipple" data-tooltip="{{ constant('DELETE_CONST') }}" data-delay="500"><span class="{{ constant('ICON_DELETE') }} icon-md"></span></a>
+                                {% endif %}
+                                </div>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- END table-responsive -->
+
+
+            {% else %}
+            <div class="card-body">
+                <p class="text-semibold">
+                    {{ alert(constant('NO_RECORD_FOUND'), 'alert-info has-icon')|raw }}
+                </p>
+            </div>
+            {% endif %}
+
+            <div class="card-footer  {{ constant('DEFAULT_CARD_FOOTER_CLASS') }} p-4 mt-5">
+                {{ object.pagination_html|raw }}
+            </div>
+        </div> <!-- END {{ object.item }}-list -->
+
+        {% endblock object_list %}
+        {# END Partial block - rendered alone on the research results #}
+
+    </div> <!-- END card -->

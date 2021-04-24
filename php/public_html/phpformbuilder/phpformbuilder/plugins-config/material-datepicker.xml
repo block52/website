@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>material-datepicker/css/material-datepicker.min.css</file>
+            </css>
+            <js>
+                <file>material-datepicker/dist/js/material-datepicker.min.js</file>
+                <file>material-datepicker/dist/i18n/%language%.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var dataAutoClose                       = (dataAttr.autoClose === undefined) ? false : dataAttr.autoClose,
+            dataFormat                          = (dataAttr.format === undefined) ? 'mmm dd, yyyy' : dataAttr.format,
+            dataDefaultDate                     = (dataAttr.defaultDate === undefined) ? null : new Date(dataAttr.defaultDate),
+            dataSetDefaultDate                  = (dataAttr.setDefaultDate === undefined) ? false : dataAttr.setDefaultDate,
+            dataDisableWeekends                 = (dataAttr.disableWeekends === undefined) ? false : dataAttr.disableWeekends,
+            dataFirstDay                        = (dataAttr.firstDay === undefined) ? 0 : dataAttr.firstDay,
+            dataMinDate                         = (dataAttr.minDate === undefined) ? null : new Date(dataAttr.minDate),
+            dataMaxDate                         = (dataAttr.maxDate === undefined) ? null : new Date(dataAttr.maxDate),
+            dataYearRange                       = (dataAttr.yearRange === undefined) ? 10 : dataAttr.yearRange,
+            dataIsRTL                           = (dataAttr.isRtl === undefined) ? false : dataAttr.isRtl,
+            dataShowMonthAfterYear              = (dataAttr.showMonthAfterYear === undefined) ? false : dataAttr.showMonthAfterYear,
+            dataShowDaysInNextAndPreviousMonths = (dataAttr.showDaysInNextAndPreviousMonths   === undefined) ? false : dataAttr.showDaysInNextAndPreviousMonths,
+            dataShowClearBtn                    = (dataAttr.showClearBtn === undefined) ? false : dataAttr.showClearBtn;
+
+        var fieldName = $(this).attr('name');
+
+        $(this).datepicker({
+            autoClose: dataAutoClose,
+            format: dataFormat,
+            defaultDate: dataDefaultDate,
+            setDefaultDate: dataSetDefaultDate,
+            disableWeekends: dataDisableWeekends,
+            firstDay: dataFirstDay,
+            minDate: dataMinDate,
+            maxDate: dataMaxDate,
+            yearRange: dataYearRange,
+            isRTL: dataIsRTL,
+            showMonthAfterYear: dataShowMonthAfterYear,
+            showDaysInNextAndPreviousMonths: dataShowDaysInNextAndPreviousMonths,
+            showClearBtn: dataShowClearBtn,
+            i18n: materialDateI18n,
+            onClose: function() {
+                var formId = $('%selector%').closest('form').attr('id');
+                var form   = forms[formId];
+                if(typeof(form.fv) == 'object') {
+                    form.fv.revalidateField(fieldName);
+                }
+            }
+        });
+    });]]>
+        </js_code>
+    </default>
+    <custom>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+            <!-- your custom code here -->
+        </js_code>
+    </custom>
+</root>

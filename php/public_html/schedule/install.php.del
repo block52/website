@@ -1,0 +1,747 @@
+<?php
+# +------------------------------------------------------------------------+
+# | Artlantis CMS Solutions                                                |
+# +------------------------------------------------------------------------+
+# | Caledonian PHP Event Calendar                                          |
+# | Copyright (c) Artlantis Design Studio 2014. All rights reserved.       |
+# | File Version  2.0                                                      |
+# | Last modified 14.07.15                                                 |
+# | Email         developer@artlantis.net                                  |
+# | Developer     http://www.artlantis.net                                 |
+# +------------------------------------------------------------------------+
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header("Content-Type: text/html; charset=UTF-8");
+date_default_timezone_set('UTC');
+
+# Load Defaults
+define('CAL_APP',dirname(__FILE__));
+define('CAL_VERSION','2.4');
+define('CAL_FULL_NAME','Caledonian PRO');
+define('DEFAULT_LANG','en'); # Caledonian Installation Language
+include_once("languages/sirius_conf.php");
+$sirius->langFiles[] = "calglb_back.php";
+$sirius->loadLanguages(); # Load Globals
+
+include_once("lib/functions.php");
+
+# General Settings
+$temp_url = relDocs(CAL_APP);
+$temp_url = $temp_url . ((substr($temp_url, -1)!='/') ? '/':'');
+
+$CAL_SETS['cal_set_default_timezone'] = 'Europe/Helsinki';
+$CAL_SETS['cal_set_default_language'] = 'en';
+$CAL_SETS['cal_set_app_url'] = $temp_url;
+$CAL_SETS['cal_set_sysmail'] = 'example@mail.com';
+$CAL_SETS['cal_set_max_upcoming'] = 5;
+$CAL_SETS['cal_set_file_size'] = 2097152;
+$CAL_SETS['cal_set_api_public'] = encr(time().'caledonian'.rand());
+$CAL_SETS['cal_set_api_private'] = encr(time().'caledonian'.rand().uniqid(true).$CAL_SETS['cal_set_api_public']);
+$CAL_SETS['cal_set_share_buttons'] = 1;
+$CAL_SETS['cal_set_show_creator'] = 1;
+$CAL_SETS['cal_set_pointips'] = 1;
+$CAL_SETS['cal_set_debug_mode'] = 0;
+$CAL_SETS['cal_set_license_key'] = '';
+foreach($CAL_SETS as $k=>$v){if(!defined($k)){define($k,$v);}}
+
+include_once("lib/class.caledonian.php");
+include_once("lib/common.php");
+
+$pos = ((!isset($_GET['pos']) || empty($_GET['pos'])) ? '':trim($_GET['pos']));
+$install = ((!isset($_GET['install']) || empty($_GET['install'])) ? false:true);
+
+# XMLHTTP Tests
+if($pos=='DBTEST'){
+
+	$getErr = 0;
+	if(!isset($_POST['db_host']) || empty($_POST['db_host'])){$getErr++;}else{$db_host = trim($_POST['db_host']);}
+	if(!isset($_POST['db_name']) || empty($_POST['db_name'])){$getErr++;}else{$db_name = trim($_POST['db_name']);}
+	if(!isset($_POST['db_login']) || empty($_POST['db_login'])){$getErr++;}else{$db_login = trim($_POST['db_login']);}
+	if(!isset($_POST['db_pass']) || empty($_POST['db_pass'])){$db_pass='';}else{$db_pass = trim($_POST['db_pass']);}
+	
+	if($getErr!=0){die('NO');}else{
+		
+		$myconns = new mysqli($db_host,$db_login,$db_pass,$db_name) or die('NO');
+		die('OK');
+		
+	}
+	
+}
+
+# Install
+if($install){
+	
+	echo('<script>$("#myCaledonian").attr("disabled",false);</script>');
+	# Connect to DB
+	$getErr = 0;
+	if(!isset($_POST['db_host']) || empty($_POST['db_host'])){$getErr++;}else{$db_host = trim($_POST['db_host']);}
+	if(!isset($_POST['db_name']) || empty($_POST['db_name'])){$getErr++;}else{$db_name = trim($_POST['db_name']);}
+	if(!isset($_POST['db_login']) || empty($_POST['db_login'])){$getErr++;}else{$db_login = trim($_POST['db_login']);}
+	if(!isset($_POST['db_pass']) || empty($_POST['db_pass'])){$db_pass='';}else{$db_pass = trim($_POST['db_pass']);}
+	if(!isset($_POST['db_prefix']) || empty($_POST['db_prefix'])){$db_prefix='cal_';}else{$db_prefix = trim($_POST['db_prefix']);}
+	
+	$db_prefix = preg_replace("/[^a-zA-Z0-9]/", "", $db_prefix);
+	$db_prefix = $db_prefix.'_';
+	define('db_table_pref',$db_prefix);
+	
+	if($getErr!=0){die('<div class="alert alert-danger">Database Connection Error!</div>');}else{
+		/* Database Connection */
+		require_once ('lib/MysqliDb.php');
+		$myconn = new mysqli($db_host,$db_login,$db_pass,$db_name) or die('DB Connection Error');
+		$myconn->set_charset('utf8');
+		$db = new MysqliDb ($myconn);
+		$db->setPrefix(db_table_pref);
+	}
+	
+	if($getErr==0){
+	# Create Tables
+	# Notes
+	$myconn->query("CREATE TABLE IF NOT EXISTS `". db_table_pref ."panel_notes` (
+				  `note_id` int(11) NOT NULL AUTO_INCREMENT,
+				  `user_id` int(11) NOT NULL DEFAULT '0',
+				  `title` varchar(255) DEFAULT NULL,
+				  `mynotes` text,
+				  `add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `note_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+				  `note_icon` varchar(50) NOT NULL DEFAULT 'fa fa-bell',
+				  `ip_address` varchar(20) NOT NULL DEFAULT '',
+				  `note_color` varchar(50) NOT NULL DEFAULT 'mediumvioletred',
+				  `isDone` tinyint(2) NOT NULL DEFAULT '0',
+				  `edit_date` datetime DEFAULT NULL,
+				  `data_type` tinyint(2) DEFAULT '0' COMMENT '0 - Private, 1 - Public',
+				  PRIMARY KEY (`note_id`)
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;") or die($myconn);
+	# Users
+	$myconn->query("CREATE TABLE IF NOT EXISTS `". db_table_pref ."users` (
+				  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+				  `full_name` varchar(100) NOT NULL,
+				  `email` varchar(100) NOT NULL,
+				  `pass` varchar(50) NOT NULL,
+				  `add_date` datetime NOT NULL,
+				  `admin_mod` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0=Normal 1=Super',
+				  `isPrimary` tinyint(2) NOT NULL DEFAULT '0',
+				  `isActive` tinyint(2) NOT NULL DEFAULT '1',
+				  `last_login` datetime DEFAULT NULL,
+				  `session_token` varchar(50) DEFAULT NULL,
+				  `session_time` datetime DEFAULT NULL,
+				  `private_key` varchar(50) NOT NULL,
+				  `public_key` varchar(50) NOT NULL,
+				  `view_mode` tinyint(2) NOT NULL DEFAULT '0',
+				  PRIMARY KEY (`user_id`)
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;") or die($myconn);
+				
+	# Widgets
+	$myconn->query("CREATE TABLE IF NOT EXISTS `". db_table_pref ."widgets` (
+				  `widget_id` int(11) NOT NULL AUTO_INCREMENT,
+				  `widget_key` varchar(100) NOT NULL,
+				  `widget_name` varchar(255) NOT NULL,
+				  `add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `widget_type` varchar(50) NOT NULL DEFAULT 'full_calendar',
+				  `widget_data` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0-Private, 1-Public, 2-All',
+				  `widget_settings` text NOT NULL COMMENT 'Included plugins',
+				  `data_user` int(11) NOT NULL DEFAULT '0' COMMENT '0 = All User',
+				  `max_data` int(11) NOT NULL DEFAULT '5',
+				  PRIMARY KEY (`widget_id`)
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;") or die($myconn);
+				
+	$errors = '';
+				
+	# Settings File Updated
+	$calClass = new caledonian();
+	$calClass->onInstall = 1;
+	$calClass->sysSettings();
+	$errors .= $calClass->errPrint;
+	
+	# User Val
+	$data = array();
+	$errText = '';
+	
+	$data = array();
+	$errText = '';
+	
+	if(!isset($_POST['name']) || empty($_POST['name'])){$errText.='* '. calglb_please_enter_a_name .'<br>';$errz[] = '#name';}else{
+		$data['full_name'] = trim($_POST['name']);
+	}
+	
+	if(!isset($_POST['email']) || !mailVal($_POST['email'])){$errText.='* '. calglb_invalid_e_mail_address .'<br>';$errz[] = '#email';}else{
+		$db->where('email=?',array($_POST['email']))->getOne('users');
+		$cnt = $db->count;
+		if($cnt!=0){
+			$errText.='* '. calglb_e_mail_already_exists .'<br>';
+			$errz[] = '#email';
+		}else{
+			$data['email'] = trim($_POST['email']);
+		}
+	}
+	
+	if(!isset($_POST['pass']) || empty($_POST['pass'])){$errText.='* '. calglb_please_enter_a_password .'<br>';$errz[] = '#pass';}else{
+		# Length
+		$pLen = isToo($_POST['pass'],calglb_password.': ',5,30);
+		if($pLen!=''){
+			$errText.='* '. $pLen .'<br>'; $errz[] = '#pass';
+		}else{
+			if(!isset($_POST['pass2']) || empty($_POST['pass2'])){$errText.='* '. calglb_please_re_enter_password .'<br>';$errz[] = '#pass2';}else{
+				if($_POST['pass'] != $_POST['pass2']){$errText.='* '. calglb_passwords_mismatch .'<br>';$errz[] = '#pass2';$errz[] = '#pass';}else{
+					$data['pass'] = encr($_POST['pass']);
+				}
+			}
+		}
+	}
+	
+	if($errText!=''){
+		$errors .= '<script>$(".alert-danger").append(\''. $errText .'\')</script>';
+	}
+	
+	if($errors==''){
+		
+		# Update DB File
+		$confList = '<?php
+# +------------------------------------------------------------------------+
+# | Artlantis CMS Solutions                                                |
+# +------------------------------------------------------------------------+
+# | Caledonian PRO PHP Event Calendar                                      |
+# | Copyright (c) Artlantis Design Studio 2014. All rights reserved.       |
+# | Version       2.4                                                      |
+# | Last modified '. date('m.d.Y') .'                                               |
+# | Email         developer@artlantis.net                                  |
+# | Web           http://www.artlantis.net                                 |
+# +------------------------------------------------------------------------+';
+		$confList .= "
+define('db_host','". trim($db_host) ."');
+define('db_name','". trim($db_name) ."');
+define('db_login','". trim($db_login) ."');
+define('db_pass','". trim($db_pass) ."');
+define('db_set_name','utf8');
+define('db_set_charset','utf8');
+define('db_set_collation','utf8_general_ci');
+define('db_table_pref','". trim($db_prefix) ."');
+?>";
+			$pathw = CAL_APP.DIRECTORY_SEPARATOR.'lib/cal.config.php';
+			if (!file_exists ($pathw) ) {
+				@touch ($pathw);
+			}
+			$conc=@fopen ($pathw,'w');
+			if (!$conc) {
+				die(errMod('DB Settings Could Not Be Write','danger'));
+			}else{
+				if (fputs ($conc,$confList) ){
+					
+				}else{
+					die(errMod('DB Settings Could Not Be Write','danger'));
+				}
+			}
+		
+		# Create Primary User
+		$data['add_date'] = date('Y-m-d H:i:s');
+		$data['private_key'] = encr($_POST['email'].time().rand().uniqid(true));
+		$data['public_key'] = encr(rand().md5($_POST['email']).time().rand().uniqid(true));
+		$data['view_mode'] = 0;
+		$data['admin_mod'] = 1;
+		$data['isPrimary'] = 1;
+		
+		$db->insert('users',$data);
+		
+		# Create Example Event
+		$data = array();
+		$data['user_id'] = 1;
+		$data['title'] = 'Hello World!';
+		$data['mynotes'] = '<h3 style="color: lightskyblue;">Thank you for purchase Caledonian PRO!</h3> <p>Caledonian PHP Calendar is a user friendly, php based and multi-user calendar/scheduling script. It has so many great features like timeline, multiple calendars, shared calendars, event reminder, multiple language support and so on. You can customize it easily and use as a standalone scheduling application or integrate into your own application. You just need a web browser or HTML5 supported mobile device to use it.</p> <p><strong style="color: darkorchid;">Features</strong></p> <ul style="list-style-type: square;"> <li>Multi-language</li> <li>Two-level admnistration</li> <li>Responsive</li> <li>Bootstrap supported</li> <li>Import (iCalendar)</li> <li>Event Icon &amp; Colors</li> <li>Upcoming Events</li> <li>Event Copier</li> <li>RSS Feed</li> <li>Event Share Buttons</li> <li>Move Posts to Another User (User Removing)</li> <li>Widgets</li> <li>API</li> </ul> <p><strong style="color: darkorchid;">Get Started</strong></p> <p><a href="https://lee/documentation/" target="_blank">Caledonian PRO Documentation</a></p> <p><strong style="color: darkorchid;">Developer</strong></p> <p><a href="http://www.artlantis.net" target="_blank">Artlantis Design Studio</a></p> <p><a href="http://codecanyon.net/user/thunderfury" target="_blank">Thunderfury</a><br /><br />If you have trouble with Caledonian usage, you can check documentation! Also you can contact with script <a href="mailto:contact@artlantis.net">developer</a>, and do not forget to rate our script <a href="http://codecanyon.net/downloads" target="_blank">here.</a></p> <p> </p>';
+		$data['note_date'] = date('Y-m-d H:i:s',strtotime(date('Y-m-d H:i:s').'+1 days'));
+		$data['edit_date'] = date('Y-m-d H:i:s');
+		$data['add_date'] = date('Y-m-d H:i:s');
+		$db->insert('panel_notes',$data);
+		
+		die(errMod('Installation Completed Successfully!<br>Do not forget to remove <strong>install.php</strong> file!<br>Goto admin <a href="admin/index.php" class="alert-link">login page</a>','success'));
+		
+	}else{
+		die($errors);
+	}
+	
+} # There No DB Conn Error End
+
+	
+die();
+} # Install End
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<title><?php echo(CAL_FULL_NAME);?></title>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="valve/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="valve/bootstrap/css/flatly_bootstrap.min.css">
+<!-- JQuery -->
+<script src="valve/Scripts/jquery-1.11.3.min.js"></script>
+<!-- jQueryUI -->
+<link href="valve/css/jquery-ui.min.css" rel="stylesheet">
+<link href="valve/css/jquery-ui.theme.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<script src="valve/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<link href="valve/icheck/skins/flat/red.css" rel="stylesheet">
+<!-- AnimateCSS -->
+<link rel="stylesheet" href="valve/css/animate.min.css">
+<!-- Fancybox -->
+<link href="valve/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+<script src="valve/fancybox/jquery.fancybox.pack.js"></script>
+<!-- Caledonian -->
+<link rel="stylesheet" href="valve/css/cal.css">
+
+<?php 
+if(version_compare(PHP_VERSION, '5.4.0')<0){
+	echo('<script>alert("Your PHP Version Does Not Meet System Requirements\nYou cannot continue installation!");</script>');
+}
+?>
+</head>
+<body>
+<!-- page content -->
+<div class="container">
+	<h1 class="main-head">Caledonian<sup>PRO</sup></h1>
+	
+	<div class="panel panel-default">
+	  <div class="panel-body">
+			<form name="install" id="install" action="javascript:;" method="POST">
+			<!-- install form start -->
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner" role="listbox">
+					<!-- Welcome -->
+					<div class="item active">
+						<h3 class="text-primary">Installation</h3><hr>
+						<div class="txxs" style="overflow-x:auto; height:300px;">
+							<h3>About</h3> <p>Caledonian PRO PHP Calendar is a user friendly, php based and multi-user calendar/scheduling script. It has so many great features like timeline, multiple calendars, shared calendars, event reminder, multiple language support and so on. You can customize it easily and use as a standalone scheduling application or integrate into your own application. You just need a web browser or HTML5 supported mobile device to use it.</p> <p>Please follow steps for Caledonian installation.</p> <h3>Support and Customization</h3> <p>If you have trouble with installation your can contact with our support team. <a href="mailto:contact@artlantis.net">contact@artlantis.net</a></p> <p>Caledonian PRO was developed by Artlantis Design Studio, if you want to modify that script you can contact with developer partnership. <a href="mailto:developer@artlantis.net">developer@artlantis.net</a></p> <p>- Artlantis Design Studio: <a href="http://www.artlantis.net" target="_blank">http://www.artlantis.net</a></p> <h3>License Summary</h3> <ul> <li>Non-commercial use only</li> <li>Cannot modify source-code for any purpose (cannot create derivative works)</li> <li>Support provided as follows :<br />- Responding to questions or problems regarding the item and its features<br />- Fixing bugs and reported issues<br />- Providing updates to ensure compatibility with new software versions<br /><span style="text-decoration: underline;">* Item support does not include:</span> <br />- Customization and installation services <br />- Support for third party software and plug-ins</li> <li>Parts of the software are provided under separate licenses, as follows: <br />- <a href="http://codecanyon.net/licenses/terms/regular" target="_blank">Envato Codecanyon Regular License</a><br />- <a href="http://codecanyon.net/licenses/terms/extended" target="_blank">Envato Codecanyon Extended License</a></li> </ul> <h3>Terms and Conditions</h3> <ol style="list-style-type: undefined;"> <li>The Regular License grants you, the purchaser, an ongoing, non-exclusive, worldwide license to make use of the digital work (Item) you have selected. Read the rest of this license for the details that apply to your use of the Item, as well as the <a href="http://codecanyon.net/licenses/faq" target="_blank">FAQs</a> (which form part of this license).</li> <li>You are licensed to use the Item to create one single End Product for yourself or for one client (a “single application”), and the End Product can be distributed for Free.</li> <li>An End Product is one of the following things, both requiring an application of skill and effort.<ol style="list-style-type: lower-alpha;"> <li>For an Item that is a template, the End Product is a customised implementation of the Item.</li> <li>For other types of Item, an End Product is a work that incorporates the Item as well as other things, so that it is larger in scope and different in nature than the Item.</li> </ol></li> <li>You can create one End Product for a client, and you can transfer that single End Product to your client for any fee. This license is then transferred to your client.</li> <li>You can make any number of copies of the single End Product, as long as the End Product is distributed for Free.</li> <li>You can modify or manipulate the Item. You can combine the Item with other works and make a derivative work from it. The resulting works are subject to the terms of this license. You can do these things as long as the End Product you then create is one that’s permitted under clause 3.</li> <li>You can’t Sell the End Product, except to one client. (If you or your client want to Sell the End Product, you will need the Extended License.)</li> <li>You can’t re-distribute the Item as stock, in a tool or template, or with source files. You can’t do this with an Item either on its own or bundled with other items, and even if you modify the Item. You can’t re-distribute or make available the Item as-is or with superficial modifications. These things are not allowed even if the re-distribution is for Free.</li> <li>You can’t use the Item in any application allowing an end user to customise a digital or physical product to their specific needs, such as an “on demand”, “made to order” or “build it yourself” application. You can use the Item in this way only if you purchase a separate license for each final product incorporating the Item that is created using the application.</li> <li>Although you can modify the Item and therefore delete unwanted components before creating your single End Product, you can’t extract and use a single component of an Item on a stand-alone basis.</li> <li>You must not permit an end user of the End Product to extract the Item and use it separately from the End Product.</li> <li>You can’t use an Item in a logo, trademark, or service mark.</li> <li>For some Items, a component of the Item will be sourced by the author from elsewhere and different license terms may apply to the component, such as someone else’s license or an open source or creative commons license. If so, the component will be identified by the author in the Item’s description page or in the Item’s downloaded files. The other license will apply to that component instead of this license. This license will apply to the rest of the Item.</li> <li>For some items, a GNU General Public License (GPL) or another open source license applies. The open source license applies in the following ways:<ol style="list-style-type: lower-alpha;"> <li>Some Items, even if entirely created by the author, may be partially subject to the open source license: a ‘split license’ applies. This means that the open source license applies to an extent that’s determined by the open source license terms and the nature of the Item, and this license applies to the rest of the Item.</li> <li>For some Items, the author may have chosen to apply a GPL license to the entire Item. This means that the relevant GPL license will apply to the entire Item instead of this license.</li> </ol></li> <li>You can only use the Item for lawful purposes. Also, if an Item contains an image of a person, even if the Item is model-released you can’t use it in a way that creates a fake identity, implies personal endorsement of a product by the person, or in a way that is defamatory, obscene or demeaning, or in connection with sensitive subjects.</li> <li>Items that contain digital versions of real products, trademarks or other intellectual property owned by others have not been property released. These Items are licensed on the basis of editorial use only. It is your responsibility to consider whether your use of these Items requires a clearance and if so, to obtain that clearance from the intellectual property rights owner.</li> <li>This license applies in conjunction with the <a href="http://codecanyon.net/legal/marketplace" target="_blank">Envato Market Terms</a> for your use of Envato Market. If there is an inconsistency between this license and the Envato Market Terms, this license will apply to the extent necessary to resolve the inconsistency.</li> <li>This license can be terminated if you breach it. If that happens, you must stop making copies of or distributing the End Product until you remove the Item from it.</li> <li>The author of the Item retains ownership of the Item but grants you the license on these terms. This license is between the author of the Item and you. Envato Pty Ltd is not a party to this license or the one giving you the license.</li> </ol> <p>Terms and Conditions was created 15 Feb 2015 via Envato. License referenced by Envato Regular License. If you purchase item with Extended License, <a href="http://codecanyon.net/licenses/terms/extended" target="_blank"><strong>Extended License</strong></a> substances shall be accepted.</p>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="next" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<!-- Requirements -->
+					<div class="item">
+						<h3 class="text-primary">Requirements<span class="text-muted pull-right">STEP 1</span></h3><hr>
+
+						<div class="row"><div class="col-md-6">
+						<table class="table table-striped" width="500">
+							<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Required</th>
+									<th>System</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><?php echo(sh('za7rBJqrZy'));?>PHP Version</td>
+									<td>5.4+</td>
+									<td>
+										<?php echo(getBullets(((version_compare(PHP_VERSION, '5.4.0') >=0) ? 1:0)));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('ZlPryPxg0A'));?>MySQLi Extension</td>
+									<td>Yes</td>
+									<td>
+										<?php echo(getBullets( ((extension_loaded ('mysqli')) ? 1:0) ));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('2WzrLjK8m4'));?>Curl Extension</td>
+									<td>Yes</td>
+									<td>
+										<?php echo(getBullets( (( _iscurl() ) ? 1:0) ));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('Y3lrxzP875'));?>Script Timeout</td>
+									<td>allowed to change</td>
+									<td>
+										<?php 
+										$currTimeLimit = @set_time_limit(300);
+										$changedTimeLimit = ini_get('max_execution_time');
+										echo(getBullets( (($changedTimeLimit==300) ? 1:0) ));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('1vngRPJMmk'));?>Writable Folders</td>
+									<td>Yes</td>
+									<td>
+										<?php 
+											$writableList = array(
+																	CAL_APP.DIRECTORY_SEPARATOR.'admin/uploads',
+																	CAL_APP.DIRECTORY_SEPARATOR.'lib/cal.config.php',
+																	CAL_APP.DIRECTORY_SEPARATOR.'lib/cal.sets.php'
+																  );
+											$isWritable = 0;
+											foreach($writableList as $k=>$v){
+												if(is_writable($v)){
+													$isWritable++;
+												}
+											}
+											echo(getBullets( (( $isWritable==count($writableList) ) ? 1:0) ));
+										?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+		<div class="col-md-6">
+						<table class="table table-striped" width="500">
+							<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Recommended</th>
+									<th>System</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><?php echo(sh('pX6gYnyrOl'));?>Script Execute Time</td>
+									<td>Unlimited</td>
+									<td>
+										<?php echo(ini_get('max_execution_time'));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('GAYM2Ow8XQ'));?>Upload Limit</td>
+									<td>10M</td>
+									<td>
+										<?php echo(ini_get('upload_max_filesize'));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('maz8jAeMpO'));?>Post Max Size</td>
+									<td>10M</td>
+									<td>
+										<?php echo(ini_get('post_max_size'));?>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo(sh('6mxg6p4M4n'));?>mb_substr() function</td>
+									<td>get part of string</td>
+									<td>
+										<?php echo(getBullets(((function_exists('mb_substr')) ? 1:0)));?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<span class="help-block">Above settings is not required, Caledonian will work as your system settings. But if you want to import large amount datas, your system may block your actions and its will not work properly.</span>
+						</div>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="prev" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</button>
+								<button data-target="#carousel" data-slide="next" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<!-- Database -->
+					<div class="item">
+						<h3 class="text-primary">Database Settings<span class="text-muted pull-right">STEP 2</span></h3><hr>
+						
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="db_host"><?php echo(sh('bjdMPn1g5v'));?>Database Host</label>
+									<input type="text" name="db_host" id="db_host" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="db_name"><?php echo(sh('2KRg1D58ep'));?>Database Name</label>
+									<input type="text" name="db_name" id="db_name" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="db_login"><?php echo(sh('O50rAdzgqo'));?>Database Login</label>
+									<input type="text" name="db_login" id="db_login" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="db_pass"><?php echo(sh('1p6Mm4LrRP'));?>Database Password</label>
+									<input type="text" name="db_pass" id="db_pass" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="db_prefix"><?php echo(sh('1vngRN3gmk'));?>Table Prefix</label>
+									<input type="text" name="db_prefix" id="db_prefix" class="form-control" placeholder="cal_" value="cal_">
+								</div>
+								<div class="form-group">
+									<button type="button" class="btn btn-warning" id="dbTester"><span class="dbRes"><span class="glyphicon glyphicon-link"></span></span> Test Connection</button>
+								</div>
+							</div>
+							<script>
+								$(document).ready(function(){
+									$("#dbTester").click(function(){
+										var dbtestBut = $(this);
+										$(".dbRes").html('<span class="spin glyphicon glyphicon-refresh"></span>');
+										dbtestBut.attr('disabled',true);
+										$.ajax({
+											url : "install.php?pos=DBTEST",
+											type: "POST",
+											data : $("#install").serialize(),
+											contentType: "application/x-www-form-urlencoded",
+											success: function(data, textStatus, jqXHR)
+											{
+												if(data=='OK'){
+													dbtestBut.removeClass('btn-danger btn-warning');
+													dbtestBut.addClass('btn-success');
+													$(".dbRes").html('<span class="glyphicon glyphicon-ok"></span>');
+												}else{
+													dbtestBut.removeClass('btn-success btn-warning');
+													dbtestBut.addClass('btn-danger');
+													$(".dbRes").html('<span class="glyphicon glyphicon-remove"></span>');
+												}
+												dbtestBut.attr('disabled',false);
+											},
+											error: function (jqXHR, textStatus, errorThrown)
+											{
+												dbtestBut.removeClass('btn-success btn-warning');
+												dbtestBut.addClass('btn-danger');
+												$(".dbRes").html('<span class="glyphicon glyphicon-remove"></span>');
+												dbtestBut.attr('disabled',false);
+											}
+										});
+									});
+								});
+							</script>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="prev" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</button>
+								<button data-target="#carousel" data-slide="next" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<!-- General Settings -->
+					<div class="item">
+						<h3 class="text-primary">Genral Settings<span class="text-muted pull-right">STEP 3</span></h3><hr>
+						
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="cal_set_default_timezone"><?php echo(sh('O50rAJZMqo').calglb_default_timezone);?></label>
+									<select name="cal_set_default_timezone" id="cal_set_default_timezone" class="form-control autoWidth">
+										<?php 
+										$tzones = timezone_list();
+										foreach($tzones as $k=>$v){echo('<option value="'. $k .'"'. formSelector($k,cal_set_default_timezone,0) .'>'. showIn($v,'page') .'</option>');}?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_default_language"><?php echo(sh('1p6MmJk8RP').calglb_default_language);?></label>
+									<select name="cal_set_default_language" id="cal_set_default_language" class="form-control autoWidth">
+										<?php foreach($SLNG_LIST as $k=>$v){
+											echo('<option value="'. $k .'"'. formSelector($k,cal_set_default_language,0) .'>'. showIn($v['sname'],'page') .'</option>');
+										}?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_app_url"><?php echo(sh('KX1M7VJrmV'));?>APP URL</label>
+									<input type="text" class="form-control autoWidth" size="30" id="cal_set_app_url" name="cal_set_app_url" value="<?php echo(showIn(cal_set_app_url,'input'));?>">
+									<span class="help-block"><small style="font-size:11px;">Change, if its not correct! (eg.http://www.example.com/caledonian/)</small></span>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_sysmail"><?php echo(sh('1vngRPdMmk').calglb_system_e_mail);?></label>
+									<input type="email" class="form-control autoWidth" id="cal_set_sysmail" name="cal_set_sysmail" value="<?php echo(showIn(cal_set_sysmail,'page'));?>">
+								</div>
+								<div class="form-group">
+									<label for="cal_set_max_upcoming"><?php echo(sh('pX6gYn4rOl').calglb_maximum_upcoming_record);?></label>
+									<input type="number" class="form-control autoWidth" id="cal_set_max_upcoming" name="cal_set_max_upcoming" value="<?php echo(showIn(cal_set_max_upcoming,'page'));?>">
+								</div>
+								<div class="form-group">
+									<label for="cal_set_file_size"><?php echo(sh('GAYM2Om8XQ').calglb_import_file_size);?></label>
+									<select name="cal_set_file_size" id="cal_set_file_size" class="form-control autoWidth">
+										<?php foreach($CAL_FILE_SIZES as $k=>$v){
+											echo('<option value="'. $k .'"'. formSelector($k,cal_set_file_size,0) .'>'. showIn($v,'page') .'</option>');
+										}?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_api_public"><?php echo(sh('maz8jAjMpO').calglb_api_public_key);?></label>
+									<div class="input-group">
+									<input type="text" class="form-control autoWidth" size="30" id="cal_set_api_public" name="cal_set_api_public" value="<?php echo(showIn(cal_set_api_public,'input'));?>" readonly>
+									<span class="input-group-btn autoWidth"><button class="btn btn-default" type="button" onclick="genKey('#cal_set_api_public');"><i class="fa fa-refresh"></i></button></span>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_api_private"><?php echo(sh('6mxg6pGM4n').calglb_api_private_key);?></label>
+									<div class="input-group">
+									<input type="text" class="form-control autoWidth" size="30" id="cal_set_api_private" name="cal_set_api_private" value="<?php echo(showIn(cal_set_api_private,'input'));?>" readonly>
+									<span class="input-group-btn autoWidth"><button class="btn btn-default" type="button" onclick="genKey('#cal_set_api_private');"><i class="fa fa-refresh"></i></button></span>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="cal_set_license_key"><?php echo(sh('ZVKMZ5lrLA').calglb_license_key);?></label>
+									<input type="password" name="cal_set_license_key" id="cal_set_license_key"  value="<?php echo(showIn(cal_set_license_key,'page'));?>" class="form-control">
+								</div>
+								<div class="form-group">
+									<?php echo(sh('KX1M7V1rmV'));?><label for="cal_set_share_buttons"><?php echo(calglb_share_buttons);?></label>
+									<input type="checkbox" class="iCheck" id="cal_set_share_buttons" name="cal_set_share_buttons" value="YES"<?php echo(formSelector(cal_set_share_buttons,1,1));?>>
+								</div>
+								<div class="form-group">
+									<?php echo(sh('ZVKMZ5orLA'));?><label for="cal_set_show_creator"><?php echo(calglb_author_informations);?></label>
+									<input type="checkbox" class="iCheck" id="cal_set_show_creator" name="cal_set_show_creator" value="YES"<?php echo(formSelector(cal_set_show_creator,1,1));?>>
+								</div>
+								<div class="form-group">
+									<?php echo(sh('2WzrLjx8m4'));?><label for="cal_set_pointips">Pointips</label>
+									<input type="checkbox" class="iCheck" id="cal_set_pointips" name="cal_set_pointips" value="YES"<?php echo(formSelector(cal_set_pointips,1,1));?>>
+								</div>
+								<div class="form-group">
+									<?php echo(sh('PzWM4v4gqx'));?><label for="cal_set_debug_mode"><?php echo(calglb_debug_mode);?></label>
+									<input type="checkbox" class="iCheck" id="cal_set_debug_mode" name="cal_set_debug_mode" value="YES"<?php echo(formSelector(cal_set_debug_mode,1,1));?>>
+								</div>
+							</div>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="prev" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</button>
+								<button data-target="#carousel" data-slide="next" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<!-- Admin Settings -->
+					<div class="item">
+						<h3 class="text-primary">Primary User Informations<span class="text-muted pull-right">STEP 4</span></h3><hr>
+						
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="name"><?php echo(sh('k0aMV9DrZQ').calglb_display_name);?></label>
+									<input type="text" class="form-control" id="name" name="name" value="<?php echo(((isseter('name')) ? showIn($_POST['name'],'input'):''));?>">
+								</div>
+								
+								<div class="form-group">
+									<label for="email"><?php echo(sh('vparlWEgDQ').calglb_email_address);?></label>
+									<input type="email" class="form-control" id="email" name="email" value="<?php echo(((isseter('email')) ? showIn($_POST['email'],'input'):''));?>">
+								</div>
+								
+								<div class="form-group">
+									<label for="pass"><?php echo(sh('lPBgzlKMQZ').calglb_password);?></label>
+									<input type="password" class="form-control" id="pass" name="pass" autocomplete="off">
+								</div>
+								
+								<div class="form-group">
+									<label for="pass2"><?php echo(sh('QnVM3VarO9').calglb_re_type);?></label>
+									<input type="password" class="form-control" id="pass2" name="pass2" autocomplete="off">
+								</div>
+
+							</div>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="prev" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</button>
+								<button data-target="#carousel" data-slide="next" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<!-- Complete -->
+					<div class="item">
+						<h3 class="text-primary">Install<span class="text-muted pull-right">STEP 5</span></h3><hr>
+						
+						<div class="row">
+							<div class="col-md-4">
+							   <div id="installResult">
+							   
+							   </div>
+							  
+								<div class="form-group">
+									<button type="submit" name="myCaledonian" id="myCaledonian" class="btn btn-success">Install Now!</button>
+								</div>
+							</div>
+						</div>
+						
+						<div class="carousel-cont"><hr>
+							<span class="pull-right">
+								<button data-target="#carousel" data-slide="prev" type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</button>
+							</span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- install form end -->
+			</form>
+	  </div>
+	</div>
+	<div class="lethe-footer">
+		<p class="text-muted">
+			<small>
+			<?php echo(CAL_FULL_NAME);?> &copy; 2015.<br>
+			Powered by Artlatis Design Studio
+			</small>
+		</p>
+	</div>
+	
+</div>
+<!-- page content end -->
+<script type="text/javascript">
+	/* Pointips */
+	var sidera_helper_uri = "//poin.tips/p/artlantis/";
+	
+	$(document).ready(function(){
+		/* Layout */
+		$('.carousel').carousel({
+			interval: false
+		});		
+		/* Install */
+		$("#myCaledonian").click(function(e){
+			e.preventDefault();
+			$("#myCaledonian").attr('disabled','true');
+			$("#installResult").html('<span class="fa fa-cog fa-spin"></span> Please wait..');
+			$.ajax({
+				url : "install.php?install=true",
+				type: "POST",
+				data : $("#install").serialize(),
+				contentType: "application/x-www-form-urlencoded",
+				success: function(data, textStatus, jqXHR)
+				{
+					$("#installResult").html(data);
+				},
+				error: function (jqXHR, textStatus, errorThrown)
+				{
+					$("#myCaledonian").attr('disabled','false');
+					$("#installResult").html('<div class="alert alert-danger">There an error occurred while sending form!</div>');
+				}
+			});
+			
+		});
+	});
+</script>
+<!-- iCheck -->
+<script src="valve/icheck/icheck.min.js"></script>
+<!-- Caledonian -->
+<script src="valve/Scripts/caledonian.js"></script>
+</body>
+</html>

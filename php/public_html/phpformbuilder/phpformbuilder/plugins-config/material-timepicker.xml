@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>material-timepicker/css/material-timepicker.min.css</file>
+            </css>
+            <js>
+                <file>material-timepicker/dist/js/material-timepicker.min.js</file>
+                <file>material-timepicker/dist/i18n/%language%.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var dataShowClearBtn = (dataAttr.showClearBtn === undefined) ? false : dataAttr.showClearBtn,
+            dataDefaultTime  = (dataAttr.defaultTime === undefined) ? 'now' : dataAttr.defaultTime,
+            dataFromNow      = (dataAttr.fromNow === undefined) ? 0 : dataAttr.fromNow,
+            dataAutoClose    = (dataAttr.autoClose === undefined) ? false : dataAttr.autoClose,
+            dataTwelveHour   = (dataAttr.twelveHour === undefined) ? true : dataAttr.twelveHour;
+
+        var fieldName = $(this).attr('name');
+
+        $(this).timepicker({
+            showClearBtn: dataShowClearBtn,
+            defaultTime: dataDefaultTime,
+            fromNow: dataFromNow,
+            autoClose: dataAutoClose,
+            twelveHour: dataTwelveHour,
+            i18n: materialTimeI18n,
+            onClose: function() {
+                var formId = $('%selector%').closest('form').attr('id');
+                var form   = forms[formId];
+                if(typeof(form.fv) == 'object') {
+                    form.fv.revalidateField(fieldName);
+                }
+            }
+        });
+    });]]>
+        </js_code>
+    </default>
+    <custom>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+            <!-- your custom code here -->
+        </js_code>
+    </custom>
+</root>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<default>
+		<includes>
+			<!--
+				Path to css and js files into plugins folder.
+				If your files are not in plugins folder, use absolute paths.
+			-->
+			<css>
+				<file>colpick/css/colpick.min.css</file>
+			</css>
+			<js>
+				<file>colpick/js/colpick.min.js</file>
+			</js>
+		</includes>
+		<js_code>
+<![CDATA[   $("%selector%").colpick({
+		onSubmit:function(hsb,hex,rgb,el) {
+			$(el).val('#'+hex);
+			$(el).colpickHide();
+		}
+	});]]>
+		</js_code>
+	</default>
+	<colored-input>
+		<!--
+			If you need differents includes for your custom code,
+			copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+			You can add several files nodes if necessary.
+		-->
+		<js_code>
+<![CDATA[   $("%selector%").colpick({
+		onSubmit:function(hsb,hex,rgb,el) {
+			$(el).val('#'+hex).css({
+                'background': '#'+hex,
+                'color': 'transparent'
+            });
+			$(el).colpickHide();
+		}
+    });
+    $("%selector%").css({
+        'background': $("%selector%").val(),
+        'color': 'transparent'
+    });]]>
+		</js_code>
+	</colored-input>
+    <dark-sheme>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+<![CDATA[   $("%selector%").colpick({
+        colorScheme:'dark',
+        layout:'rgbhex',
+        color:'ff8800',
+        onSubmit:function(hsb,hex,rgb,el) {
+            $(el).val('#'+hex).css('background', '#'+hex);
+            $(el).colpickHide();
+        }
+    });]]>
+        </js_code>
+    </dark-sheme>
+</root>

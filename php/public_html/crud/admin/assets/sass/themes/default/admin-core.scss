@@ -1,0 +1,21 @@
+/* Custom PHPCG default colors */
+@import "colors-custom.scss";
+
+/* Admin CORE custom variables */
+@import "../../admin-core/variables-custom.scss";
+
+/* Bootstrap functions */
+@import "../../../../../../node_modules/bootstrap/scss/functions";
+
+/* Bootstrap variables */
+@import "../../../../../../node_modules/bootstrap/scss/variables";
+
+/* Color variants - https://codepen.io/migli/pen/QaGNVp */
+@import "../../admin-core/color_variants.scss";
+
+/* Bootstrap Utilities & mixins */
+@import "../../admin-core/utilities.scss";
+@import "../../../../../../node_modules/bootstrap/scss/mixins";
+
+/* Admin CORE main SCSS */
+@import "../../admin-core/admin-core.scss";

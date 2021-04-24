@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <js>
+                <file>intl-tel-input/js/intlTelInput.min.js</file>
+                <file>intl-tel-input/js/utils.js</file>
+            </js>
+            <css>
+                <file>intl-tel-input/css/intlTelInput.min.css</file>
+            </css>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+    //$(this).val('');
+        var inputName = $(this).attr('name'),
+            dataAttr  = $(this).data();
+
+        // restore intl full-phone posted value
+        if ($('input[name="' + inputName + '-full-phone"]')[0]) {
+            var intlValue = $('input[name="' + inputName + '-full-phone"]').val();
+            if(intlValue !== '') {
+                $(this).val(intlValue);
+            }
+        }
+
+        var dataAllowDropdown      = (dataAttr.allowDropdown === undefined) ? true : dataAttr.allowDropdown,
+            dataExcludeCountries   = (dataAttr.excludeCountries === undefined) ? [] : dataAttr.excludeCountries.split(','),
+            dataInitialCountry     = (dataAttr.initialCountry === undefined) ? 'auto' : dataAttr.initialCountry,
+            dataOnlyCountries      = (dataAttr.onlyCountries === undefined) ? [] : dataAttr.onlyCountries.split(','),
+            dataPreferredCountries = (dataAttr.preferredCountries === undefined) ? [] : dataAttr.preferredCountries.split(',');
+
+        this.iti = intlTelInput(this, {
+            allowDropdown: dataAllowDropdown,
+            excludeCountries: dataExcludeCountries,
+            hiddenInput: inputName + '-full-phone',
+            initialCountry: dataInitialCountry,
+            onlyCountries: dataOnlyCountries,
+            preferredCountries: dataPreferredCountries,
+            utilsScript: '%PLUGINS_URL%intl-tel-input/js/utils.js',
+            geoIpLookup: function(success, failure) {
+                $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                    var countryCode = (resp && resp.country) ? resp.country : "";
+                    success(countryCode);
+                })
+            }
+        });
+
+        $(this).on("countrychange", function() {
+            var formId = $(this).closest('form').attr('id');
+            var form   = forms[formId];
+            if(typeof(form.fv) == 'object' && $(this).attr('data-fv-intphonenumber') == 'true') {
+                var countryCode = this.iti.getSelectedCountryData().iso2,
+                    fieldName = $(this).attr('name');
+                form.fv.updateFieldStatus(fieldName, 'NotValidated', 'intphonenumber');
+            }
+        });
+
+        // material label animation
+        if ($(this).closest('.material-form')[0] && $('label[for="' + inputName + '"]')[0]) {
+            var $label = $('label[for="' + inputName + '"]'),
+                $that = $(this),
+                originalPlaceholder = $(this).attr('placeholder');
+            $(this).attr('placeholder', '');
+            $(this).on('focus', function() {
+                $label.addClass('active');
+                $that.attr('placeholder', originalPlaceholder);
+            }).on('blur', function() {
+                $label.removeClass('active');
+                $that.attr('placeholder', '');
+            });
+        }
+
+        // bs4 style (flex)
+        $('.form-group.row .intl-tel-input').css({
+            'display': 'flex',
+            'flex': '1 1 auto'
+        });
+    });]]>
+        </js_code>
+    </default>
+</root>

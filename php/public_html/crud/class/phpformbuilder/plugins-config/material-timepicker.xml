@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>material-timepicker/css/material-timepicker.min.css</file>
+            </css>
+            <js>
+                <file>material-timepicker/dist/js/material-timepicker.min.js</file>
+                <file>material-timepicker/dist/i18n/%language%.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+        var dataAttr = $(this).data();
+
+        var defaultTime
+
+        var dataShowClearBtn = (dataAttr.showClearBtn === undefined) ? false : dataAttr.showClearBtn,
+            dataFormatSubmit = (dataAttr.formatSubmit === undefined) ? undefined : dataAttr.formatSubmit,
+            dataDefaultTime  = (dataAttr.defaultTime === undefined) ? null : dataAttr.defaultTime,
+            dataFromNow      = (dataAttr.fromNow === undefined) ? 0 : dataAttr.fromNow,
+            dataAutoClose    = (dataAttr.autoClose === undefined) ? false : dataAttr.autoClose,
+            dataTwelveHour   = (dataAttr.twelveHour === undefined) ? true : dataAttr.twelveHour;
+
+        // pass the time value from the field to the timepicker
+        if (dataDefaultTime === null) {
+            if (dataTwelveHour === true) {
+                var curVal = $(this).val().split(':'),
+                    pickerVal = '';
+                var hours = curVal[0],
+                    minutes = curVal[1];
+                if (hours > 12) {
+                    pickerVal = parseInt(hours - 12) + ':' + minutes + ' PM';
+                } else {
+                    pickerVal = hours + ':' + minutes + ' AM';
+                }
+            } else {
+                pickerVal = $(this).val();
+            }
+            dataDefaultTime = pickerVal;
+
+            $(this).val(dataDefaultTime);
+        }
+
+        var fieldName = $(this).attr('name');
+
+        // create an hidden input to submit a standard date
+        if (dataFormatSubmit !== undefined) {
+            var $inputSubmit = $('<input type="hidden" name="' + fieldName + '_submit" value="' + $(this).val() + '" />');
+            $(this).after($inputSubmit);
+        }
+        $(this).timepicker({
+            showClearBtn: dataShowClearBtn,
+            defaultTime: dataDefaultTime,
+            fromNow: dataFromNow,
+            autoClose: dataAutoClose,
+            twelveHour: dataTwelveHour,
+            i18n: materialTimeI18n,
+            onCloseEnd: function() {
+                if (dataFormatSubmit !== undefined) {
+                    var hours = this.hours;
+                    console.log(this);
+                    if (this.amOrPm === 'PM' && this.options.twelveHour === true) {
+                        hours += 12;
+                    }
+                    $inputSubmit.val(hours + ':' + this.minutes);
+                }
+                var formId = $('%selector%').closest('form').attr('id');
+                var form   = forms[formId];
+                if(typeof(form.fv) == 'object') {
+                    form.fv.revalidateField(fieldName);
+                }
+            }
+        });
+    });]]>
+        </js_code>
+    </default>
+    <custom>
+        <!--
+            If you need differents includes for your custom code,
+            copy the default '<includes>' structure and put the needed files into '<file>' nodes.
+            You can add several files nodes if necessary.
+        -->
+        <js_code>
+            <!-- your custom code here -->
+        </js_code>
+    </custom>
+</root>

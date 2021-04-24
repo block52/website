@@ -1,0 +1,26 @@
+/* Admin CORE custom variables */
+@import "../../admin-core/variables-custom.scss";
+
+/* Bootstrap functions */
+@import "../../../../../../node_modules/bootstrap/scss/functions";
+
+/* Bootstrap mixins */
+@import "../../../../../../node_modules/bootstrap/scss/mixins";
+
+/* -------------------------- Bootswatch here -------------------------- */
+
+@import "../../../../../../node_modules/bootswatch/dist/yeti/variables";
+
+/* ----------------------------------- End ---------------------------------- */
+
+/* Bootstrap variables */
+@import "../../../../../../node_modules/bootstrap/scss/variables";
+
+/* Color variants - https://codepen.io/migli/pen/QaGNVp */
+@import "../../admin-core/color_variants.scss";
+
+/* Admin CORE Utilities */
+@import "../../admin-core/utilities.scss";
+
+/* Admin CORE main SCSS */
+@import "../../admin-core/admin-core.scss";

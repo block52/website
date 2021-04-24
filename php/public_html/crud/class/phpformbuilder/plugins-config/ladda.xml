@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>ladda/dist/ladda-themeless.min.css</file>
+            </css>
+            <js>
+                <file>ladda/dist/spin.min.js</file>
+                <file>ladda/dist/ladda.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   if(typeof(l) == "undefined") {
+        var l = [];
+    }
+    var formId = $('%selector%').closest('form').attr('id');
+    var form   = forms[formId];
+
+    l['%selector%'] = Ladda.create(document.querySelector('%selector%'));
+
+    $laddaForm = $('%selector%').closest('form');
+    $('%selector%').on('click', function() {
+        if(!$(this).is(':disabled')) {
+            if(!$('%selector%')[0].hasAttribute('data-loading')) {
+                l['%selector%'].start();
+
+                // formValidation won't work if submit button is disabled
+                // if($laddaForm.hasClass('has-validator')) {
+                    $(this).removeAttr('disabled');
+                // }
+            } else {
+                l['%selector%'].stop();
+            }
+        }
+
+        // stop if validation fails
+        if(typeof(form.fv) == 'object') {
+            form.fv.on('core.form.invalid', function() {
+                l['%selector%'].stop();
+            });
+        }
+    });
+]]>
+        </js_code>
+    </default>
+</root>

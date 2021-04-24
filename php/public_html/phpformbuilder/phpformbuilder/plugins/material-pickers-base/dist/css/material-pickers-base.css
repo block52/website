@@ -1,0 +1,618 @@
+/* Color*/
+
+/* @import 'components/color-classes';*/
+
+/* Variables;*/
+
+/* Reset*/
+
+/* @import 'components/normalize';*/
+
+/* PHP Form Builder custom css */
+
+/* Validation Sass Placeholders */
+
+/* extracted from forms/_input-fields.scss */
+
+.material-form .select-wrapper.valid > input.select-dropdown,
+.datepicker-modal .select-wrapper.valid > input.select-dropdown {
+  border-bottom: 1px solid #4CAF50;
+  box-shadow: 0 1px 0 0 #4CAF50;
+}
+
+.material-form .select-wrapper.invalid > input.select-dropdown,
+.material-form .select-wrapper.invalid > input.select-dropdown:focus,
+.datepicker-modal .select-wrapper.invalid > input.select-dropdown,
+.datepicker-modal .select-wrapper.invalid > input.select-dropdown:focus {
+  border-bottom: 1px solid #F44336;
+  box-shadow: 0 1px 0 0 #F44336;
+}
+
+.material-form .select-wrapper.valid .helper-text[data-success],
+.material-form .select-wrapper.invalid ~ .helper-text[data-error],
+.datepicker-modal .select-wrapper.valid .helper-text[data-success],
+.datepicker-modal .select-wrapper.invalid ~ .helper-text[data-error] {
+  color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.material-form .select-wrapper.valid ~ .helper-text:after,
+.datepicker-modal .select-wrapper.valid ~ .helper-text:after {
+  content: attr(data-success);
+  color: #4CAF50;
+}
+
+.material-form .select-wrapper.invalid ~ .helper-text:after,
+.datepicker-modal .select-wrapper.invalid ~ .helper-text:after {
+  content: attr(data-error);
+  color: #F44336;
+}
+
+.material-form .select-wrapper + label:after,
+.datepicker-modal .select-wrapper + label:after {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  transition: 0.2s opacity ease-out, 0.2s color ease-out;
+}
+
+/* Custom styles for Bootstrap 4 compatibility */
+
+.modal.datepicker-modal,
+.modal.timepicker-modal {
+  height: auto !important;
+  bottom: auto;
+}
+
+.datepicker-container {
+  border: none;
+}
+
+.btn-flat.datepicker-cancel,
+.btn-flat.datepicker-done {
+  height: 36px;
+  line-height: 36px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+
+.btn-flat.datepicker-cancel:hover,
+.btn-flat.datepicker-cancel:focus,
+.btn-flat.datepicker-done:hover,
+.btn-flat.datepicker-done:focus {
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* components*/
+
+.z-depth-0 {
+  box-shadow: none !important;
+}
+
+/* 2dp elevation modified*/
+
+.z-depth-1,
+.dropdown-content {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.z-depth-1-half {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* 6dp elevation modified*/
+
+.z-depth-2 {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* 12dp elevation modified*/
+
+.z-depth-3 {
+  box-shadow: 0 8px 17px 2px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+
+/* 16dp elevation */
+
+.z-depth-4 {
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
+}
+
+/* 24dp elevation */
+
+.z-depth-5,
+.modal {
+  box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+}
+
+/*********************
+  Transition Classes
+**********************/
+
+.fade-in {
+  opacity: 0;
+  -webkit-transform-origin: 0 50%;
+  -ms-transform-origin: 0 50%;
+  transform-origin: 0 50%;
+}
+
+/*******************
+  Utility Classes
+*******************/
+
+.hide {
+  display: none !important;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.center,
+.center-align {
+  text-align: center;
+}
+
+.left {
+  float: left !important;
+}
+
+.right {
+  float: right !important;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.truncate {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+/* @import 'components/badges';*/
+
+/* @import 'components/icons-material-design';*/
+
+/* @import 'components/grid';*/
+
+/* @import 'components/navbar';*/
+
+/* @import 'components/typography';*/
+
+/* @import 'components/transitions';*/
+
+/* @import 'components/cards';*/
+
+/* @import 'components/toast';*/
+
+/* @import 'components/tabs';*/
+
+/* @import 'components/tooltip';*/
+
+/* @import "components/buttons";*/
+
+.dropdown-content {
+  background-color: #fff;
+  margin: 0;
+  display: none;
+  min-width: 100px;
+  overflow-y: auto;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+
+.dropdown-content:focus {
+  outline: 0;
+}
+
+.dropdown-content li {
+  clear: both;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: pointer;
+  min-height: 50px;
+  line-height: 1.5rem;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-content li:hover,
+.dropdown-content li.active {
+  background-color: #eee;
+}
+
+.dropdown-content li:focus {
+  outline: none;
+}
+
+.dropdown-content li.divider {
+  min-height: 0;
+  height: 1px;
+}
+
+.dropdown-content li > a,
+.dropdown-content li > span {
+  font-size: 16px;
+  color: #26a69a;
+  display: block;
+  line-height: 22px;
+  padding: 14px 16px;
+}
+
+.dropdown-content li > span > label {
+  top: 1px;
+  left: 0;
+  height: 18px;
+}
+
+.dropdown-content li > a > i {
+  height: inherit;
+  line-height: inherit;
+  float: left;
+  margin: 0 24px 0 0;
+  width: 24px;
+}
+
+body.keyboard-focused .dropdown-content li:focus {
+  background-color: #dadada;
+}
+
+.input-field.col .dropdown-content [type="checkbox"] + label {
+  top: 1px;
+  left: 0;
+  height: 18px;
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+}
+
+/* @import 'components/waves';*/
+
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: #fafafa;
+  padding: 0;
+  max-height: 70%;
+  width: 55%;
+  margin: auto;
+  overflow-y: auto;
+  border-radius: 2px;
+  will-change: top, opacity;
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal h1,
+.modal h2,
+.modal h3,
+.modal h4 {
+  margin-top: 0;
+}
+
+.modal .modal-content {
+  padding: 24px;
+}
+
+.modal .modal-close {
+  cursor: pointer;
+}
+
+.modal .modal-footer {
+  border-radius: 0 0 2px 2px;
+  background-color: #fafafa;
+  padding: 4px 6px;
+  height: 56px;
+  width: 100%;
+  text-align: right;
+}
+
+.modal .modal-footer .btn,
+.modal .modal-footer .btn-flat {
+  margin: 6px 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  z-index: 999;
+  top: -25%;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 125%;
+  width: 100%;
+  background: #000;
+  display: none;
+  will-change: opacity;
+}
+
+.modal.modal-fixed-footer {
+  padding: 0;
+  height: 70%;
+}
+
+.modal.modal-fixed-footer .modal-content {
+  position: absolute;
+  height: calc(100% - 56px);
+  max-height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.modal.modal-fixed-footer .modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: 0;
+}
+
+.modal.bottom-sheet {
+  top: auto;
+  bottom: -100%;
+  margin: 0;
+  width: 100%;
+  max-height: 45%;
+  border-radius: 0;
+  will-change: bottom, opacity;
+}
+
+/* @import 'components/collapsible';*/
+
+/* @import 'components/chips';*/
+
+/* @import 'components/materialbox';*/
+
+/* @import 'components/table_of_contents';*/
+
+/* @import 'components/sidenav';*/
+
+/* @import 'components/preloader';*/
+
+/* @import 'components/slider';*/
+
+/* @import 'components/carousel';*/
+
+/* @import 'components/tapTarget';*/
+
+/* @import 'components/pulse';*/
+
+/* @import 'components/datepicker'; */
+
+/* @import 'components/timepicker';*/
+
+.material-form,
+.datepicker-modal {
+  /* Select Field
+   ========================================================================== */
+}
+
+.material-form select,
+.datepicker-modal select {
+  display: none;
+}
+
+.material-form select.browser-default,
+.datepicker-modal select.browser-default {
+  display: block;
+}
+
+.material-form select,
+.datepicker-modal select {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+  height: 3rem;
+}
+
+.material-form .select-label,
+.datepicker-modal .select-label {
+  position: absolute;
+}
+
+.material-form .select-wrapper,
+.datepicker-modal .select-wrapper {
+  position: relative;
+}
+
+.material-form .select-wrapper.valid + label,
+.material-form .select-wrapper.invalid + label,
+.datepicker-modal .select-wrapper.valid + label,
+.datepicker-modal .select-wrapper.invalid + label {
+  width: 100%;
+  pointer-events: none;
+}
+
+.material-form .select-wrapper input.select-dropdown,
+.datepicker-modal .select-wrapper input.select-dropdown {
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  outline: none;
+  height: 3rem;
+  line-height: 3rem;
+  width: 100%;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  padding: 0;
+  display: block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 1;
+}
+
+.material-form .select-wrapper input.select-dropdown:focus,
+.datepicker-modal .select-wrapper input.select-dropdown:focus {
+  border-bottom: 1px solid #26a69a;
+}
+
+.material-form .select-wrapper .caret,
+.datepicker-modal .select-wrapper .caret {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  z-index: 0;
+  fill: rgba(0, 0, 0, 0.87);
+}
+
+.material-form .select-wrapper + label,
+.datepicker-modal .select-wrapper + label {
+  position: absolute;
+  top: -26px;
+  font-size: 0.8rem;
+}
+
+.material-form select:disabled,
+.datepicker-modal select:disabled {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.material-form .select-wrapper.disabled + label,
+.datepicker-modal .select-wrapper.disabled + label {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.material-form .select-wrapper.disabled .caret,
+.datepicker-modal .select-wrapper.disabled .caret {
+  fill: rgba(0, 0, 0, 0.42);
+}
+
+.material-form .select-wrapper input.select-dropdown:disabled,
+.datepicker-modal .select-wrapper input.select-dropdown:disabled {
+  color: rgba(0, 0, 0, 0.42);
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.material-form .select-wrapper i,
+.datepicker-modal .select-wrapper i {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.material-form .select-dropdown li.disabled,
+.material-form .select-dropdown li.disabled > span,
+.material-form .select-dropdown li.optgroup,
+.datepicker-modal .select-dropdown li.disabled,
+.datepicker-modal .select-dropdown li.disabled > span,
+.datepicker-modal .select-dropdown li.optgroup {
+  color: rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+}
+
+.material-form body.keyboard-focused .select-dropdown.dropdown-content li:focus,
+.datepicker-modal body.keyboard-focused .select-dropdown.dropdown-content li:focus {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.material-form .select-dropdown.dropdown-content li:hover,
+.datepicker-modal .select-dropdown.dropdown-content li:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.material-form .select-dropdown.dropdown-content li.selected,
+.datepicker-modal .select-dropdown.dropdown-content li.selected {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.material-form .prefix ~ .select-wrapper,
+.datepicker-modal .prefix ~ .select-wrapper {
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem);
+}
+
+.material-form .prefix ~ label,
+.datepicker-modal .prefix ~ label {
+  margin-left: 3rem;
+}
+
+.material-form .select-dropdown li img,
+.datepicker-modal .select-dropdown li img {
+  height: 40px;
+  width: 40px;
+  margin: 5px 15px;
+  float: right;
+}
+
+.material-form .select-dropdown li.optgroup,
+.datepicker-modal .select-dropdown li.optgroup {
+  border-top: 1px solid #eee;
+}
+
+.material-form .select-dropdown li.optgroup.selected > span,
+.datepicker-modal .select-dropdown li.optgroup.selected > span {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.material-form .select-dropdown li.optgroup > span,
+.datepicker-modal .select-dropdown li.optgroup > span {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.material-form .select-dropdown li.optgroup ~ li.optgroup-option,
+.datepicker-modal .select-dropdown li.optgroup ~ li.optgroup-option {
+  padding-left: 1rem;
+}
+
+@media only screen and (max-width: 992px) {
+  .modal {
+    width: 80%;
+  }
+}

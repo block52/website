@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<title>Caledonian PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="author" content="Artlantis Design Studio - http://www.artlantis.net/">
+	<meta name="generator" content="Sidera Online Support Centre ~ documentSide - http://www.sideradesk.com/">
+	<link href="asset/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="" type="text/css" rel="stylesheet">
+	<link rel="shortcut icon" href="http://caledonian.artlantis.net/valve/images/favicon.ico">
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.2.0/respond.js"></script>
+    <![endif]-->
+<style>
+body {
+	background-color:#FFFFFF;
+	color:#000000;
+}
+
+a{color: #11CACC;}
+a:hover{color: #EC5500;}
+
+pre br{display:block;}
+code br{display:block;}
+
+#masthead {
+min-height:270px;
+background-color:#11CACC;
+color:#FFFFFF !important;
+}
+
+#masthead h1 {
+font-size: 45px !important;
+line-height: 1;
+margin-top:8%;
+}
+
+#masthead h1 .lead{color:#FFFFFF; line-height:1;}
+
+#masthead h1 p{line-height:0.5; font-size:18px;}
+#masthead h1 p small{color:#FFFFFF;}
+#masthead h1 a{color:#FFFFFF !important;}
+
+#masthead .well {
+margin-top:13%;
+background-color:#0EB0B3;
+border-color:#11CACC;
+color: #FFFFFF;
+}
+
+.descr-area{width:auto; max-height:180px; overflow-x:hidden;}
+
+
+ul.affix {
+	position: fixed; 
+	top: 60px;
+	/* left: 62px; */
+	width: 260px;
+	min-width:260px;
+}
+ul.affix-top {
+	position: static;
+}
+ul.affix-bottom {
+	position: absolute;
+	width: 260px;
+}
+
+/* First level of nav */
+.sidenav {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding-top:    10px;
+  padding-bottom: 10px;
+  background-color:#5C5857;
+  border-radius: 5px;
+}
+
+/* All levels of nav */
+.sidebar .nav > li > a {
+  display: block;
+  color:#FFFFFF;
+  padding: 5px 20px;
+}
+.sidebar .nav > li > a:hover,
+.sidebar .nav > li > a:focus {
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color:#5C5857;
+}
+.sidebar .nav > .active > a,
+.sidebar .nav > .active:hover > a,
+.sidebar .nav > .active:focus > a {
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color:#5C5857 !important;
+}
+
+/* Nav: second level */
+.sidebar .nav .nav {
+	display: none;
+}
+.sidebar .nav > li.active .nav {
+	display:block;
+}
+.sidebar .nav .nav {
+  margin-bottom: 8px;
+}
+.sidebar .nav .nav > li > a {
+  padding-top:    3px;
+  padding-bottom: 3px;
+  padding-left: 30px;
+  font-size: 90%;
+}
+#content {
+	margin-top:20px;
+	position: relative;
+	z-index: -10px;
+}
+footer {height:100px;}
+</style>
+
+
+</head>
+<body data-spy="scroll" data-target="#affix-nav">
+<div id="masthead">  
+  <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h1>Caledonian PRO
+            <p class="lead">Caledonian PHP Event Calendar</p>
+			<p><small><strong>Created by:</strong> Thunderfury</small></p>
+			<p><small><strong>Created:</strong> 08.07.2015 <strong>Last Update:</strong> 08.07.2015</small></p>
+			<p><small><strong>Web:</strong> <a href="http://www.artlantis.net" target="_blank">http://www.artlantis.net</a></small></p>
+			<p><small><strong>E-Mail:</strong> <a href="mailto:contact@artlantis.net">contact@artlantis.net</a></small></p>
+          </h1>
+        </div>
+        <div class="col-md-5">
+			
+				<div class="well well-lg"> 
+				  <div class="row">
+					<div class="col-sm-3">
+						<img src="http://caledonian.artlantis.net/valve/images/icon.png" class="img-responsive">
+					</div>
+					<div class="col-sm-9">
+						<strong>Caledonian PRO</strong>
+						<div class="descr-area">
+						Caledonian PHP Calendar is a user friendly, php based and multi-user calendar/scheduling script. It has so many great features like timeline, multiple calendars, shared calendars, event reminder, multiple language support and so on. You can customize it e
+						</div>
+					</div>
+				  </div>
+				</div>
+				
+        </div>
+      </div> 
+  </div><!-- /cont -->
+</div>
+
+<div class="container">
+
+<div class="row">
+<nav id="affix-nav" class="sidebar col-lg-3 col-md-3 col-sm-3 hidden-xs">
+    <ul class="nav sidenav" data-spy="affix" data-offset-top="290" data-offset-bottom="250">
+        <li><a href="#sec116">Presentation</a></li><li><a href="#sec117">Features</a></li><li><a href="#sec118">Requirements</a></li><li><a href="#sec119">Installation</a></li><li><a href="#sec120">General Settings</a></li><li><a href="#sec121">Administration</a></li><li><a href="#sec122">Event Creation</a></li><li><a href="#sec123">Calendar Drawing</a></li><li><a href="#sec124">Call Upcoming Events</a></li><li><a href="#sec129">Call Today&#039;s Events</a></li><li><a href="#sec130">Call All Event List</a></li><li><a href="#sec125">Import Events</a></li><li><a href="#sec126">Widgets</a></li><li><a href="#sec131">API Usage</a></li><li><a href="#sec128">Credits</a></li>
+    </ul>
+</nav>
+<section id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+    <div class="doc-conts" id="sec116"><h2>Presentation</h2><p>Caledonian PRO PHP Calendar is a user friendly, php based and multi-user calendar/scheduling script. It has so many great features like timeline, multiple calendars, shared calendars, event reminder, multiple language support and so on. You can customize it easily and use as a standalone scheduling application or integrate into your own application. You just need a web browser or HTML5 supported mobile device to use it.</p></div><div class="doc-conts" id="sec117"><h2>Features</h2><ul style="list-style-type: square;">
+<li>Multi-language</li>
+<li>Two-level admnistration</li>
+<li>Responsive</li>
+<li>Bootstrap supported</li>
+<li>Import (iCalendar)</li>
+<li>Event Icon &amp; Colors</li>
+<li>Upcoming Events</li>
+<li>Event Copier</li>
+<li>RSS Feed</li>
+<li>Event Share Buttons (AddThis)</li>
+<li>Move Posts to Another User (User Removing)</li>
+<li>Widgets
+<ul>
+<li>Full Calendar</li>
+<li>Mini Calendar</li>
+<li>Upcoming Events (Ajax &amp; Iframe)</li>
+<li>Today's Events (Ajax &amp; Iframe)</li>
+<li>Navbar Notices (Bootstrap, Sound and Animated)</li>
+<li>Pop-up Master (Lightbox)</li>
+<li>Event Lister (With Pagination)</li>
+</ul>
+</li>
+<li>API
+<ul>
+<li>Add</li>
+<li>Remove</li>
+<li>List</li>
+</ul>
+</li>
+</ul></div><div class="doc-conts" id="sec118"><h2>Requirements</h2><ul style="list-style-type: disc;">
+<li>PHP Version 5.4+</li>
+<li>MySQLi Extension</li>
+<li>Curl Extension</li>
+<li>Script Timeout</li>
+<li>Writable Folders<br /><br /><strong>Optional</strong><br /><br /></li>
+<li>Script Execute Time (Unlimited)</li>
+<li>Upload Limit (10MB)</li>
+<li>Post Max Size (10MB)</li>
+<li>mb_substr() function</li>
+</ul></div><div class="doc-conts" id="sec119"><h2>Installation</h2><h3><span style="color: #3366ff;">STEP 1 : REQUIREMENTS</span></h3>
+<p>Required functions must be installed on your server. If all options marked as green tick, please click to NEXT button</p>
+<h3><span style="color: #3366ff;">STEP 2 : DATABASE SETTINGS</span></h3>
+<p>Create a MySQL database on your hosting panel.</p>
+<p>Here a examples for famous hosting control panels</p>
+<p><a href="https://documentation.cpanel.net/display/ALD/MySQL+Database+Wizard" target="_blank"><strong>CPanel</strong></a></p>
+<p><a href="http://www.interspire.com/support/kb/questions/674/How+do+I+create+a+MySQL+database+in+Plesk%3F" target="_blank"><strong>Plesk</strong></a></p>
+<p>1. Database host address or IP number</p>
+<p>2. Database name as you created</p>
+<p>3. Database login name as you created</p>
+<p>4. Database password as you created</p>
+<p>5. Database table prefix (example: cal_ or calendar_) Do not use space or unwanted characters!</p>
+<p>6. Click to TEST CONNECTION button.</p>
+<p>7. If button goes green color continue installation with NEXT button, else check your DB informations.</p>
+<h3><span style="color: #3366ff;">STEP 3 : GENERAL SETTINGS</span></h3>
+<p><strong>Default Timezone</strong></p>
+<p>If your local time different from server time. You can choose correct local time in listbox.</p>
+<p><strong>Default Language</strong></p>
+<p>Languages controlled by cookies. Please define default language for your new guests.</p>
+<p><strong>APP URL</strong></p>
+<p>Caledonian application URL. URL generated automatically, please change it if its not correct</p>
+<p><strong>System E-Mail</strong></p>
+<p>Password reminder and other mail submission actions sender mail.</p>
+<p><strong>Upcoming Event List Number</strong></p>
+<p>Jusr required for dashboard. (Not for widgets)</p>
+<p><strong>Import file maximum size</strong></p>
+<p>Maximum file size for ICS files</p>
+<p><strong>API Public Key</strong></p>
+<p>Required for API connections. You can change it with reload button.</p>
+<p><strong>API Private Key</strong></p>
+<p>Required for API connections. You can change it with reload button.</p>
+<p><strong>License Key</strong></p>
+<p>Envato purchase key. You must enter valid key for installation. keys generated by Envato when you purchase Caledonian PRO.</p>
+<p><strong>Share Buttons</strong></p>
+<p>It will enable share buttons in your event details page.</p>
+<p><strong>Author Informations</strong></p>
+<p>It will enable event author informations in your event details page.</p>
+<p><strong>Pointips</strong></p>
+<p>Inline helper icons.</p>
+<p><strong>Debug Mode</strong></p>
+<p>If you have trouble with Caledonian, you can turn-on debug mode to find error resources.</p>
+<h3><span style="color: #3366ff;">STEP 4 : PRIMARY USER INFORMATIONS</span></h3>
+<p>Primary administration account creator. This user cannot be deleted or turn-off to inactive mode.</p>
+<h3><span style="color: #3366ff;">STEP 5 : COMPLETE</span></h3>
+<p>Click to Install Now button. It will show errors or success texts as your entered infrormations.</p>
+<p><span style="color: #ff0000;"><strong>MySQL Syntax errors;</strong></span></p>
+<p>If you get MySQL syntax error after install Caledonian. It could be STRICT_TRANS_TABLES issue for your hosting service. Please check your MySQL config file for that.</p>
+<p><strong>INSTALLATION VIDEO</strong></p>
+<hr />
+<p><iframe src="https://www.youtube.com/embed/eUiF6Iku588" width="560" height="315" frameborder="0" allowfullscreen=""></iframe></p></div><div class="doc-conts" id="sec120"><h2>General Settings</h2><p><strong>Default Timezone</strong></p>
+<p>If your local time different from server time. You can choose correct local time in listbox.</p>
+<p><strong>Default Language</strong></p>
+<p>Languages controlled by cookies. Please define default language for your new guests.</p>
+<p><strong>APP URL</strong></p>
+<p>Caledonian application URL. URL generated automatically, please change it if its not correct</p>
+<p><strong>System E-Mail</strong></p>
+<p>Password reminder and other mail submission actions sender mail.</p>
+<p><strong>Upcoming Event List Number</strong></p>
+<p>Jusr required for dashboard. (Not for widgets)</p>
+<p><strong>Import file maximum size</strong></p>
+<p>Maximum file size for ICS files</p>
+<p><strong>API Public Key</strong></p>
+<p>Required for API connections. You can change it with reload button.</p>
+<p><strong>API Private Key</strong></p>
+<p>Required for API connections. You can change it with reload button.</p>
+<p><strong>License Key</strong></p>
+<p>Envato purchase key. You must enter valid key for installation. keys generated by Envato when you purchase Caledonian PRO.</p>
+<p><strong>Share Buttons</strong></p>
+<p>It will enable share buttons in your event details page.</p>
+<p><strong>Author Informations</strong></p>
+<p>It will enable event author informations in your event details page.</p>
+<p><strong>Pointips</strong></p>
+<p>Inline helper icons.</p>
+<p><strong>Debug Mode</strong></p>
+<p>If you have trouble with Caledonian, you can turn-on debug mode to find error resources.</p></div><div class="doc-conts" id="sec121"><h2>Administration</h2><p>There 2 level administration type available.</p>
+<p><strong>Admin</strong></p>
+<p>Users with full access.</p>
+<ul style="list-style-type: circle;">
+<li>Admin could be create new admin and normal user accounts.</li>
+<li>They're can see all events, also edit and remove from system</li>
+<li>Widget creation</li>
+<li>API handler permissions</li>
+</ul>
+<p><strong>User</strong></p>
+<p>Basic event manager. Users only can be create new events and edit their own records.</p>
+<p><iframe src="https://www.youtube.com/embed/1pMmIYnzVqk" width="560" height="315" frameborder="0" allowfullscreen=""></iframe></p></div><div class="doc-conts" id="sec122"><h2>Event Creation</h2><p>There 3 way available for event creation.</p>
+<p><strong>1- From Navigation Bar</strong></p>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/create_event_001.png" alt="" width="600" height="107" /></p>
+<p><strong>2- From Calendar Day</strong></p>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/create_event_002.png" alt="" width="600" height="335" /></p>
+<p><strong>3- From Event Detail Pane</strong></p>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/create_event_003.png" alt="" width="600" height="143" /></p>
+<p> </p>
+<h3><span style="color: #3366ff;">Create New Event</span></h3>
+<p>1 - Choose a user (Only for Admin)</p>
+<p>2 - Enter a Event Title</p>
+<p>3 - Choose a date and hour / minutes</p>
+<p>4 - Choose Icon and Color (Optional)</p>
+<p>5 - Enter Event Details</p>
+<p>6 - Also you can copy event to another days</p>
+<p><iframe src="https://www.youtube.com/embed/3yqnp43Ohko" width="560" height="315" frameborder="0" allowfullscreen=""></iframe></p></div><div class="doc-conts" id="sec123"><h2>Calendar Drawing</h2><p>If you do not want to use widgets, you can easily call Calendar structure.</p>
+<h3><span style="color: #3366ff;">How to prepare page for calendar?</span></h3>
+<p><strong>HEAD TAG</strong></p>
+<pre class="pretty-lang-markup"><code class="language-markup">&lt;!-- JQuery --&gt;
+&lt;script src="../valve/Scripts/jquery-1.11.3.min.js"&gt;&lt;/script&gt;
+&lt;!-- Bootstrap --&gt;
+&lt;link rel="stylesheet" href="../valve/bootstrap/css/bootstrap.min.css"&gt;
+&lt;link rel="stylesheet" href="../valve/bootstrap/css/flatly_bootstrap.min.css"&gt;
+&lt;!-- Calendario --&gt;
+&lt;link rel="stylesheet" type="text/css" href="../valve/calendario/calendar.css" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="../valve/calendario/custom_2.css" /&gt;
+&lt;script type="text/javascript" src="../valve/calendario/modernizr.custom.63321.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="../valve/calendario/jquery.calendario.js"&gt;&lt;/script&gt;
+&lt;!-- Fancybox --&gt;
+&lt;link href="../valve/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" /&gt;
+&lt;!-- Caledonian --&gt;
+&lt;link rel="stylesheet" href="../valve/css/cal.css"&gt;</code></pre>
+<p><strong>PAGE CONTENT</strong></p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+
+	$calendar = new caledonian(); # Calendar class
+	$calendar-&gt;calDate = '2015-05-21'; # Default Date
+	echo('&lt;div id="sdr-calendar"&gt;&lt;/div&gt;'); # You can change container style with CSS
+	echo($calendar-&gt;getCalendar()); # Calendar drawing
+
+?&gt;</code></pre>
+<p><strong>END OF PAGE BODY</strong></p>
+<pre class="pretty-lang-markup"><code class="language-markup">&lt;!-- Bootstrap --&gt;
+&lt;script src="../valve/bootstrap/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;!-- Fancybox --&gt;
+&lt;script src="../valve/fancybox/jquery.fancybox.pack.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!-- Caledonian --&gt;
+&lt;script src="../valve/Scripts/caledonian.js"&gt;&lt;/script&gt;</code></pre>
+<p> </p>
+<div class="alert alert-info"><strong>TIPS:</strong> You can find example page in /demo folder. (draw_calendar.php)</div></div><div class="doc-conts" id="sec124"><h2>Call Upcoming Events</h2><p>If you do not want to use widgets, you can easily call upcoming event list. It will return array based records.</p>
+<p> </p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	$upcList = new caledonian(); 
+	$upcList-&gt;widgetOn = true;
+	$upcList-&gt;widgetFetchData = 2;
+	$upcList-&gt;widgetUser = 0;
+	$upcList-&gt;widgetDataCount = 5;
+	$upcList = $upcList-&gt;upcoming(true); # Show 1 hour expiration, default true
+?&gt;</code></pre>
+<p> </p>
+<h3><span style="color: #3366ff;">Returns</span></h3>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>error</strong></span> = true / false (If there no record found, it will return false)</p>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>data</strong></span> = Event List (array)</p>
+<h3><span style="color: #3366ff;">Data Keys</span></h3>
+<p><strong>note_id</strong> = Event ID</p>
+<p><strong>user_id</strong> = Author ID</p>
+<p><strong>title</strong> = Event Title</p>
+<p><strong>mynotes</strong> = Event Details</p>
+<p><strong>add_date</strong> = Creation Date</p>
+<p><strong>note_date</strong> = Event Date</p>
+<p><strong>note_icon</strong> = Event Icon (Font Awesome)</p>
+<p><strong>note_color</strong> = Icon Color</p>
+<p><strong>ip_address</strong> = Creator IP Address</p>
+<p><strong>data_type</strong> = Data Type -&gt; 1 - Private // 0 - Public</p>
+<h3><span style="color: #3366ff;">Class Settings</span></h3>
+<p><strong>-&gt;widgetOn =</strong> Will enable user selection and data count</p>
+<p><strong>-&gt;widgetUser =</strong> User base event list, you must kow user IDs or leave 0</p>
+<p><strong>-&gt;widgetFetchData =</strong> Data type selection 0 - Public, 1 - Private, 2 - All Datas</p>
+<p><strong>-&gt;widgetDataCount =</strong> Maximum event list number </p>
+<h3><span style="color: #3366ff;">How To Write Events to Page</span></h3>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	if($upcList['error']){
+		echo('No Record Found!');
+	}else{
+		foreach($upcList['error'] as $k=&gt;$v){
+			echo('
+					Title: '. $v['title'] .'&lt;br&gt;
+					Date: '. $v['note_date'] .'&lt;br&gt;
+					&lt;hr&gt;
+				');
+		}
+	}
+?&gt;</code></pre></div><div class="doc-conts" id="sec129"><h2>Call Today&#039;s Events</h2><p>If you do not want to use widgets, you can easily call today's event list. It will return array based records.</p>
+<p> </p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	$upcList = new caledonian(); 
+	$upcList-&gt;widgetOn = true;
+	$upcList-&gt;widgetFetchData = 2;
+	$upcList-&gt;widgetUser = 0;
+	$upcList-&gt;widgetDataCount = 5;
+	$upcList = $upcList-&gt;todays(true); # Show 1 hour expiration, default true
+?&gt;</code></pre>
+<p> </p>
+<h3><span style="color: #3366ff;">Returns</span></h3>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>error</strong></span> = true / false (If there no record found, it will return false)</p>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>data</strong></span> = Event List (array)</p>
+<h3><span style="color: #3366ff;">Data Keys</span></h3>
+<p><strong>note_id</strong> = Event ID</p>
+<p><strong>user_id</strong> = Author ID</p>
+<p><strong>title</strong> = Event Title</p>
+<p><strong>mynotes</strong> = Event Details</p>
+<p><strong>add_date</strong> = Creation Date</p>
+<p><strong>note_date</strong> = Event Date</p>
+<p><strong>note_icon</strong> = Event Icon (Font Awesome)</p>
+<p><strong>note_color</strong> = Icon Color</p>
+<p><strong>ip_address</strong> = Creator IP Address</p>
+<p><strong>data_type</strong> = Data Type -&gt; 1 - Private // 0 - Public</p>
+<h3><span style="color: #3366ff;">Class Settings</span></h3>
+<p><strong>-&gt;widgetOn =</strong> Will enable user selection and data count</p>
+<p><strong>-&gt;widgetUser =</strong> User base event list, you must kow user IDs or leave 0</p>
+<p><strong>-&gt;widgetFetchData =</strong> Data type selection 0 - Public, 1 - Private, 2 - All Datas</p>
+<p><strong>-&gt;widgetDataCount =</strong> Maximum event list number</p>
+<h3><span style="color: #3366ff;">How To Write Events to Page</span></h3>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	if($upcList['error']){
+		echo('No Record Found!');
+	}else{
+		foreach($upcList['error'] as $k=&gt;$v){
+			echo('
+					Title: '. $v['title'] .'&lt;br&gt;
+					Date: '. $v['note_date'] .'&lt;br&gt;
+					&lt;hr&gt;
+				');
+		}
+	}
+?&gt;</code></pre></div><div class="doc-conts" id="sec130"><h2>Call All Event List</h2><p>If you do not want to use widgets, you can easily call all event list. It will return array based records.</p>
+<p>Its same with other list but, returned array contain pagination data.</p>
+<p> </p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	$upcList = new caledonian(); 
+	$upcList-&gt;widgetOn = true;
+	$upcList-&gt;widgetFetchData = $widget['widget_data'];
+	$upcList-&gt;widgetUser = $widget['data_user'];
+	$upcList-&gt;widgetDataCount = $widget['max_data'];
+	$upcList = $upcList-&gt;listEvent(true); # Show 1 hour expiration, default true
+?&gt;</code></pre>
+<p> </p>
+<h3><span style="color: #3366ff;">Returns</span></h3>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>error</strong></span> = true / false (If there no record found, it will return false)</p>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>data</strong></span> = Event List (array)</p>
+<p><em><strong>array</strong></em> &gt; <span style="color: #ff0000;"><strong>pages</strong></span> = Pagination list. &lt;ul&gt; based, also bootstrap pagination style supported.</p>
+<h3><span style="color: #3366ff;">Data Keys</span></h3>
+<p><strong>note_id</strong> = Event ID</p>
+<p><strong>user_id</strong> = Author ID</p>
+<p><strong>title</strong> = Event Title</p>
+<p><strong>mynotes</strong> = Event Details</p>
+<p><strong>add_date</strong> = Creation Date</p>
+<p><strong>note_date</strong> = Event Date</p>
+<p><strong>note_icon</strong> = Event Icon (Font Awesome)</p>
+<p><strong>note_color</strong> = Icon Color</p>
+<p><strong>ip_address</strong> = Creator IP Address</p>
+<p><strong>data_type</strong> = Data Type -&gt; 1 - Private // 0 - Public</p>
+<h3><span style="color: #3366ff;">Class Settings</span></h3>
+<p><strong>-&gt;widgetOn =</strong> Will enable user selection and data count</p>
+<p><strong>-&gt;widgetUser =</strong> User base event list, you must kow user IDs or leave 0</p>
+<p><strong>-&gt;widgetFetchData =</strong> Data type selection 0 - Public, 1 - Private, 2 - All Datas</p>
+<p><strong>-&gt;widgetDataCount =</strong> Page data number for each pages.</p>
+<h3><span style="color: #3366ff;">How To Write Events to Page</span></h3>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+	if($upcList['error']){
+		echo('No Record Found!');
+	}else{
+		foreach($upcList['error'] as $k=&gt;$v){
+			echo('
+					Title: '. $v['title'] .'&lt;br&gt;
+					Date: '. $v['note_date'] .'&lt;br&gt;
+					&lt;hr&gt;
+				');
+		}<br />                echo($upcList['pages']);
+	}
+?&gt;</code></pre></div><div class="doc-conts" id="sec125"><h2>Import Events</h2><p>You can easily import iCalendar files to your Caledonian. Admins can choose users for imported events.</p>
+<p><iframe src="https://www.youtube.com/embed/AHVsQ0qGaxI" width="560" height="315" frameborder="0" allowfullscreen=""></iframe> </p></div><div class="doc-conts" id="sec126"><h2>Widgets</h2><p>Caledonian PRO provides, advanced event listing features. You can use our simple ready-to-use widgets.</p>
+<h3><span style="color: #3366ff;">Full Calendar</span></h3>
+<p><span style="color: #3366ff;"><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/full_calendar.png" alt="" width="480" height="268" /></span></p>
+<p>Caledonian default calendar style. Calendar style already supported responsive features. But you can use that widget without external plugins or css styles in your front-end page.</p>
+<p>Just works with simple iframe embed code.</p>
+<p><span style="color: #ff6600;"><strong>How to create Full Calendar Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose full calendar widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.<br /><br /><strong>Plugins;</strong><br /><br />Please choose plugins if you do not modify of Caledonian's widget iframe page.</p>
+<p>After widget creation, it will give a embed code, you can use that code where you want to show your calendar in your front-end page.</p>
+<p> </p>
+<h3><span style="color: #3366ff;">Mini Calendar</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/mini_calendar.png" alt="" width="354" height="408" /></p>
+<p>Caledonian default calendar style. Calendar style already supported responsive features. But you can use that widget without external plugins or css styles in your front-end page.</p>
+<p>Just works with simple iframe embed code.</p>
+<p><span style="color: #ff6600;"><strong>How to create Mini Calendar Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose mini calendar widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.<br /><br /><strong>Plugins;</strong><br /><br />Please choose plugins if you do not modify of Caledonian's widget iframe page.</p>
+<p>After widget creation, it will give a embed code, you can use that code where you want to show your calendar in your front-end page.</p>
+<h3><span style="color: #3366ff;">Upcoming Event List</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/upcoming_event.png" alt="" width="309" height="498" /></p>
+<p>Upcoming event lister. Widget calling styled events. If you want to call array based events, you should be use this code in your page;</p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+include_once('CALEDONIAN_ROOT/caledonian.php');
+$event = new caledonian();
+$data = $event-&gt;upcoming();
+?&gt;</code></pre>
+<p><strong>$data</strong> variable will return 2 array key <strong>$data['error']</strong> and <strong>$data['data']</strong></p>
+<p>You can control available events with error key 0 - There no event found, 1- Event found</p>
+<p>Just works with simple iframe embed code and ajax call.</p>
+<p><span style="color: #ff6600;"><strong>How to create Upcoming Event Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose Upcoming Event widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.</p>
+<p><strong>Maximum Event List;</strong><br /><br />You can define a number of event count<br /><br /><strong>Plugins;</strong><br /><br />Please choose plugins if you do not modify of Caledonian's widget iframe page.</p>
+<p>After widget creation, it will give a embed code, you can use that code where you want to show your calendar in your front-end page. Ajax call requires external plugins top of your page.</p>
+<p> </p>
+<pre class="pretty-lang-markup"><code class="language-markup">&lt;!-- Fancybox --&gt;
+&lt;link href="../valve/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" /&gt;
+&lt;!-- Caledonian --&gt;
+&lt;link rel="stylesheet" href="../valve/css/cal.css"&gt;
+
+&lt;!-- Fancybox --&gt;
+&lt;script src="../valve/fancybox/jquery.fancybox.pack.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!-- Caledonian --&gt;
+&lt;script src="../valve/Scripts/caledonian.js"&gt;&lt;/script&gt;</code></pre>
+<p> </p>
+<p> </p>
+<h3><span style="color: #3366ff;">Today's Events</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/today_event.png" alt="" width="309" height="498" /></p>
+<p>Today's event lister. Widget calling styled events. If you want to call array based events, you should be use this code in your page;</p>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+include_once('CALEDONIAN_ROOT/caledonian.php');
+$event = new caledonian();
+$data = $event-&gt;todays();
+?&gt;</code></pre>
+<p><strong>$data</strong> variable will return 2 array key <strong>$data['error']</strong> and <strong>$data['data']</strong></p>
+<p>You can control available events with error key 0 - There no event found, 1- Event found</p>
+<p>Just works with simple iframe embed code and ajax call.</p>
+<p><span style="color: #ff6600;"><strong>How to create Today's Event Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose Today's Event widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.</p>
+<p><strong>Maximum Event List;</strong><br /><br />You can define a number of event count<br /><br /><strong>Plugins;</strong><br /><br />Please choose plugins if you do not modify of Caledonian's widget iframe page.</p>
+<p>After widget creation, it will give a embed code, you can use that code where you want to show your calendar in your front-end page. Ajax call requires external plugins top of your page.</p>
+<pre class="pretty-lang-markup"><code class="language-markup">&lt;!-- Fancybox --&gt;
+&lt;link href="../valve/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" /&gt;
+&lt;!-- Caledonian --&gt;
+&lt;link rel="stylesheet" href="../valve/css/cal.css"&gt;
+
+&lt;!-- Fancybox --&gt;
+&lt;script src="../valve/fancybox/jquery.fancybox.pack.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!-- Caledonian --&gt;
+&lt;script src="../valve/Scripts/caledonian.js"&gt;&lt;/script&gt;</code></pre>
+<p> </p>
+<h3><span style="color: #3366ff;">Navbar Notices</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/navbar_notices.png" alt="" width="363" height="315" /></p>
+<p>Navbar Notices widget using Bootstrap Navbar feature. Navbar should be created on your page. <a href="http://getbootstrap.com/components/#navbar" target="_blank">Click here</a> for detailed informations.</p>
+<p>Navbar Notices best solution for back-end page task controls. Its contain animated button, sound effect and live controls.</p>
+<p><span style="color: #ff6600;"><strong>How to create Navbar Notices Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name (Name will be used for button label!), and choose Navbar Notices widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.</p>
+<p><strong>Maximum Event List;</strong><br /><br />You can define a number of event count</p>
+<p><strong>Refresh Time;</strong><br /><br />Second based recent task controller. If you enter 15, every 15 second system will check your tasks.</p>
+<p><strong>Sound;</strong><br /><br />If you want to warning alerts for recent tasks, you must be turn-on sound option. And choose a sound effect list below. 10 sound effect included.<br /><br /><strong>Plugins;</strong><br /><br />Please choose plugins if you do not modify of Caledonian's widget iframe / ajax page.</p>
+<p>After widget creation, it will give a embed code, you can use that code where you want to show your calendar in your front-end page. Ajax call requires external plugins top of your page. Embed code already had these plugins, but if you use these plugins before you can remove plugin links.</p>
+<div class="alert alert-warning"><strong>IMPORTANT:</strong> Your Navbar dropdown link must be called as .caledonian class! &lt;li class="caledonian dropdown"&gt;&lt;/li&gt;</div>
+<p><span style="color: #ff6600;"><strong>How to create navbar?</strong></span></p>
+<p>You can check <a href="http://getbootstrap.com/components/#navbar" target="_blank">this page</a> for detailed informations.</p>
+<p><strong>Here a example navbar;</strong></p>
+<pre class="pretty-lang-markup"><code class="language-markup">		&lt;nav class="navbar navbar-inverse"&gt;
+		  &lt;div class="container-fluid"&gt;
+			&lt;!-- Brand and toggle get grouped for better mobile display --&gt;
+			&lt;div class="navbar-header"&gt;
+			  &lt;button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"&gt;
+				&lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+				&lt;span class="icon-bar"&gt;&lt;/span&gt;
+				&lt;span class="icon-bar"&gt;&lt;/span&gt;
+				&lt;span class="icon-bar"&gt;&lt;/span&gt;
+			  &lt;/button&gt;
+			  &lt;a class="navbar-brand" href="#"&gt;Brand&lt;/a&gt;
+			&lt;/div&gt;
+
+			&lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+			&lt;div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"&gt;
+			  &lt;ul class="nav navbar-nav"&gt;
+				&lt;li class="active"&gt;&lt;a href="#"&gt;Link &lt;span class="sr-only"&gt;(current)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+				&lt;li class="dropdown"&gt;
+				  &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+				  &lt;ul class="dropdown-menu"&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+					&lt;li role="separator" class="divider"&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+					&lt;li role="separator" class="divider"&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;One more separated link&lt;/a&gt;&lt;/li&gt;
+				  &lt;/ul&gt;
+				&lt;/li&gt;
+			  &lt;/ul&gt;
+			  &lt;form class="navbar-form navbar-left" role="search"&gt;
+				&lt;div class="form-group"&gt;
+				  &lt;input type="text" class="form-control" placeholder="Search"&gt;
+				&lt;/div&gt;
+				&lt;button type="submit" class="btn btn-default"&gt;Submit&lt;/button&gt;
+			  &lt;/form&gt;
+			  &lt;ul class="nav navbar-nav navbar-right"&gt;
+				&lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+				<strong>&lt;li class="caledonian dropdown"&gt;&lt;/li&gt;</strong>
+				&lt;li class="dropdown"&gt;
+				  &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+				  &lt;ul class="dropdown-menu"&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+					&lt;li role="separator" class="divider"&gt;&lt;/li&gt;
+					&lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+				  &lt;/ul&gt;
+				&lt;/li&gt;
+			  &lt;/ul&gt;
+			&lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
+		  &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
+		&lt;/nav&gt;</code></pre>
+<h3><span style="color: #3366ff;">Pop-up Master</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/popup_master.png" alt="" width="500" height="353" /></p>
+<p>You can list of your events between two dates with lightbox opener.</p>
+<p>Pop-up will show upcoming event lister. Widget calling styled events.</p>
+<p><span style="color: #ff6600;"><strong>How to create Pop-up Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose Pop-up Master widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.</p>
+<p><strong>Maximum Event List;</strong><br /><br />You can define a number of event count</p>
+<p><strong>Date Range Start / End</strong></p>
+<p>Pop-up will appear between two dates. Start date and End date. Please choose your dates.</p>
+<h3><span style="color: #3366ff;">Event Lister</span></h3>
+<p><img src="http://dev.artlantis.net/envato/stock/caledonian/doc/event_lister.png" alt="" width="500" height="353" /></p>
+<p>You can list all events by iframe. Also widget contain paganiation feature.</p>
+<p><span style="color: #ff6600;"><strong>How to create Event Lister Widget?</strong></span></p>
+<p>- Go to Widgets Section and Click to Add Button</p>
+<p>Enter your Widget name, and choose Event Lister widget from listbox (Widget Type) New setting form fields will appear.<br /><br /><strong>User;</strong><br /><br />You can show events for specific user or all events.<br /><br /><strong>Data Type;</strong><br /><br />You can share of your events with Public, Private or All options.</p>
+<p><strong>Maximum Event List;</strong><br /><br />You can define a number of event count (pagination count)</p></div><div class="doc-conts" id="sec131"><h2>API Usage</h2><p>You can control of your events from remote server. There 3 API action available right now.</p>
+<ol style="list-style-type: undefined;">
+<li>Event List</li>
+<li>Add Event</li>
+<li>Delete Event</li>
+</ol>
+<h3><span style="color: #3366ff;">API Calls</span></h3>
+<ul style="list-style-type: square;">
+<li><strong>API url:</strong> /api/v1/</li>
+<li><strong>End Points:</strong>
+<ul>
+<li>lists/</li>
+<li>add/</li>
+<li>delete/</li>
+</ul>
+</li>
+<li><strong>Data Type:</strong> POST</li>
+<li><strong>Data Return:</strong> JSON</li>
+<li><strong>API Key POST Variable:</strong> apiKey</li>
+</ul>
+<h3><span style="color: #3366ff;">How To Use API Hook?</span></h3>
+<p>You can find sample API actions, in <strong>api.test.php</strong> file. There ready-to-use Curl based class available.</p>
+<h3><span style="color: #3366ff;">API List</span></h3>
+<p>Required POST variables;</p>
+<pre class="pretty-lang-markup"><code class="language-markup">$_POST['from'] = List Start Date (YYYY-MM-DD)
+$_POST['to'] = List End Date (YYYY-MM-DD)
+$_POST['offset'] = Page Offset Value (Numeric)
+$_POST['count'] = Page Data Limit (Numeric)</code></pre>
+<h3><span style="color: #3366ff;">API Add</span></h3>
+<pre class="pretty-lang-markup"><code class="language-markup">$_POST['title'] = 'Test From API'; # Event Title
+$_POST['event'] = 'Test From API Details';  # Event Detail
+$_POST['event_date'] = '2015-07-11';  # Event Date
+$_POST['user'] = '083535632f263bc92ff8044e6aad58c7'; # User Public Key
+$_POST['ip'] = $_SERVER['REMOTE_ADDR']; # IP Address
+$_POST['icon'] = 'fa fa-users'; # Optional
+$_POST['color'] = 'magenta'; # Optional</code></pre>
+<h3><span style="color: #3366ff;">API Delete</span></h3>
+<pre class="pretty-lang-markup"><code class="language-markup">$_POST['id'] = 3; # Event ID
+$_POST['user'] = '083535632f263bc92ff8044e6aad58c7'; # User Public Key</code></pre>
+<h3><span style="color: #3366ff;">Example API Call</span></h3>
+<pre class="pretty-lang-php"><code class="language-php">&lt;?php
+		$post_data = ((!is_array($_POST)) ? array():$_POST);
+		$post_data['apiKey'] = "YOUR PRIVATE API KEY";
+		foreach($post_data as $key=&gt;$value) { $fields_string .= $sep.$key.'='.urlencode($value); $sep='&amp;'; }
+		
+		$options = array(
+			CURLOPT_URL =&gt; "https://www.example.com/api/v1/add/",
+			CURLOPT_HEADER         =&gt; false,    // don't return headers
+			CURLOPT_ENCODING       =&gt; "",       // handle all encodings
+			CURLOPT_USERAGENT      =&gt; "Caledonian", // who am i
+			CURLOPT_CONNECTTIMEOUT =&gt; 120,      // timeout on connect
+			CURLOPT_TIMEOUT        =&gt; 120,      // timeout on response
+			CURLOPT_MAXREDIRS      =&gt; 10,       // stop after 10 redirects
+			CURLOPT_POST           =&gt; true,
+			CURLOPT_SSL_VERIFYPEER =&gt; false,
+			CURLOPT_POSTFIELDS     =&gt; $fields_string,
+			CURLOPT_FRESH_CONNECT  =&gt; 1,
+			CURLOPT_HTTPHEADER     =&gt; array(
+											'Cache-Control: no-cache',
+											'Content-length: '.strlen($fields_string)
+                                            )
+		);
+		$ch      = curl_init();
+		curl_setopt_array( $ch, $options );
+		$content = curl_exec( $ch );
+		$err     = curl_errno( $ch );
+		$errmsg  = curl_error( $ch );
+		$header  = curl_getinfo( $ch );
+		curl_close( $ch );
+
+		$header['errno']   = $err;
+		$header['errmsg']  = $errmsg;
+		$header['content'] = $content;
+?&gt;</code></pre>
+<h3><span style="color: #3366ff;">API Returns</span></h3>
+<p>API calls will return RESULT named array key. Here is possible results;</p>
+<p><code><strong>NO_API_KEY_PROVIDED</strong></code> = No API Key</p>
+<p><code><strong>INVALID_API_KEY</strong></code> = Invalid API Key</p>
+<p><code><strong>INVALID_USER_TOKEN</strong></code> = Invalid User Token</p>
+<p><code><strong>INVALID_TITLE</strong></code> = Invalid Event Title</p>
+<p><code><strong>INVALID_DETAILS</strong></code> = Invalid Event Details</p>
+<p><code><strong>INVALID_DATE</strong></code> = Invalid Event Date</p>
+<p><code><strong>EVENT_CREATED</strong></code> = Event Successfully Created</p>
+<p><code><strong>EVENT_NOT_CREATED</strong></code> = Error Occurred While Post a Event</p>
+<p><code><strong>ONLY_POST_REQUESTS</strong></code> = Only POST Data Acceptable</p>
+<p><code><strong>NO_RECORD</strong></code> = There No Record Found</p>
+<p><code><strong>REMOVED</strong></code> = Event Successfully Removed</p></div><div class="doc-conts" id="sec128"><h2>Credits</h2><ul style="list-style-type: square;">
+<li><a href="https://www.php.net" target="_blank">PHP</a></li>
+<li><a href="http://www.mysql.com/" target="_blank">MySQL</a></li>
+<li><a href="http://fancybox.net/" target="_blank">Fancybox</a></li>
+<li><a href="https://github.com/fronteed/iCheck" target="_blank">iCheck</a></li>
+<li><a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a></li>
+<li><a href="http://jquery.com/" target="_blank">Jquery</a>, <a href="https://jqueryui.com/" target="_blank">JqueryUI</a></li>
+<li><a href="http://tympanus.net/Development/Calendario/" target="_blank">Calendario</a></li>
+<li><a href="http://www.artlantis.net" target="_blank">Artlantis Design Studio</a></li>
+<li><a href="http://codecanyon.net/item/sirius-php-language-file-editor/6211162?ref=thunderfury" target="_blank">Sirius Language Editor</a></li>
+<li><a href="http://codecanyon.net/item/documentside-php-document-guide-manager/8547622?ref=thunderfury" target="_blank">documentSide Documentation Manager</a></li>
+</ul></div>
+</section>  
+</div><!-- end of row -->
+<footer></footer>
+</div><!-- end of container -->
+
+<script type='text/javascript' src="asset/jquery-1.11.1.min.js"></script>
+<script type='text/javascript' src="asset/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/prism/prism.js"></script>
+<link href="asset/prism/prism.css" rel="stylesheet" type="text/css">
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+
+/* smooth scrolling sections */
+$('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top - 1
+        }, 1000);
+        return false;
+      }
+    }
+});
+	
+
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+.hidden-wrapper{-webkit-transform-origin:0 0;transform-origin:0 0;border:1px solid transparent}.hidden-wrapper.off{transition:all .4s cubic-bezier(0,1,0,1);max-height:0;opacity:0;overflow:hidden}.hidden-wrapper:not(.off){transition:all .6s ease-in;max-height:100000px;opacity:1}

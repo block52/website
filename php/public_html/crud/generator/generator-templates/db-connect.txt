@@ -1,0 +1,16 @@
+<?php
+
+/* database connection */
+
+if (ENVIRONMENT == 'development') {
+    define('DBUSER', '%localhost-user%');
+    define('DBPASS', '%localhost-pass%');
+    define('DBHOST', '%localhost-host%');
+    define('DBNAME', '%localhost-name%');
+} else {
+    define('DBUSER', '%production-user%');
+    define('DBPASS', '%production-pass%');
+    define('DBHOST', '%production-host%');
+    define('DBNAME', '%production-name%');
+}
+define('DB', 'mysql:host=' . DBHOST . ';dbname=' . DBNAME);

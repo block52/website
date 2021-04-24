@@ -1,0 +1,116 @@
+/* Radio Buttons
+   ========================================================================== */
+
+/* Remove default Radio Buttons*/
+.material-form [type='radio']:not(:checked),
+.material-form [type='radio']:checked {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.material-form [type='radio']:not(:checked) + span,
+.material-form [type='radio']:checked + span {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  display: inline-block;
+  height: 25px;
+  line-height: 25px;
+  font-size: 1rem;
+  transition: 0.28s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.material-form [type='radio'] + span:before,
+.material-form [type='radio'] + span:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 4px;
+  width: 16px;
+  height: 16px;
+  z-index: 0;
+  transition: 0.28s ease;
+}
+
+/* Unchecked styles */
+.material-form [type='radio']:not(:checked) + span:before,
+.material-form [type='radio']:not(:checked) + span:after,
+.material-form [type='radio']:checked + span:before,
+.material-form [type='radio']:checked + span:after,
+.material-form [type='radio'].with-gap:checked + span:before,
+.material-form [type='radio'].with-gap:checked + span:after {
+  border-radius: 50%;
+}
+
+.material-form [type='radio']:not(:checked) + span:before,
+.material-form [type='radio']:not(:checked) + span:after {
+  border: 2px solid $radio-empty-color;
+}
+
+.material-form [type='radio']:not(:checked) + span:after {
+  transform: scale(0);
+}
+
+/* Checked styles */
+.material-form [type='radio']:checked + span:before {
+  border: 2px solid transparent;
+}
+
+.material-form [type='radio']:checked + span:after,
+.material-form [type='radio'].with-gap:checked + span:before,
+.material-form [type='radio'].with-gap:checked + span:after {
+  border: $radio-border;
+}
+
+.material-form [type='radio']:checked + span:after,
+.material-form [type='radio'].with-gap:checked + span:after {
+  background-color: $radio-fill-color;
+}
+
+.material-form [type='radio']:checked + span:after {
+  transform: scale(1.02);
+}
+
+/* Radio With gap */
+.material-form [type='radio'].with-gap:checked + span:after {
+  transform: scale(0.5);
+}
+
+/* Focused styles */
+.material-form [type='radio'].tabbed:focus + span:before {
+  box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled Radio With gap */
+.material-form [type='radio'].with-gap:disabled:checked + span:before {
+  border: 2px solid $input-disabled-color;
+}
+
+.material-form [type='radio'].with-gap:disabled:checked + span:after {
+  border: none;
+  background-color: $input-disabled-color;
+}
+
+/* Disabled style */
+.material-form [type='radio']:disabled:not(:checked) + span:before,
+.material-form [type='radio']:disabled:checked + span:before {
+  background-color: transparent;
+  border-color: $input-disabled-color;
+}
+
+.material-form [type='radio']:disabled + span {
+  color: $input-disabled-color;
+}
+
+.material-form [type='radio']:disabled:not(:checked) + span:before {
+  border-color: $input-disabled-color;
+}
+
+.material-form [type='radio']:disabled:checked + span:after {
+  background-color: $input-disabled-color;
+  border-color: $input-disabled-solid-color;
+}

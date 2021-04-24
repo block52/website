@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<default>
+		<includes>
+			<!--
+				Path to css and js files into plugins folder.
+				If your files are not in plugins folder, use absolute paths.
+			-->
+			<css>
+                <file>frameworks/all-frameworks.min.css</file>
+				<file>frameworks/material/material.min.css</file>
+			</css>
+			<js>
+                <file>frameworks/material/material.min.js</file>
+            </js>
+		</includes>
+		<js_code>
+<![CDATA[]]>
+		</js_code>
+	</default>
+</root>

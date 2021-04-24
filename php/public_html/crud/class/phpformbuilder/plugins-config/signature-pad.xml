@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>signature-pad/signature_pad.min.css</file>
+            </css>
+            <js>
+                <file>signature-pad/signature_pad.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+            <![CDATA[   if(typeof(signPads) == "undefined") {
+        var signPads = [];
+        window.resizeSignatures = function() {
+            let ratio =  Math.max(window.devicePixelRatio || 1, 1);
+            $('.signature-pad-canvas').each(function() {
+                if ($(this).attr('data-percent-width')[0]) {
+                    let percent = $(this).attr('data-percent-width') / 100;
+                    $(this).prop('width', $(this).parent().width() * percent);
+                }
+                let canvas = $(this).get(0);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext("2d").scale(ratio, ratio);
+            });
+            signPads.forEach(function(el) {
+                el.clear();
+            })
+        };
+        $(window).on('resize', resizeSignatures);
+    }
+
+    let inputName = $("%selector%").attr('name'),
+        dataAttr             = $("%selector%").data(),
+        dataWidth            = (dataAttr.width === undefined) ? '100%' : dataAttr.width,
+        dataHeight           = (dataAttr.height === undefined) ? 200 : dataAttr.height,
+        dataBackgroundColor  = (dataAttr.backgroundColor === undefined) ? 'rgba(255, 255, 255, 0)' : dataAttr.backgroundColor,
+        dataPenColor         = (dataAttr.penColor === undefined) ? 'rgb(0, 0, 0)' : dataAttr.penColor,
+        dataClearButton      = (dataAttr.clearButton === undefined) ? false : dataAttr.clearButton,
+        dataClearButtonClass = (dataAttr.clearButtonClass === undefined) ? '' : dataAttr.clearButtonClass,
+        dataClearButtonText  = (dataAttr.clearButtonText === undefined) ? 'clear' : dataAttr.clearButtonText;
+
+    $("%selector%-canvas").prop({height: dataHeight});
+
+    if (typeof(dataWidth) === 'number') {
+        $("%selector%-canvas").prop({width: dataWidth});
+    } else {
+        // if percent
+        $("%selector%-canvas").attr('data-percent-width', dataWidth.replace('%', ''));
+        resizeSignatures();
+    }
+
+    let signaturePad = new SignaturePad($("%selector%-canvas")[0], {
+        backgroundColor: dataBackgroundColor,
+        penColor: dataPenColor,
+        onEnd: function() {
+            let data = signaturePad.toDataURL('image/png');
+            $("%selector%").val(data);
+        }
+    });
+
+    signPads['%selector%'] = signaturePad;
+
+    if (dataClearButton == true) {
+        let $clearButton = $(`<button type="button" class="${dataClearButtonClass} sign-pad-btn">${dataClearButtonText}</button>`);
+        $("%selector%-canvas").after($clearButton);
+
+        $clearButton.on('click', function () {
+            signPads['%selector%'].clear();
+        });
+    }
+
+]]>
+        </js_code>
+    </default>
+</root>

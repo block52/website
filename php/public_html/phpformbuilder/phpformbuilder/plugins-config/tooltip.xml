@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <default>
+        <includes>
+            <!--
+                Path to css and js files into plugins folder.
+                If your files are not in plugins folder, use absolute paths.
+            -->
+            <css>
+                <file>qtip/jquery.qtip.min.css</file>
+            </css>
+            <js>
+                <file>qtip/jquery.qtip.min.js</file>
+            </js>
+        </includes>
+        <js_code>
+<![CDATA[   $("%selector%").each(function() {
+
+        // reset to default options for each tooltip
+        var defaults = {
+                style: '%style%',
+                title: ''
+            };
+
+        // defaults events
+        if($(this).is('input')) {
+            defaults.showEvent = 'focus';
+            defaults.hideEvent = 'unfocus';
+        } else {
+            defaults.showEvent = 'mouseenter';
+            defaults.hideEvent = 'mouseleave';
+        }
+        var options = defaults;
+
+        // replace default options with data-attr in exist
+        for (var key in defaults) {
+            if($(this).data(key) !== undefined) {
+                options[key] = $(this).data(key);
+            } else {
+                options[key] = defaults[key];
+            }
+        }
+
+        // tooltip placement (default top)
+        options.position = {
+            my: 'bottom center',
+            at: 'top center',
+            adjust: {
+                x: 0,
+                y: 0
+            }
+        }
+        if($(this).data('position') !== undefined) {
+            var position = $(this).data('position');
+            if(position == 'right') {
+                options.position = {
+                    my: 'left center',
+                    at: 'right center'
+                }
+            } else if(position == 'bottom') {
+                options.position = {
+                    my: 'top center',
+                    at: 'bottom center'
+                }
+            } else if(position == 'left') {
+                options.position = {
+                    my: 'right center',
+                    at: 'left center'
+                }
+            }
+        }
+        if($(this).data('adjust-x') !== undefined) {
+            var adjustX = $(this).data('adjust-x');
+            options.position.adjust.x = adjustX;
+        }
+        if($(this).data('adjust-y') !== undefined) {
+            var adjustY = $(this).data('adjust-y');
+            options.position.adjust.y = adjustY;
+        }
+
+        // tooltip dimensions
+        options.maxWidth = {};
+        if($(this).data('max-width') !== undefined) {
+            options.maxWidth = $(this).data('max-width');
+        }
+
+        options.maxHeight = {};
+        if($(this).data('max-height') !== undefined) {
+            options.maxHeight = $(this).data('max-height');
+        }
+
+        // if data-tooltip refers an html element
+        var selector = $(this).data('tooltip');
+        try {
+            options['content'] = $(selector).html();
+        } catch(error) {}
+
+        // else (content text from data-tooltip attr)
+        if(options.content === undefined) {
+            options.content = {
+                title: options.title,
+                attr: 'data-tooltip'
+            };
+        }
+
+        $(this).qtip({
+            content: options.content,
+            position: options.position,
+            show: {
+                event: options.showEvent,
+                effect: function(offset) {
+                    $(this).fadeIn(200);
+                }
+            },
+            hide: {
+                event: options.hideEvent,
+                delay: 500,
+                effect: function(offset) {
+                    $(this).fadeOut(200);
+                }
+            },
+            style: {
+                classes: options.style
+            },
+            events: {
+                    show: function(event, api) {
+                        $(this).css({
+                            'max-width': options.maxWidth,
+                            'max-height': options.maxHeight
+                        });
+                    }
+                }
+        });
+    });]]>
+        </js_code>
+    </default>
+</root>

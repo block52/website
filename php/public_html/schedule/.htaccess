@@ -1,0 +1,30 @@
+Options +FollowSymLinks
+# php_flag display_errors 1
+
+# Prevent Directoy listing 
+Options -Indexes
+
+# Prevent Direct Access to files
+<FilesMatch "\.(tpl|ini|log)">
+ Order deny,allow
+ Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+
+# SEO URL Settings
+RewriteEngine On
+
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css)
+
+
+#** Event Detail
+RewriteRule ^event/([a-zA-Z0-9-]+)/([0-9]+)(/)?$ sdr.calendar.php?pos=details&ID=$2 [NC]
+
+#** API
+RewriteRule ^api/v1/(.*)$ api/v1/api.php?request=$1 [QSA,NC,L]
+
+</IfModule>

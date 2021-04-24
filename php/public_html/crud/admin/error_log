@@ -1,0 +1,4 @@
+[17-Sep-2020 17:00:40 Australia/Brisbane] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/floattheflop/public_html/crud/admin/class/crud/ElementsFilters.php on line 52
+[17-Sep-2020 17:00:40 Australia/Brisbane] PHP Warning:  Invalid argument supplied for foreach() in /home/floattheflop/public_html/crud/admin/class/crud/ElementsFilters.php on line 533
+[17-Sep-2020 17:00:44 Australia/Brisbane] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/floattheflop/public_html/crud/admin/class/crud/ElementsFilters.php on line 52
+[17-Sep-2020 17:00:44 Australia/Brisbane] PHP Warning:  Invalid argument supplied for foreach() in /home/floattheflop/public_html/crud/admin/class/crud/ElementsFilters.php on line 533

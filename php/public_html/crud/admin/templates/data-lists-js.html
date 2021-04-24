@@ -1,0 +1,787 @@
+<script>
+
+/* global variables & functions
+-------------------------------------------------- */
+
+let nestedContent = {};
+
+let isSearchResultsList = false;
+
+const footableParser = function(valueOrElement) {
+    return $(valueOrElement).html();
+};
+
+const initTimeout = function(tableTogglableWidth) {
+
+    // we have to wait until table-togglable reaches its final size
+    setTimeout(function() {
+        let newWidth = $('.table-togglable').width();
+        if (newWidth == tableTogglableWidth) {
+            init();
+        } else {
+            initTimeout(newWidth);
+        }
+    }, 50);
+};
+
+// init all events AFTER footable if $('.table-data')[0]
+const init = function() {
+
+    // Sorting
+    if ($('.sorting')[0]) {
+        if (!isSearchResultsList) {
+            $('.sorting').each(function() {
+                $(this).find('a').on('click', function(e) {
+                    e.preventDefault();
+                    let dataField = $(this).attr('data-field'),
+                        dataDirection = $(this).attr('data-direction');
+                    $.ajax({
+                        url: '{{ constant('ADMIN_URL') }}inc/sorting.php',
+                        type: 'GET',
+                        data: {
+                            'dataTable': '{{ object.table }}',
+                            'dataField': dataField,
+                            'dataDirection': dataDirection
+                        }
+                    }).done(function(data) {
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 200);
+
+                        return false;
+                    }).fail(function(data, statut, error) {
+                        console.log(error);
+                    });
+                })
+            });
+        } else {
+            $('a[class^="sorting-"]').css({'opacity': 0, 'cursor': 'default'}).on('click', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        }
+    }
+
+    if (!isSearchResultsList) {
+
+        loadjs([
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/colorcolumns.min.js'
+            ], 'bundleB'
+        );
+
+        loadjs([
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/select2-themes/css/select2.min.css',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/select2/dist/js/select2.min.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/select2/dist/js/i18n/{{ constant('LANG') }}.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/litepicker/litepicker.min.css',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/litepicker/litepicker.min.js'
+            ], 'bundleC',
+            {
+                async: false
+            }
+        );
+
+        loadjs([
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/jquery.qtip.min.js'
+            ], 'bundleD'
+        );
+
+        loadjs([
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/pickadate/lib/compressed/picker.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/pickadate/lib/compressed/picker.date.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/pickadate/lib/compressed/picker.time.js',
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/jeditable.min.js',
+            ], 'bundleE',
+            {
+                async: false
+            }
+        );
+
+        loadjs([
+            '{{ constant('ADMIN_URL') }}assets/javascripts/fontawesome-all.min.js',
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/jquery.mCustomScrollbar.concat.min.js',
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/jquery.floatThead.min.js'
+            ], 'bundleF'
+        );
+
+        loadjs([
+            '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/jquery.autocomplete.min.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/ladda/dist/ladda-themeless.min.css',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/ladda/dist/spin.min.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/ladda/dist/ladda.min.js',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/nice-check/dist/css/nice-check-red.min.css',
+            '{{ constant('CLASS_URL') }}phpformbuilder/plugins/nice-check/dist/js/jquery.nice-check.min.js'
+            ], 'bundleG',
+            {
+                async: false
+            }
+        );
+    } else {
+        initBundleB();
+        initBundleE();
+        initBundleF();
+    }
+};
+
+{#
+================ Core JS loaded ================
+#}
+
+loadjs.ready('core', function() {
+    loadjs([
+        '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/moment.min.js',
+        '{{ constant('ADMIN_URL') }}assets/javascripts/plugins/footable.min.js'
+        ], 'bundleA',
+        {
+            async: false
+        }
+    );
+
+    // Number/page
+    if ($('#npp')[0]) {
+        $('#npp').on('change', function () {
+            $('#npp-form').submit();
+        });
+    }
+
+    // auto-enable filters
+    if ($('#filters-list')[0]) {
+        if ($('#filters-list').hasClass('auto-enable-filters')) {
+            $('#filters-list select').on('change', function() {
+                $('#filters-list').submit();
+            });
+        }
+    }
+});
+
+{#
+================ CORE + Footable ================
+#}
+
+const initBundleA = function() {
+    // extract nested tables
+    let index = 0,
+        $nested = $('.table-data td table');
+    nestedContent = {
+        id: [],
+        html: []
+    };
+    $nested.each(function() {
+        $(this).addClass('nested-table');
+        let $parentTd = $(this).closest('td'),
+            parentTdHtml = $parentTd.html();
+        nestedContent.id[index] = 'has-nested' + index;
+        nestedContent.html[index] = parentTdHtml;
+        $parentTd.attr('id', 'has-nested' + index).html('');
+        index ++;
+    });
+    if ($('.table-togglable')[0]) {
+        $('.table-togglable').find('tbody > tr').each(function() {
+            $(this).css('background-color', $(this).css('background-color'));
+        });
+
+        $('.table-togglable').on({
+            "ready.ft.table": function(e, ft){
+                // bind to the plugin initialize event to do something
+                $('.footable-toggle').css('cursor', 'pointer');
+
+                // init all events AFTER footable
+                initTimeout($('.table-togglable').width());
+            }
+        }).footable();
+    } else {
+        init();
+    }
+};
+
+loadjs.ready(['core', 'bundleA'], initBundleA);
+
+{#
+================ CORE + Footable + colorColumns ================
+#}
+const initBundleB = function() {
+    {% if object.filtered_columns is defined and object.filtered_columns is not empty %}
+    var filteredColumnsArray = [{{ object.filtered_columns }}];
+        if ($('#bulk-check-toggle')[0]) {
+            var bulkPositionIndex = $('#bulk-check-toggle').closest('th').index();
+            filteredColumnsArray.forEach(columnIndex => {
+                if (columnIndex > bulkPositionIndex) {
+                    columnIndex += 1;
+                }
+            });
+        }
+        $('#{{ object.item }}-list .table').colorColumns(filteredColumnsArray, 'rgba(0, 0, 0, 0.05)');
+    {% endif %}
+};
+loadjs.ready(['core', 'bundleA', 'bundleB'], initBundleB);
+
+{#
+================ CORE + Footable + Select2 ================
+#}
+const initBundleC = function() {
+    if ($('#filters-list')[0]) {
+        $('#filters-list .select2').select2({
+            theme: "clean"
+        });
+        // daterange filters
+        if ($('#filters-list .litepick')[0]) {
+            $('#filters-list .litepick').each(function() {
+                var inputId = $(this).prop('id'),
+                    minDate = $(this).attr('data-min-date'),
+                    maxDate = $(this).attr('data-max-date'),
+                    minDateObject = new Date($(this).attr('data-min-date')),
+                    maxDateObject = new Date($(this).attr('data-max-date')),
+                    minYear = parseInt(minDateObject.getFullYear()),
+                    maxYear = parseInt(maxDateObject.getFullYear()),
+                    minMonth = parseInt(minDateObject.getMonth()),
+                    maxMonth = parseInt(maxDateObject.getMonth());
+
+                var yearsDropdown = false;
+                if (maxYear - minYear > 0) {
+                    yearsDropdown = true;
+                }
+
+                var lp = new Litepicker({
+                    element: document.getElementById(inputId),
+                    singleMode: false,
+                    numberOfMonths: 2,
+                    numberOfColumns: 2,
+                    lang: '{{ constant('DATETIMEPICKERS_LANG')|replace({'_': '-'}) }}',
+                    minDate: $(this).attr('data-min-date'),
+                    maxDate: $(this).attr('data-max-date'),
+                    useResetBtn: true,
+                    buttonText: {
+                        reset: '{{ constant('RESET') }}<i class="far fa-window-close fa-2x text-danger ml-2"></i>'
+                    },
+                    onShow: function() {
+                        if (this.getDate() === null) {
+                            this.gotoDate(minDateObject, 0);
+                            this.gotoDate(maxDateObject, 1);
+                        }
+                    },
+                    // startDate: $(this).attr('data-min-date'),
+                    // endDate: $(this).attr('data-max-date'),
+                    splitView: true,
+                    dropdowns: {
+                        minYear: minYear,
+                        maxYear: maxYear,
+                        months: true,
+                        years: yearsDropdown,
+                    }
+                });
+            });
+        }
+        // ajax filters
+        if ($('#filters-list .ajax-filter')[0]) {
+            $('#filters-list .ajax-filter').each(function() {
+                var selectName = $(this).prop('id');
+                $('#' + selectName).select2({
+                    theme: "clean",
+                    language: '{{ constant('LANG') }}',
+                    templateResult: function(option) {
+                        return option.text
+                    },
+                    minimumInputLength: 1,
+                    ajax: {
+                        url: '{{ constant('ADMIN_URL') }}inc/ajax-filter.php',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            var query = {
+                                selectname: selectName,
+                                search: params.term,
+                                page: params.page || 1
+                            }
+
+                            // Query parameters will be ?selectname=[selectName]search=[term]&page=[page]
+                            return query;
+                        },
+                        processResults: function (data) {
+                            console.log(data);
+                            return data;
+                        }
+                    }
+                });
+            });
+        }
+    }
+};
+loadjs.ready(['core', 'bundleA', 'bundleC'], initBundleC);
+
+{#
+================ CORE + Footable + qTip ================
+#}
+const initBundleD = function() {
+    if ($('[data-tooltip]')[0]) {
+        // tooltips
+        $('[data-tooltip]').each(function() {
+            // reset to default options for each tooltip
+            const defaults = {
+                style: 'qtip-dark',
+                title: ''
+            };
+
+            // defaults events
+            if ($(this).is('input')) {
+                defaults.showEvent = 'focus';
+                defaults.hideEvent = 'unfocus';
+            } else {
+                defaults.showEvent = 'mouseenter';
+                defaults.hideEvent = 'mouseleave';
+            }
+            let options = defaults;
+
+            // replace default options with data-attr in exist
+            for (let key in defaults) {
+                if ($(this).data(key) !== undefined) {
+                    options[key] = $(this).data(key);
+                } else {
+                    options[key] = defaults[key];
+                }
+            }
+
+            // tooltip placement (default top)
+            options.position = {
+                my: 'bottom center',
+                at: 'top center',
+                adjust: {
+                    x: 0,
+                    y: 0
+                }
+            };
+            if ($(this).data('position') !== undefined) {
+                let position = $(this).data('position');
+                if (position == 'right') {
+                    options.position = {
+                        my: 'left center',
+                        at: 'right center'
+                    };
+                } else if (position == 'bottom') {
+                    options.position = {
+                        my: 'top center',
+                        at: 'bottom center'
+                    };
+                } else if (position == 'left') {
+                    options.position = {
+                        my: 'right center',
+                        at: 'left center'
+                    };
+                }
+            }
+            if ($(this).data('adjust-x') !== undefined) {
+                let adjustX = $(this).data('adjust-x');
+                options.position.adjust.x = adjustX;
+            }
+            if ($(this).data('adjust-y') !== undefined) {
+                let adjustY = $(this).data('adjust-y');
+                options.position.adjust.y = adjustY;
+            }
+
+            // tooltip dimensions
+            options.maxWidth = {};
+            if ($(this).data('max-width') !== undefined) {
+                options.maxWidth = $(this).data('max-width');
+            }
+
+            options.maxHeight = {};
+            if ($(this).data('max-height') !== undefined) {
+                options.maxHeight = $(this).data('max-height');
+            }
+
+            // if data-tooltip refers an html element
+            let selector = $(this).data('tooltip');
+            try {
+                options['content'] = $(selector).html();
+            } catch (error) {}
+
+            // else (content text from data-tooltip attr)
+            if (options.content === undefined) {
+                options.content = {
+                    title: options.title,
+                    attr: 'data-tooltip'
+                };
+            }
+            $(this).qtip({
+                content: options.content,
+                position: options.position,
+                show: {
+                    event: options.showEvent,
+                    effect: function(offset) {
+                        $(this).fadeIn(200);
+                    }
+                },
+                hide: {
+                    event: options.hideEvent,
+                    delay: 500,
+                    effect: function(offset) {
+                        $(this).fadeOut(200);
+                    }
+                },
+                style: {
+                    classes: options.style
+                },
+                events: {
+                    show: function(event, api) {
+                        $(this).css({
+                            'max-width': options.maxWidth,
+                            'max-height': options.maxHeight
+                        });
+                    }
+                }
+            });
+        });
+    }
+};
+loadjs.ready(['core', 'bundleA', 'bundleD'], initBundleD);
+
+{#
+================ CORE + Footable + jEdit ================
+#}
+const initBundleE = function() {
+    // EDIT IN PLACE - TEXT INPUTS
+    $('.jedit-text').editable('{{ constant('ADMIN_URL') }}inc/jedit.php', {
+        cssclass: 'form-horizontal',
+        type   : 'text',
+        indicator     : '<img src="{{ constant('ADMIN_URL') }}assets/images/ajax-loader.gif" alt="{{ constant('RECORDING') }} ...">',
+        cancel        : '{{ constant('CANCEL') }}',
+        submit        : '{{ constant('OK') }}',
+        onblur        : 'ignore',
+        onsubmit: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        onreset: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        callback     : function (value, settings) {
+            $(this).html(value);
+        }
+    });
+
+    $('.jedit-textarea').editable('{{ constant('ADMIN_URL') }}inc/jedit.php', {
+        cssclass: 'form-horizontal',
+        type      : 'textarea',
+        indicator     : '<img src="{{ constant('ADMIN_URL') }}assets/images/ajax-loader.gif" alt="{{ constant('RECORDING') }} ...">',
+        rows    : 5,
+        cols    : 30,
+        indicator     : '<img src="images/ajax-loader.gif" alt="{{ constant('RECORDING') }} ...">',
+        cancel        : '{{ constant('CANCEL') }}',
+        submit        : '{{ constant('OK') }}',
+        onblur        : 'ignore',
+        onsubmit: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        onreset: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        callback     : function (value, settings) {
+            $(this).html(value);
+        }
+    });
+
+    // EDIT IN PLACE - BOOLEAN
+    $('.jedit-boolean').editable('{{ constant('ADMIN_URL') }}inc/jedit.php', {
+        cssclass      : 'form-inline',
+        type          : 'select',
+        data    : {"1":"{{ constant('YES') }}","0":"{{ constant('NO') }}","selected":"1"},
+        indicator     : '<img src="{{ constant('ADMIN_URL') }}assets/images/ajax-loader.gif" alt="{{ constant('RECORDING') }} ...">',
+        cancel        : '{{ constant('CANCEL') }}',
+        submit        : '<button type="submit" class="btn btn-success btn-xs mt-5">{{ constant('OK') }}</button>',
+        onblur        : 'ignore',
+        onsubmit      : function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        onreset       : function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        callback      : function (value, settings) {
+            if (value > 0) {
+                $(this).html('<svg class="svg-inline--fa fa-check fa-w-16 icon-lg text-success" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>');
+                // $(this).html('{{ constant('YES') }}');
+            } else {
+                $(this).html('<svg class="svg-inline--fa fa-times fa-w-12 icon-md text-danger" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z"></path></svg>');
+                // $(this).html('{{ constant('NO') }}');
+            }
+        }
+    });
+
+    // EDIT IN PLACE - SELECT (from /class/lib/Twig/Extension/CrudTwigExtension.php)
+    {{ jeditSelect(object.table, object.select_data)|raw }}
+
+    // EDIT IN PLACE - DATES
+    $('.jedit-date').editable('{{ constant('ADMIN_URL') }}inc/jedit.php', {
+        cssclass: 'form-inline',
+        type   : 'pickadate',
+        indicator     : '<img src="{{ constant('ADMIN_URL') }}assets/images/ajax-loader.gif" alt="{{ constant('RECORDING') }} ...">',
+        cancel        : '',
+        submit        : '',
+        submitdata    : function (value, settings) {
+            return { "value_submit": $('input[name="value_submit"]').val() };
+        },
+        onblur        : 'ignore',
+        onsubmit: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        onreset: function() {
+            $(this).closest('[class^="jedit-"]').removeClass('active');
+        },
+        callback     : function (value, settings) {
+            $(this).html(value);
+        }
+    });
+};
+loadjs.ready(['core', 'bundleA', 'bundleE'], initBundleE);
+{#
+================ CORE + Footable + Table plugins ================
+#}
+const initBundleF = function() {
+    const getAvailableHeight = function() {
+        let availableHeight = 500; // set default minimal height
+        if ($('.page-header')[0] && $('.content-wrapper')[0] && $('#msg')[0] && $('.content-wrapper .row:first .card-header')[0] && $('.content-wrapper .row:first .card-footer')[0]) {
+            let headerHeight          = $('.page-header').outerHeight(true),
+                contentWrapperPadding = $('.content-wrapper').outerHeight(true) - $('.content-wrapper').height(),
+                msgHeight            = $('#msg').outerHeight(true),
+                cardHeaderHeight      = $('.content-wrapper .row:first .card-header').outerHeight(true),
+                cardFooterHeight      = $('.content-wrapper .row:first .card-footer').outerHeight();
+
+            availableHeight = $(window).height() - headerHeight - contentWrapperPadding * 2 - msgHeight - cardHeaderHeight - cardFooterHeight;
+        }
+
+        return availableHeight;
+    };
+
+    const reinsertNestedContent = function(nestedContent) {
+
+        // get nested tables back once footable has done its job
+        for (let i = 0; i < nestedContent.id.length; i++) {
+            $('#' + nestedContent.id[i]).html(nestedContent.html[i]);
+        }
+        $('.table-responsive .collapse').on('show.bs.collapse', function() {
+            $('.table-responsive').mCustomScrollbar("update");
+        }).on('hide.bs.collapse', function() {
+            $('.table-responsive').mCustomScrollbar("update");
+        });
+    };
+
+    const initTable = function() {
+        let $tableData = $('.table-data'),
+            $tableResponsive = $tableData.closest('.table-responsive'),
+            tableDataWidth = $tableData.width(),
+            tableResponsiveWidth = $tableResponsive.width();
+        if (tableDataWidth > tableResponsiveWidth) {
+            let availableHeight = getAvailableHeight();
+            $('.table-responsive').mCustomScrollbar({
+                axis:"xy",
+                scrollbarPosition: "outside",
+                autoExpandScrollbar: true,
+                advanced: {
+                    autoScrollOnFocus: false,
+                },
+                alwaysShowScrollbar: 2,
+                setwidth: tableResponsiveWidth - 50,
+                setHeight: availableHeight - 50,
+                scrollButtons: {
+                    enable: true,
+                    scrollAmount: 50,
+                    scrollType: "stepless"
+                },
+                keyboard:{
+                    enable: true,
+                    scrollAmount: 50,
+                    scrollType: "stepless"
+                },
+                theme:"rounded-dark",
+                callbacks:{
+                    onCreate: function() {
+                        setTimeout(function() {
+                            $('.table-responsive table:not(.nested-table)').floatThead({
+                                position: 'absolute',
+                                scrollContainer: function($table){
+                                    return $('#mCSB_1_container');
+                                }
+                            });
+                            $('.floatThead-table').css('display', 'table');
+                        }, 1000);
+                    },
+                    onUpdate: function(){
+                        setTimeout(function() {
+                            $('.table-responsive table:not(.nested-table):not(.floatThead-table)').floatThead('reflow');
+                        }, 200);
+                    },
+                    whileScrolling:function() {
+                        $('.floatThead-container').css({'transform':'translateX(' + this.mcs.left + 'px)'});
+                    }
+                }
+            });
+        }
+    };
+
+    if ($('.nested-wrapper')[0]) {
+        $('.nested-wrapper').slideUp();
+        $('.toggle-nested').each(function() {
+            $(this).on('click', function() {
+                $(this).siblings('.nested-wrapper').slideToggle();
+            });
+        });
+    }
+    if (typeof(nestedContent.id) != 'undefined') {
+        reinsertNestedContent(nestedContent);
+    }
+    initTable();
+};
+loadjs.ready(['core', 'bundleA', 'bundleF'], initBundleF);
+
+{#
+================ CORE + jQuery Autocomplete + Ladda ================
+#}
+const initBundleG = function() {
+    if ($('#rp-search-form')[0]) {
+        const l = Ladda.create( document.querySelector('#rp-search-submit'));
+        if (!$('#rp-search-field a.dropdown-item.active')[0]) {
+            $('#rp-search-field a.dropdown-item:first-child').addClass('active');
+        }
+        let selectedOption = {
+            name: $('#rp-search-field a.dropdown-item.active').text(),
+            value: $('#rp-search-field a.dropdown-item.active').data('value')
+        };
+        let autocompleteLoaded = false;
+        const initAutocomplete = function() {
+            $('#rp-search').autocomplete({
+                serviceUrl: '{{ constant('ADMIN_URL') }}inc/search-autocomplete.php',
+                paramName: 'search_string',
+                minChars: 2,
+                noCache: true,
+                showNoSuggestionNotice: true,
+                noSuggestionNotice: '{{ constant('NO_RESULT_FOUND') }}',
+                params: {
+                    item: '{{ object.item }}',
+                    search_field: selectedOption.value,
+                    is_autocomplete: true
+                },
+                onSelect: function (suggestion) {
+                    $('#rp-search-form').submit();
+                },
+                onSearchStart: function (query) {
+                    l.start();
+                },
+                onSearchComplete: function (query, suggestions) {
+                    l.stop();
+                },
+                onSearchError: function (query, jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    l.stop();
+                },
+                type: 'POST',
+                deferRequestBy: 400
+            });
+            $('#rp-search').attr('placeholder', '{{ constant('SEARCH') }} ' + selectedOption.name);
+            if (autocompleteLoaded === true) {
+                $('#rp-search').val('');
+            }
+            autocompleteLoaded = true;
+        };
+
+        const addResetSearchButton = function() {
+            if ($('#reset-search').length < 1 && $('#rp-search').val().length > 0) {
+                $('#rp-search-submit').before('<button id="reset-search" class="btn btn-warning" type="button" title="{{ constant('RESET') }}"><i class="{{ constant('ICON_CANCEL') }}"></i></button>');
+                $('#reset-search').on('click', function() {
+                    // reset session values
+                    $.ajax({
+                        url: '{{ constant('ADMIN_URL') }}inc/search-reset.php',
+                        type: 'POST',
+                        data: {
+                            table: '{{ object.table }}'
+                        }
+                    }).done(function(data) {
+                        location.reload();
+                    }).fail(function(data, statut, error) {
+                            console.log(error);
+                    });
+                });
+            }
+        };
+
+        $('#rp-search-field a.dropdown-item').on('click', function(e) {
+            $('#rp-search-field a.dropdown-item').removeClass('active');
+            $(e.target).addClass('active');
+            selectedOption.name = $(e.target).text();
+            selectedOption.value = $(e.target).data('value');
+            initAutocomplete();
+        });
+
+        $('#rp-search-field a.dropdown-item.active').trigger('click');
+
+        $('#rp-search-form').on('submit', function(e) {
+            e.preventDefault();
+            l.start();
+            const target = $('#{{ object.item }}-list').parent('div');
+            $.ajax({
+                    url: 'search/{{ object.item }}',
+                    type: 'POST',
+                    data: {
+                        search_field: selectedOption.value,
+                        search_string: $('#rp-search').val()
+                    }
+            }).done(function(data) {
+                l.stop();
+                data = JSON.parse(data);
+                $('#{{ object.item }}-list').html($(data).html());
+                isSearchResultsList = true;
+                initBundleA();
+                addResetSearchButton();
+            }).fail(function(data, statut, error) {
+                    console.log(error);
+            });
+            return false;
+        });
+
+        addResetSearchButton();
+
+        {#
+        ================ BULK CHECK ================
+        #}
+        if ($('#bulk-delete-btn')[0]) {
+            $('.table-data').niceCheck();
+            $('#bulk-check-toggle').on('click', function() {
+                var checkBoxes = $(".bulk-check");
+                checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+            });
+
+            $('#bulk-delete-modal').modal();
+
+            $('#bulk-delete-btn').on('click', function() {
+                var recordsIds = [];
+                $(".bulk-check:checked").each(function() {
+                    recordsIds.push($(this).attr('data-id'));
+                });
+                if (recordsIds.length < 1) {
+                    alert('No record selected');
+                    return false;
+                }
+                $('#bulk-delete-modal #records-count').text(recordsIds.length);
+                $('#bulk-delete-modal').modal('open');
+                $('#bulk-delete-confirm-btn').on('click', function() {
+                    $.ajax({
+                        url: '{{ constant('ADMIN_URL') }}inc/forms/{{ object.item }}-bulk-delete.php',
+                        type: 'POST',
+                        data: {
+                            'recordsIds': recordsIds
+                        }
+                    }).done(function(data, statut, error) {
+                        $('#bulk-delete-modal').modal('close');
+                        recordsIds.forEach(function(rid) {
+                            $('#bulk-check-' + rid).closest('tr').remove();
+                        });
+                        $('#msg').html(data);
+                        $([document.documentElement, document.body]).animate({ scrollTop: $("#msg").offset().top }, 400);
+                    }).fail(function(data, statut, error) {
+                        console.log(error);
+                    });
+                });
+
+            });
+        }
+    }
+}
+loadjs.ready(['core', 'bundleG'], initBundleG);
+
+</script>

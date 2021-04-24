@@ -1,0 +1,28 @@
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks -MultiViews
+RewriteEngine On
+RewriteBase /
+
+#############################################################
+# All URLs are redirected to /admin/index.php
+# Then the router does its job to match the request.
+#############################################################
+
+#############################################################
+# If you encounter 404 errors:
+# - remove the '#' L.18 + 19
+# - if you installed in a subfolder, add it in the path L.19
+# - add a '#' at the beginning of L.22 + 23 + 26 + 27
+#############################################################
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule . /admin/index.php [QSA,L]
+
+# Store the current location in an environment variable CWD
+RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+RewriteRule ^.*$ - [E=CWD:%2]
+
+# Just by prefixing the environment variable, we can safely rewrite anything now
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . %{ENV:CWD}$1.$3 [L]
+</IfModule>
