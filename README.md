@@ -1,6 +1,6 @@
 # What is block52?
 
-**Third Generation Blockchain**
+**Third Generation Blockchain**  
 Block 52 is an efficient blockchain based protocol to facilitate trustless player to player card games over the internet, with zero knowledge, no central authority and the ability to allow games to wager in a native crypto currency.
 
 # About
