@@ -10,7 +10,13 @@ Block 52 is an efficent protocol to facilitate trustless player to player card g
 ## How
 Block 52 will run its own public chain that is designed to for the sole purpose of implmenting the Block 52 protocol.  Unlike general purpose blockchains like Ethereum, by creating a custom blockchain, Block 52 will allow fast p2p card games to be built and run allowing anyone with an internet connction to host and play online card games.
 
-Just like the lbry.io project 
+Just like the lbry.io project has created its own chain and stack to distribute video content and pay content creators fairly without a "middle man", block 52 will do the same for online card games.
+
+## Challenges
+There have been attempts a generalized game, such as poker, but all suffer similar fates of
+- Slow transaction times when using protocols such as Bitcoin
+- High transaction fees on Ethereum and Bitcoin
+- Use generalised programming languages like solidity or non turing complete and limited languages such as scrypt
 
 ## About
 Offical site for https://block52.io
