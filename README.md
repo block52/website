@@ -1,7 +1,10 @@
 # What is block52?
 
-**Third Generation Blockchain**  
-Block 52 is an efficient blockchain based protocol to facilitate trustless player to player card games over the internet, with zero knowledge, no central authority and the ability to allow games to wager in a native crypto currency.
+**Protocol and Blockchain**  
+Block 52 is an efficent protocol to facilitate trustless player to player card games over the internet, with zero knowledge, no central authority.
+
+## How
+Block 52 will run its own public chain, that is designed to for the sole purpose of implmenting the Block 52 protocol.  Unlike general purpose blockchains like Ethereum, by creating a custom blockchain, Block 52 will allow fast p2p card games to be built and run allowing anyone with an internet connction to host and play online card games.
 
 # About
 Offical site for https://block52.io
