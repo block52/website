@@ -26,8 +26,11 @@ There have been attempts a generalized game, such as poker, but all suffer simil
 ## About
 Offical site for https://block52.io
 
-## Contact
+## Contract Address
 
+Mainnet: `0x70b710c8c98090d706087bbc5d0de3ca4cc91353`
+
+## Contact
 You can email us at block52 at protonmail dot com
 
 ```text
