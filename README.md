@@ -28,7 +28,8 @@ Offical site for https://block52.io
 
 ## Contract Address
 
-Mainnet: `0x70b710c8c98090d706087bbc5d0de3ca4cc91353`
+Kovan `0xf76EE39dcd53Ab4F7e3BD3aE30F7a8Ef8168B864`  
+Mainnet: `0x70b710c8c98090d706087bbc5d0de3ca4cc91353` or `block52.eth`  
 
 ## Contact
 You can email us at block52 at protonmail dot com
