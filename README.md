@@ -5,17 +5,17 @@
 
 ## Abstract
 **A Protocol and Blockchain**  
-Block 52 is an efficient protocol to facilitate trustless player to player card games over the internet, with zero knowledge and no central authority.  
+Block 52 is an Ethereum Layer 2 solution and protocol to facilitate trustless player to player card games over the internet, with zero knowledge and no central authority.  
 
 The Block 52 project is an implementation of several "mental poker" protocols made possible with its own proof of stake blockchain.
 
 ## How
-Block 52 will run its own public chain that is designed to for the sole purpose of implmenting the Block 52 protocol.  Unlike general purpose blockchains like Ethereum, by creating a custom blockchain, Block 52 will allow fast p2p card games to be built and run allowing anyone with an internet connction to host and play online card games.
+Block 52 will run its own public layer two sidechain that is designed to for the sole purpose of implmenting the Block 52 protocol.  Unlike general purpose blockchains like Ethereum, by creating a custom blockchain, Block 52 will allow fast p2p card games to be built and run allowing anyone with an internet connction to host and play online card games.
 
 Just like the lbry.io project has created its own chain and stack to distribute video content and pay content creators fairly without a "middle man", block 52 will do the same for online card games.
 
 ### Primary Nodes
-The first layer is a set of primary nodes to replicate and sync the state of the network.  
+The layer 2 solution comprises of a set of primary nodes to replicate and sync the state of the network.  Nodes can either be staking or non staking.
 
 ## Challenges
 There have been attempts a generalized game, such as poker, but all suffer similar fates of
